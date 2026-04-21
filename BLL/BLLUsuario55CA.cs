@@ -42,6 +42,8 @@ namespace BLL
 
 
             dal.InsertarUsuario(u);
+            BLLBitacora55CA bit = new BLLBitacora55CA();
+            bit.RegistrarCreacionUsuario(1, u.User);
         }
 
         public List<BEUsuario55CA> obtenerTodos()
