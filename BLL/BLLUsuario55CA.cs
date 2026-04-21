@@ -77,6 +77,12 @@ namespace BLL
             if (usuario.Password != passwordHash)
             {
                 dal.aumentarIntento(usuario.DNI);
+                
+                if(usuario.Intentos > 3)
+                {
+                    dal.bloquearUsuario(usuario.DNI);   
+                }
+
                 throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos} de 3.");
             }
             

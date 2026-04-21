@@ -164,6 +164,16 @@ namespace DAL
             return resultado;
         }
 
+        public int bloquearUsuario(string dni)
+        {
+            string query = "UPDATE Usuarios SET Bloqueo = 1 WHERE DNI = @dni";
+            var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
+
+            int resultado = acceso.executeNonQuery(query, parametros);
+
+            return resultado;
+        }
+
         #endregion IntentosFallidos
 
     }
