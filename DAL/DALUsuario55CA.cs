@@ -28,7 +28,7 @@ namespace DAL
         public void InsertarUsuario(BEUsuario55CA u)
         {
             string query = @"INSERT INTO Usuario
-                    (DNI, Nombre, Apellido, Email, Rol, NombreUsuario, Password)
+                    (DNI, Nombre, Apellido, Email, Rol, User, Password)
                     VALUES
                     (@dni, @nom, @ape, @mail, @rol, @user, @pass)";
 

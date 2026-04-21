@@ -16,7 +16,6 @@ namespace BE
         public string Rol { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
-
         public int Intentos { get; set; }
         public bool Bloqueo { get; set; }
         public bool Activo { get; set; }
