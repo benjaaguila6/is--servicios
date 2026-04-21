@@ -44,7 +44,14 @@
     <Compile Include="ServiceCredenciales55CA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceSeguridad55CA.cs" />
+    <Compile Include="ServiceSessionManager55CA.cs" />
     <Compile Include="ServiceValidacion55CA.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BE\BE.csproj">
+      <Project>{1dce08c7-4239-4595-9712-bac2bbec9de8}</Project>
+      <Name>BE</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

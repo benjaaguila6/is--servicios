@@ -57,7 +57,6 @@ namespace DAL
                     }
                     catch (SqlException ex)
                     {
-
                         throw new Exception("Error al escribir en la base de datos", ex);
                     }
                 }

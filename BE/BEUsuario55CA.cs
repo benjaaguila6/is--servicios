@@ -8,7 +8,6 @@ namespace BE
 {
     public class BEUsuario55CA
     {
-        public int IdUsuario { get; set; }
         public string DNI { get; set; }
         public string Nombre { get; set; }
         public string Apellido { get; set; }

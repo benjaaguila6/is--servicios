@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BE;
+using Microsoft.SqlServer.Server;
 
 namespace DAL
 {
@@ -13,19 +14,7 @@ namespace DAL
     {
         DALAcceso55CA acceso = new DALAcceso55CA();
 
-        public bool ExisteDNI(string dni)
-        {
-            string query = "SELECT * FROM Usuario WHERE DNI = @dni";
-
-            List<SqlParameter> p = new List<SqlParameter>();
-            p.Add(new SqlParameter("@dni", dni));
-
-            DataTable dt = acceso.executeDataTable(query, p);
-
-            return dt.Rows.Count > 0;
-        }
-
-        public void InsertarUsuario(BEUsuario55CA u)
+        public int InsertarUsuario(BEUsuario55CA u)
         {
             string query = @"INSERT INTO Usuario
                     (DNI, Nombre, Apellido, Email, Rol, User, Password)
@@ -42,9 +31,12 @@ namespace DAL
             parametros.Add(new SqlParameter("@user", u.User));
             parametros.Add(new SqlParameter("@pass", u.Password));
 
-            acceso.executeNonQuery(query, parametros);
+            int resultado = acceso.executeNonQuery(query, parametros);
+
+            return resultado;
         }
 
+        #region ObtenerUsuarios
         public List<BEUsuario55CA> obtenerTodos()
         {
             string query = "SELECT * FROM Usuario";
@@ -75,5 +67,104 @@ namespace DAL
             }
             return null;
         }
+
+        public bool obtenerPorDNI(string dni)
+        {
+            string query = "SELECT * FROM Usuario WHERE DNI = @dni";
+
+            List<SqlParameter> p = new List<SqlParameter>();
+            p.Add(new SqlParameter("@dni", dni));
+
+            DataTable dt = acceso.executeDataTable(query, p);
+
+            return dt.Rows.Count > 0;
+        }
+
+        public BEUsuario55CA obtenerPorEmail(string email)
+        {
+            string query = "SELECT * FROM USUARIO WHERE Email = @email";
+            var parametros = new List<SqlParameter> { new SqlParameter("@email", email) };
+
+            DataTable dt = acceso.executeDataTable(query, parametros);
+
+            if(dt.Rows.Count > 0) // si hay un usuario con ese email
+            {
+                DataRow row = dt.Rows[0]; //agarramos el primero (deberia haber uno solo)
+
+                BEUsuario55CA u = new BEUsuario55CA
+                {
+                    DNI = row["DNI"].ToString(),
+                    Nombre = row["Nombre"].ToString(),
+                    Apellido = row["Apellido"].ToString(),
+                    Email = row["Email"].ToString(),
+                    User = row["User"].ToString(),
+                    Password = row["Password"].ToString(),
+                    Intentos = Convert.ToInt32(row["Intentos"]),
+                    Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
+                    Activo = Convert.ToBoolean(row["Activo"])
+                };
+
+                return u;
+            }
+
+            return null;
+        }
+
+        public BEUsuario55CA obtenerPorUser(string user)
+        {
+            string query = "SELECT * FROM USUARIO WHERE User = @user";
+            var parametros = new List<SqlParameter> { new SqlParameter("@user", user) };
+
+            DataTable dt = acceso.executeDataTable(query, parametros);
+
+            if (dt.Rows.Count > 0) // si hay un usuario con ese user
+            {
+                DataRow row = dt.Rows[0]; //agarramos el primero (deberia haber uno solo)
+
+                BEUsuario55CA u = new BEUsuario55CA
+                {
+                    DNI = row["DNI"].ToString(),
+                    Nombre = row["Nombre"].ToString(),
+                    Apellido = row["Apellido"].ToString(),
+                    Email = row["Email"].ToString(),
+                    User = row["User"].ToString(),
+                    Password = row["Password"].ToString(),
+                    Intentos = Convert.ToInt32(row["Intentos"]),
+                    Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
+                    Activo = Convert.ToBoolean(row["Activo"])
+                };
+
+                return u;
+            }
+
+            return null;
+        }
+
+        #endregion ObtenerUsuarios
+
+        #region IntentosFallidos
+
+        public int aumentarIntento(string dni)
+        {
+            string query = "UPDATE Usuarios SET Intentos = Intentos + 1 WHERE DNI = @dni";
+            var parametros = new List<SqlParameter> { new SqlParameter ("@dni", dni) };
+
+            int resultado = acceso.executeNonQuery(query, parametros);
+
+            return resultado;
+        }
+
+        public int reinciarIntentos(string dni)
+        {
+            string query = "UPDATE Usuarios SET Intentos = 0 WHERE DNI = @dni";
+            var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
+
+            int resultado = acceso.executeNonQuery(query, parametros);
+
+            return resultado;
+        }
+
+        #endregion IntentosFallidos
+
     }
 }

@@ -12,7 +12,7 @@ namespace BLL
     public class BLLUsuario55CA
     {
         public DALUsuario55CA dal = new DALUsuario55CA();
-        
+        BLLBitacora55CA bit = new BLLBitacora55CA();
         public void CrearUsuario(BEUsuario55CA u)
         {
 
@@ -25,25 +25,65 @@ namespace BLL
             }
 
             if (!ServiceValidacion55CA.EsDNIValido(u.DNI))
+            {
                 throw new Exception("El DNI ingresado no es válido.");
+            }
+                
 
             if (!ServiceValidacion55CA.EsEmailValido(u.Email))
+            {
                 throw new Exception("El email ingresado no es válido.");
+            }
+                
 
-            if (dal.ExisteDNI(u.DNI))
+            if (dal.obtenerPorDNI(u.DNI))
+            {
                 throw new Exception("Ya existe un usuario con ese DNI.");
-
-
-
+            }
+               
             u.User = ServiceCredenciales55CA.GenerarUsuario(u.Nombre, u.DNI);
             u.Password = ServiceCredenciales55CA.GenerarPassword(u.Apellido, u.DNI);
             u.Password = ServiceSeguridad55CA.Hashear(u.Password);
 
 
-
             dal.InsertarUsuario(u);
-            BLLBitacora55CA bit = new BLLBitacora55CA();
+
             bit.RegistrarCreacionUsuario(1, u.User);
+        }
+
+        public void login(string user, string password)
+        {
+           
+            BEUsuario55CA usuario = dal.obtenerPorUser(user);
+            
+            //validaciones
+            if (ServiceSessionManager55CA.getIntancia().estaLogueado())
+            {
+                throw new Exception("Ya existe una sesión activa.");
+            }
+
+            if(usuario == null)
+            {
+                throw new Exception("El usuario no existe.");
+            }
+
+            if(usuario.Bloqueo == true)
+            {
+                throw new Exception("El usuario esta bloqueado por intentos fallidos. Contacte a un administrador.");
+            }
+
+            string passwordHash = ServiceSeguridad55CA.Hashear(password);
+
+            if (usuario.Password != passwordHash)
+            {
+                dal.aumentarIntento(usuario.DNI);
+                throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos} de 3.");
+            }
+            
+            //login exitoso
+            ServiceSessionManager55CA.getIntancia().Login(usuario);
+            dal.reinciarIntentos(usuario.DNI);
+
         }
 
         public List<BEUsuario55CA> obtenerTodos()
