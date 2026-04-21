@@ -154,7 +154,7 @@ namespace DAL
             return resultado;
         }
 
-        public int reinciarIntentos(string dni)
+        public int reiniciarIntentos(string dni)
         {
             string query = "UPDATE Usuarios SET Intentos = 0 WHERE DNI = @dni";
             var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };

@@ -76,19 +76,22 @@ namespace BLL
 
             if (usuario.Password != passwordHash)
             {
+                usuario.Intentos++;
+
                 dal.aumentarIntento(usuario.DNI);
-                
-                if(usuario.Intentos > 3)
+
+                if (usuario.Intentos >= 4)
                 {
-                    dal.bloquearUsuario(usuario.DNI);   
+                    dal.bloquearUsuario(usuario.DNI);
+                    throw new Exception("Su cuenta ha sido bloqueada tras 4 intentos fallidos. Contacte al administrador.");
                 }
 
-                throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos} de 3.");
+                throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos}. Al cuarto intento fallido se bloqueará la cuenta.");
             }
             
             //login exitoso
             ServiceSessionManager55CA.getIntancia().Login(usuario);
-            dal.reinciarIntentos(usuario.DNI);
+            dal.reiniciarIntentos(usuario.DNI);
 
         }
 
