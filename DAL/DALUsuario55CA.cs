@@ -61,6 +61,7 @@ namespace DAL
                         Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
                         Activo = Convert.ToBoolean(row["Activo"])
                     };
+
                     lista.Add(u);
                 }
                 return lista;

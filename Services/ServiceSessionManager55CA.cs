@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BE;
+using Services.Modelos;
 
 namespace Services
 {
@@ -13,7 +14,7 @@ namespace Services
 
         private static ServiceSessionManager55CA _instancia;
 
-        public BEUsuario55CA usuarioActivo { get; private set; }
+        public UsuarioModelo55CA usuarioActivo { get; private set; }
 
         public static ServiceSessionManager55CA getIntancia()
         {
@@ -25,7 +26,7 @@ namespace Services
             return _instancia;
         }
 
-        public void Login(BEUsuario55CA usuario)
+        public void Login(UsuarioModelo55CA usuario)
         {
             usuarioActivo = usuario;
         }
