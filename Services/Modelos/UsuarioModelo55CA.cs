@@ -20,19 +20,9 @@ namespace Services.Modelos
         public bool Bloqueo { get; set; }
         public bool Activo { get; set; }
 
-
-        public UsuarioModelo55CA(string dNI, string nombre, string apellido, string email, string rol, string user, string password, int intentos, bool bloqueo, bool activo)
+        public UsuarioModelo55CA()
         {
-            DNI = dNI;
-            Nombre = nombre;
-            Apellido = apellido;
-            Email = email;
-            Rol = rol;
-            User = user;
-            Password = password;
-            Intentos = intentos;
-            Bloqueo = bloqueo;
-            Activo = activo;
+            
         }
 
         //ctor para new

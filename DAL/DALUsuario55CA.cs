@@ -37,36 +37,13 @@ namespace DAL
         }
 
         #region ObtenerUsuarios
-        public List<BEUsuario55CA> obtenerTodos()
+        public DataTable obtenerTodos()
         {
             string query = "SELECT * FROM Usuario";
 
-            List<BEUsuario55CA> lista = new List<BEUsuario55CA>();
-
             DataTable dt = acceso.executeDataTable(query);
 
-            if(dt.Rows.Count > 0)
-            {
-                foreach (DataRow row in dt.Rows)
-                {
-                    BEUsuario55CA u = new BEUsuario55CA
-                    {
-                        DNI = row["DNI"].ToString(),
-                        Nombre = row["Nombre"].ToString(),
-                        Apellido = row["Apellido"].ToString(),
-                        Email = row["Email"].ToString(),
-                        User = row["User"].ToString(),
-                        Password = row["Password"].ToString(),
-                        Intentos = Convert.ToInt32(row["Intentos"]),
-                        Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
-                        Activo = Convert.ToBoolean(row["Activo"])
-                    };
-
-                    lista.Add(u);
-                }
-                return lista;
-            }
-            return null;
+            return dt;
         }
 
         public bool obtenerPorDNI(string dni)
@@ -81,64 +58,25 @@ namespace DAL
             return dt.Rows.Count > 0;
         }
 
-        public BEUsuario55CA obtenerPorEmail(string email)
+        public bool obtenerPorEmail(string email)
         {
             string query = "SELECT * FROM USUARIO WHERE Email = @email";
+
             var parametros = new List<SqlParameter> { new SqlParameter("@email", email) };
 
             DataTable dt = acceso.executeDataTable(query, parametros);
 
-            if(dt.Rows.Count > 0) // si hay un usuario con ese email
-            {
-                DataRow row = dt.Rows[0]; //agarramos el primero (deberia haber uno solo)
-
-                BEUsuario55CA u = new BEUsuario55CA
-                {
-                    DNI = row["DNI"].ToString(),
-                    Nombre = row["Nombre"].ToString(),
-                    Apellido = row["Apellido"].ToString(),
-                    Email = row["Email"].ToString(),
-                    User = row["User"].ToString(),
-                    Password = row["Password"].ToString(),
-                    Intentos = Convert.ToInt32(row["Intentos"]),
-                    Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
-                    Activo = Convert.ToBoolean(row["Activo"])
-                };
-
-                return u;
-            }
-
-            return null;
+            return dt.Rows.Count > 0;
         }
 
-        public BEUsuario55CA obtenerPorUser(string user)
+        public DataRow obtenerPorUser(string user)
         {
             string query = "SELECT * FROM USUARIO WHERE User = @user";
             var parametros = new List<SqlParameter> { new SqlParameter("@user", user) };
 
             DataTable dt = acceso.executeDataTable(query, parametros);
 
-            if (dt.Rows.Count > 0) // si hay un usuario con ese user
-            {
-                DataRow row = dt.Rows[0]; //agarramos el primero (deberia haber uno solo)
-
-                BEUsuario55CA u = new BEUsuario55CA
-                {
-                    DNI = row["DNI"].ToString(),
-                    Nombre = row["Nombre"].ToString(),
-                    Apellido = row["Apellido"].ToString(),
-                    Email = row["Email"].ToString(),
-                    User = row["User"].ToString(),
-                    Password = row["Password"].ToString(),
-                    Intentos = Convert.ToInt32(row["Intentos"]),
-                    Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
-                    Activo = Convert.ToBoolean(row["Activo"])
-                };
-
-                return u;
-            }
-
-            return null;
+            return dt;
         }
 
         #endregion ObtenerUsuarios
