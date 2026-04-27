@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BE;
 
 namespace Services.Modelos
 {
@@ -13,7 +14,7 @@ namespace Services.Modelos
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string Email { get; set; }
-        public string Rol { get; set; }
+        public TipoRol55CA Rol { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
         public int Intentos { get; set; }
@@ -26,7 +27,7 @@ namespace Services.Modelos
         }
 
         //ctor para new
-        public UsuarioModelo55CA(string dNI, string nombre, string apellido, string email, string rol)
+        public UsuarioModelo55CA(string dNI, string nombre, string apellido, string email, TipoRol55CA rol)
         {
             DNI = dNI;
             Nombre = nombre;

@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using BE;
+using DAL;
 using Services.Modelos;
 using System;
 using System.Collections.Generic;
@@ -72,6 +73,35 @@ namespace Services
 
         }
 
+        public void CrearUsuario(string dni, string nombre, string apellido, string email, TipoRol55CA rol)
+        {
+
+            if (dal.obtenerPorDNI(dni)) //true si existe
+            {
+                throw new Exception("Ya existe un usuario con ese DNI.");
+            }
+
+            string user = GenerarUsuario(nombre, dni);
+            string password = GenerarPassword(apellido, dni);
+            string passwordHash = ServiceSeguridad55CA.Hashear(password);
+
+            Dictionary<string, object> datos = new Dictionary<string, object>
+            {
+                { "@dni", dni },
+                { "@nom", nombre },
+                { "@ape", apellido },
+                { "@mail", email },
+                { "@rol", (int)rol }, //lo convertimos en int para que guarde el pk del rol,
+                { "@user", user },
+                { "@pass", passwordHash }
+            }; //diccionario para que el metodo DAL no tenga muchos parametros
+
+            dal.InsertarUsuario(datos);
+
+            bit.RegistrarCreacionUsuario(1, u.User);
+        }
+
+
         private UsuarioModelo55CA MapearUsuario(DataRow row)
         {
             if(row == null)
@@ -84,6 +114,7 @@ namespace Services
                 Nombre = row["Nombre"].ToString(),
                 Apellido = row["Apellido"].ToString(),
                 Email = row["Email"].ToString(),
+                Rol = (TipoRol55CA)Convert.ToInt32(row["IdRol"]), //Toma el numero del rol y automaticamente sabe que rol le corresponde
                 User = row["User"].ToString(),
                 Password = row["Password"].ToString(),
                 Intentos = Convert.ToInt32(row["Intentos"]),
@@ -91,5 +122,17 @@ namespace Services
                 Activo = Convert.ToBoolean(row["Activo"])
             };
         }
+
+        #region Credenciales
+        public string GenerarUsuario(string nombre, string dni)
+        {
+            return nombre.Trim().ToLower() + dni;
+        }
+
+        public string GenerarPassword(string apellido, string dni)
+        {
+            return apellido.Trim().ToLower() + dni;
+        }
+        #endregion Credenciales
     }
 }

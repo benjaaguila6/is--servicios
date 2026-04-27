@@ -14,22 +14,17 @@ namespace DAL
     {
         DALAcceso55CA acceso = new DALAcceso55CA();
 
-        public int InsertarUsuario(BEUsuario55CA u)
+        public int InsertarUsuario(Dictionary<string, object> datos)
         {
-            string query = @"INSERT INTO Usuario
-                    (DNI, Nombre, Apellido, Email, Rol, User, Password)
-                    VALUES
-                    (@dni, @nom, @ape, @mail, @rol, @user, @pass)";
+            string query = @"INSERT INTO Usuario (DNI, Nombre, Apellido, Email, Rol, User, Password) 
+                     VALUES (@dni, @nom, @ape, @mail, @rol, @user, @pass)";
 
             List<SqlParameter> parametros = new List<SqlParameter>();
 
-            parametros.Add(new SqlParameter("@dni", u.DNI));
-            parametros.Add(new SqlParameter("@nom", u.Nombre));
-            parametros.Add(new SqlParameter("@ape", u.Apellido));
-            parametros.Add(new SqlParameter("@mail", u.Email));
-            parametros.Add(new SqlParameter("@rol", u.Rol));
-            parametros.Add(new SqlParameter("@user", u.User));
-            parametros.Add(new SqlParameter("@pass", u.Password));
+            foreach (var item in datos)
+            {
+                parametros.Add(new SqlParameter(item.Key, item.Value));
+            }
 
             int resultado = acceso.executeNonQuery(query, parametros);
 
@@ -76,7 +71,7 @@ namespace DAL
 
             DataTable dt = acceso.executeDataTable(query, parametros);
 
-            return dt;
+            return dt.Rows.Count > 0 ? dt.Rows[0] : null; //si hay datos, devuelve la unica fila. sino devuelve null
         }
 
         #endregion ObtenerUsuarios
