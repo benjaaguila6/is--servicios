@@ -1,6 +1,7 @@
 ﻿using BE;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -12,20 +13,20 @@ namespace DAL
     {
         DALAcceso55CA acceso = new DALAcceso55CA();
 
-        public void Registrar(BEBitacora55CA b)
+        public int insertarLog(Dictionary<string, object> datos)
         {
-            string query = @"INSERT INTO Bitacora
-                            (IdUsuario, Accion, FechaHora)
-                            VALUES
-                            (@id, @accion, @fecha)";
+            string query = @"INSERT INTO BitacoraEventos (DNI, Evento, Criticidad, FechaHora, Modulo) VALUES (@id, @accion, @fecha)";
+            
+            List<SqlParameter> parametros = new List<SqlParameter>();
 
-            List<SqlParameter> p = new List<SqlParameter>();
+            foreach (var item in datos)
+            {
+                parametros.Add(new SqlParameter(item.Key, item.Value));
+            }
 
-            p.Add(new SqlParameter("@id", b.IdUsuario));
-            p.Add(new SqlParameter("@accion", b.Accion));
-            p.Add(new SqlParameter("@fecha", b.FechaHora));
+            int resultado = acceso.executeNonQuery(query, parametros);
 
-            acceso.executeNonQuery(query, p);
+            return resultado;
         }
     }
 }

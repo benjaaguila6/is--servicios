@@ -13,6 +13,7 @@ namespace Services
     public class UsuarioService
     {
         DALUsuario55CA dal = new DALUsuario55CA();
+        BitacoraEventosService bit = new BitacoraEventosService();
 
         public List<UsuarioModelo55CA> obtenerTodos()
         {
