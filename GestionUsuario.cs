@@ -72,15 +72,24 @@ namespace Servicios
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
+            if (dgvUsuarios.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione un usuario.");
+                return;
+            }
+
+
             modoActual = ModoOperacion.Modificar;
             gbDatos.Visible = true;
+
+            dgvUsuarios_CellClick(null, null);
 
             //se bloquea porque solo se puede modificar el rol y el email.
             txtNombre.Enabled = false;
             txtApellido.Enabled = false;
             txtDNI.Enabled = false;
 
-            LimpiarCampos();
+            //LimpiarCampos();
         }
 
         private void rbTodos_CheckedChanged(object sender, EventArgs e)
@@ -176,6 +185,21 @@ namespace Servicios
         private void btnActDesact_Click(object sender, EventArgs e)
         {
             modoActual = ModoOperacion.ActDesact;
+        }
+
+        private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow fila = dgvUsuarios.Rows[e.RowIndex];
+
+                txtDNI.Text = fila.Cells["DNI"].Value.ToString();
+                txtNombre.Text = fila.Cells["Nombre"].Value.ToString();
+                txtApellido.Text = fila.Cells["Apellido"].Value.ToString();
+                txtEmail.Text = fila.Cells["Email"].Value.ToString();
+
+                cmbRol.SelectedIndex = Convert.ToInt32(fila.Cells["Rol"].Value) - 1;
+            }
         }
     }
 }

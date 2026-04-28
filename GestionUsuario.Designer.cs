@@ -56,64 +56,58 @@
             // 
             // txtNombre
             // 
-            this.txtNombre.Location = new System.Drawing.Point(51, 81);
-            this.txtNombre.Margin = new System.Windows.Forms.Padding(6);
+            this.txtNombre.Location = new System.Drawing.Point(26, 42);
             this.txtNombre.Name = "txtNombre";
-            this.txtNombre.Size = new System.Drawing.Size(798, 46);
+            this.txtNombre.Size = new System.Drawing.Size(401, 27);
             this.txtNombre.TabIndex = 0;
             // 
             // txtApellido
             // 
-            this.txtApellido.Location = new System.Drawing.Point(51, 164);
-            this.txtApellido.Margin = new System.Windows.Forms.Padding(6);
+            this.txtApellido.Location = new System.Drawing.Point(26, 85);
             this.txtApellido.Name = "txtApellido";
-            this.txtApellido.Size = new System.Drawing.Size(798, 46);
+            this.txtApellido.Size = new System.Drawing.Size(401, 27);
             this.txtApellido.TabIndex = 1;
             // 
             // txtDNI
             // 
-            this.txtDNI.Location = new System.Drawing.Point(51, 247);
-            this.txtDNI.Margin = new System.Windows.Forms.Padding(6);
+            this.txtDNI.Location = new System.Drawing.Point(26, 128);
             this.txtDNI.Name = "txtDNI";
-            this.txtDNI.Size = new System.Drawing.Size(798, 46);
+            this.txtDNI.Size = new System.Drawing.Size(401, 27);
             this.txtDNI.TabIndex = 2;
             // 
             // txtEmail
             // 
-            this.txtEmail.Location = new System.Drawing.Point(51, 330);
-            this.txtEmail.Margin = new System.Windows.Forms.Padding(6);
+            this.txtEmail.Location = new System.Drawing.Point(26, 172);
             this.txtEmail.Name = "txtEmail";
-            this.txtEmail.Size = new System.Drawing.Size(798, 46);
+            this.txtEmail.Size = new System.Drawing.Size(401, 27);
             this.txtEmail.TabIndex = 3;
             // 
             // cmbRol
             // 
             this.cmbRol.FormattingEnabled = true;
-            this.cmbRol.Location = new System.Drawing.Point(51, 413);
-            this.cmbRol.Margin = new System.Windows.Forms.Padding(6);
+            this.cmbRol.Location = new System.Drawing.Point(26, 215);
             this.cmbRol.Name = "cmbRol";
-            this.cmbRol.Size = new System.Drawing.Size(798, 46);
+            this.cmbRol.Size = new System.Drawing.Size(401, 26);
             this.cmbRol.TabIndex = 4;
             // 
             // dgvUsuarios
             // 
             this.dgvUsuarios.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.dgvUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvUsuarios.Location = new System.Drawing.Point(9, 48);
-            this.dgvUsuarios.Margin = new System.Windows.Forms.Padding(6);
+            this.dgvUsuarios.Location = new System.Drawing.Point(4, 25);
             this.dgvUsuarios.Name = "dgvUsuarios";
             this.dgvUsuarios.RowHeadersWidth = 82;
-            this.dgvUsuarios.Size = new System.Drawing.Size(1555, 432);
+            this.dgvUsuarios.Size = new System.Drawing.Size(778, 225);
             this.dgvUsuarios.TabIndex = 6;
+            this.dgvUsuarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsuarios_CellContentClick);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Verdana", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(58, 50);
-            this.label1.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label1.Location = new System.Drawing.Point(29, 26);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(96, 25);
+            this.label1.Size = new System.Drawing.Size(52, 13);
             this.label1.TabIndex = 7;
             this.label1.Text = "Nombre";
             // 
@@ -121,10 +115,9 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Verdana", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(58, 133);
-            this.label2.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label2.Location = new System.Drawing.Point(29, 69);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(96, 25);
+            this.label2.Size = new System.Drawing.Size(52, 13);
             this.label2.TabIndex = 8;
             this.label2.Text = "Apellido";
             // 
@@ -132,10 +125,9 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Verdana", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(58, 216);
-            this.label3.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label3.Location = new System.Drawing.Point(29, 112);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(52, 25);
+            this.label3.Size = new System.Drawing.Size(29, 13);
             this.label3.TabIndex = 9;
             this.label3.Text = "DNI";
             // 
@@ -143,10 +135,9 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Verdana", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(59, 299);
-            this.label4.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label4.Location = new System.Drawing.Point(30, 155);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(70, 25);
+            this.label4.Size = new System.Drawing.Size(38, 13);
             this.label4.TabIndex = 10;
             this.label4.Text = "Email";
             // 
@@ -154,10 +145,9 @@
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Verdana", 7.875F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(58, 382);
-            this.label5.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.label5.Location = new System.Drawing.Point(29, 199);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(45, 25);
+            this.label5.Size = new System.Drawing.Size(25, 13);
             this.label5.TabIndex = 11;
             this.label5.Text = "Rol";
             // 
@@ -165,9 +155,11 @@
             // 
             this.gbUsuarios.Controls.Add(this.dgvUsuarios);
             this.gbUsuarios.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbUsuarios.Location = new System.Drawing.Point(47, 69);
+            this.gbUsuarios.Location = new System.Drawing.Point(24, 36);
+            this.gbUsuarios.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.gbUsuarios.Name = "gbUsuarios";
-            this.gbUsuarios.Size = new System.Drawing.Size(1573, 515);
+            this.gbUsuarios.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbUsuarios.Size = new System.Drawing.Size(786, 268);
             this.gbUsuarios.TabIndex = 12;
             this.gbUsuarios.TabStop = false;
             this.gbUsuarios.Text = "Usuarios";
@@ -177,9 +169,10 @@
             this.rbActivos.AutoSize = true;
             this.rbActivos.Checked = true;
             this.rbActivos.Font = new System.Drawing.Font("Verdana", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbActivos.Location = new System.Drawing.Point(1665, 85);
+            this.rbActivos.Location = new System.Drawing.Point(832, 44);
+            this.rbActivos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rbActivos.Name = "rbActivos";
-            this.rbActivos.Size = new System.Drawing.Size(156, 36);
+            this.rbActivos.Size = new System.Drawing.Size(82, 21);
             this.rbActivos.TabIndex = 13;
             this.rbActivos.TabStop = true;
             this.rbActivos.Text = "Activos";
@@ -190,9 +183,10 @@
             // 
             this.rbTodos.AutoSize = true;
             this.rbTodos.Font = new System.Drawing.Font("Verdana", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbTodos.Location = new System.Drawing.Point(1870, 85);
+            this.rbTodos.Location = new System.Drawing.Point(935, 44);
+            this.rbTodos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.rbTodos.Name = "rbTodos";
-            this.rbTodos.Size = new System.Drawing.Size(136, 36);
+            this.rbTodos.Size = new System.Drawing.Size(74, 21);
             this.rbTodos.TabIndex = 14;
             this.rbTodos.TabStop = true;
             this.rbTodos.Text = "Todos";
@@ -204,9 +198,10 @@
             this.btnCrear.BackColor = System.Drawing.Color.SteelBlue;
             this.btnCrear.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCrear.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnCrear.Location = new System.Drawing.Point(1665, 189);
+            this.btnCrear.Location = new System.Drawing.Point(832, 98);
+            this.btnCrear.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCrear.Name = "btnCrear";
-            this.btnCrear.Size = new System.Drawing.Size(341, 132);
+            this.btnCrear.Size = new System.Drawing.Size(170, 69);
             this.btnCrear.TabIndex = 15;
             this.btnCrear.Text = "CREAR";
             this.btnCrear.UseVisualStyleBackColor = false;
@@ -217,9 +212,10 @@
             this.btnDesbloquear.BackColor = System.Drawing.Color.SteelBlue;
             this.btnDesbloquear.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDesbloquear.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnDesbloquear.Location = new System.Drawing.Point(1665, 344);
+            this.btnDesbloquear.Location = new System.Drawing.Point(832, 179);
+            this.btnDesbloquear.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnDesbloquear.Name = "btnDesbloquear";
-            this.btnDesbloquear.Size = new System.Drawing.Size(341, 132);
+            this.btnDesbloquear.Size = new System.Drawing.Size(170, 69);
             this.btnDesbloquear.TabIndex = 16;
             this.btnDesbloquear.Text = "DESBLOQUEAR";
             this.btnDesbloquear.UseVisualStyleBackColor = false;
@@ -229,9 +225,10 @@
             this.btnModificar.BackColor = System.Drawing.Color.SteelBlue;
             this.btnModificar.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnModificar.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnModificar.Location = new System.Drawing.Point(1665, 499);
+            this.btnModificar.Location = new System.Drawing.Point(832, 259);
+            this.btnModificar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnModificar.Name = "btnModificar";
-            this.btnModificar.Size = new System.Drawing.Size(341, 132);
+            this.btnModificar.Size = new System.Drawing.Size(170, 69);
             this.btnModificar.TabIndex = 17;
             this.btnModificar.Text = "MODIFICAR";
             this.btnModificar.UseVisualStyleBackColor = false;
@@ -242,9 +239,10 @@
             this.btnActDesact.BackColor = System.Drawing.Color.SteelBlue;
             this.btnActDesact.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnActDesact.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnActDesact.Location = new System.Drawing.Point(1665, 654);
+            this.btnActDesact.Location = new System.Drawing.Point(832, 340);
+            this.btnActDesact.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnActDesact.Name = "btnActDesact";
-            this.btnActDesact.Size = new System.Drawing.Size(341, 132);
+            this.btnActDesact.Size = new System.Drawing.Size(170, 69);
             this.btnActDesact.TabIndex = 18;
             this.btnActDesact.Text = "ACT. / DESACT.";
             this.btnActDesact.UseVisualStyleBackColor = false;
@@ -255,9 +253,10 @@
             this.btnGuardar.BackColor = System.Drawing.Color.SteelBlue;
             this.btnGuardar.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGuardar.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnGuardar.Location = new System.Drawing.Point(1665, 809);
+            this.btnGuardar.Location = new System.Drawing.Point(832, 421);
+            this.btnGuardar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnGuardar.Name = "btnGuardar";
-            this.btnGuardar.Size = new System.Drawing.Size(341, 132);
+            this.btnGuardar.Size = new System.Drawing.Size(170, 69);
             this.btnGuardar.TabIndex = 19;
             this.btnGuardar.Text = "GUARDAR";
             this.btnGuardar.UseVisualStyleBackColor = false;
@@ -268,9 +267,10 @@
             this.btnCancelar.BackColor = System.Drawing.Color.SteelBlue;
             this.btnCancelar.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancelar.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.btnCancelar.Location = new System.Drawing.Point(1665, 964);
+            this.btnCancelar.Location = new System.Drawing.Point(832, 501);
+            this.btnCancelar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCancelar.Name = "btnCancelar";
-            this.btnCancelar.Size = new System.Drawing.Size(341, 132);
+            this.btnCancelar.Size = new System.Drawing.Size(170, 69);
             this.btnCancelar.TabIndex = 20;
             this.btnCancelar.Text = "CANCELAR";
             this.btnCancelar.UseVisualStyleBackColor = false;
@@ -289,9 +289,11 @@
             this.gbDatos.Controls.Add(this.label4);
             this.gbDatos.Controls.Add(this.label5);
             this.gbDatos.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbDatos.Location = new System.Drawing.Point(47, 620);
+            this.gbDatos.Location = new System.Drawing.Point(24, 322);
+            this.gbDatos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.gbDatos.Name = "gbDatos";
-            this.gbDatos.Size = new System.Drawing.Size(883, 476);
+            this.gbDatos.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbDatos.Size = new System.Drawing.Size(442, 248);
             this.gbDatos.TabIndex = 21;
             this.gbDatos.TabStop = false;
             this.gbDatos.Text = "Datos";
@@ -299,10 +301,10 @@
             // 
             // GestionUsuario
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(2051, 1143);
+            this.ClientSize = new System.Drawing.Size(1026, 586);
             this.Controls.Add(this.gbDatos);
             this.Controls.Add(this.btnCancelar);
             this.Controls.Add(this.btnGuardar);
@@ -313,7 +315,6 @@
             this.Controls.Add(this.rbTodos);
             this.Controls.Add(this.rbActivos);
             this.Controls.Add(this.gbUsuarios);
-            this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "GestionUsuario";
             this.Text = "Gestion de Usuarios";
             this.Load += new System.EventHandler(this.CrearUsuario_Load);
