@@ -49,7 +49,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceSeguridad55CA.cs" />
     <Compile Include="ServiceSessionManager55CA.cs" />
-    <Compile Include="ServiceValidacion55CA.cs" />
     <Compile Include="UsuarioService.cs" />
   </ItemGroup>
   <ItemGroup>

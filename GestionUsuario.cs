@@ -1,5 +1,4 @@
 ﻿using BE;
-using BLL;
 using Services;
 using Services.Modelos;
 using System;
@@ -136,6 +135,12 @@ namespace Servicios
                 {
 
                 }
+                else if(modoActual == ModoOperacion.ActDesact)
+                {
+                    string dniSeleccionado = dgvUsuarios.CurrentRow.Cells["DNI"].Value.ToString();
+                    usuarioService.activarDesactivar(dniSeleccionado);
+                    MessageBox.Show("El estado del usuario se actualizó correctamente.");
+                }
 
                 gbDatos.Visible = false;
                 modoActual = ModoOperacion.Ninguno;
@@ -168,5 +173,9 @@ namespace Servicios
 
         #endregion Validaciones
 
+        private void btnActDesact_Click(object sender, EventArgs e)
+        {
+            modoActual = ModoOperacion.ActDesact;
+        }
     }
 }

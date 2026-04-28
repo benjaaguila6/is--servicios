@@ -248,6 +248,7 @@
             this.btnActDesact.TabIndex = 18;
             this.btnActDesact.Text = "ACT. / DESACT.";
             this.btnActDesact.UseVisualStyleBackColor = false;
+            this.btnActDesact.Click += new System.EventHandler(this.btnActDesact_Click);
             // 
             // btnGuardar
             // 

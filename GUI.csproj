@@ -46,11 +46,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CrearUsuario.cs">
+    <Compile Include="GestionUsuario.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CrearUsuario.Designer.cs">
-      <DependentUpon>CrearUsuario.cs</DependentUpon>
+    <Compile Include="GestionUsuario.Designer.cs">
+      <DependentUpon>GestionUsuario.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -60,8 +60,8 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="CrearUsuario.resx">
-      <DependentUpon>CrearUsuario.cs</DependentUpon>
+    <EmbeddedResource Include="GestionUsuario.resx">
+      <DependentUpon>GestionUsuario.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -93,6 +93,10 @@
     <ProjectReference Include="BLL\BLL.csproj">
       <Project>{b2fb6397-6033-427b-bb87-fd46a8d06be8}</Project>
       <Name>BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="Services\Services.csproj">
+      <Project>{960d771d-0546-4ffe-b37e-8d38ade0bc87}</Project>
+      <Name>Services</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
