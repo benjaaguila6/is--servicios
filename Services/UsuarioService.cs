@@ -1,5 +1,6 @@
 ﻿using BE;
 using DAL;
+using Services.Enum;
 using Services.Modelos;
 using System;
 using System.Collections.Generic;
@@ -62,6 +63,7 @@ namespace Services
                 if (usuario.Intentos >= 4)
                 {
                     dal.bloquearUsuario(usuario.DNI);
+                    bit.registrarEvento(usuario.DNI, $"Usuario con DNI: {usuario.DNI} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
                     throw new Exception("Su cuenta ha sido bloqueada tras 4 intentos fallidos. Contacte al administrador.");
                 }
 
@@ -70,6 +72,7 @@ namespace Services
 
             //login ok
             ServiceSessionManager55CA.getIntancia().Login(usuario);
+            bit.registrarEvento(usuario.DNI, $"Realizo login exitoso.", Criticidad55CA.Alto, Modulos55CA.Usuario);
             dal.reiniciarIntentos(usuario.DNI);
 
         }
@@ -99,7 +102,9 @@ namespace Services
 
             dal.InsertarUsuario(datos);
 
-            bit.RegistrarCreacionUsuario(1, u.User);
+            string dniAutor = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+
+            bit.registrarEvento(dniAutor, "Se creo un usuario nuevo", Criticidad55CA.Medio, Modulos55CA.Usuario);
         }
 
 
