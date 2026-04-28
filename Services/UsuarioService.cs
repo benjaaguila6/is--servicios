@@ -131,6 +131,20 @@ namespace Services
             bit.registrarEvento(dniAutor, evento, Criticidad55CA.Alto, Modulos55CA.Usuario);
         }
 
+        public void ModificarUsuario(string dni, string email, TipoRol55CA rol)
+        {
+            dal.ModificarUsuario(dni, email, (int)rol);
+
+            string dniAutor = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+
+            bit.registrarEvento(
+            dniAutor,
+            $"Se modificó usuario DNI {dni}",
+            Criticidad55CA.Medio,
+            Modulos55CA.Usuario
+            );
+        }
+
         private UsuarioModelo55CA MapearUsuario(DataRow row)
         {
             if(row == null)
