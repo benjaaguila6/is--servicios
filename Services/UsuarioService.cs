@@ -63,7 +63,7 @@ namespace Services
                 if (usuario.Intentos >= 4)
                 {
                     dal.bloquearUsuario(usuario.DNI);
-                    bit.registrarEvento(usuario.DNI, $"Usuario con DNI: {usuario.DNI} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
+                    bit.registrarEvento(usuario.DNI, $"Usuario: {usuario.User} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
                     throw new Exception("Su cuenta ha sido bloqueada tras 4 intentos fallidos. Contacte al administrador.");
                 }
 
@@ -107,6 +107,29 @@ namespace Services
             bit.registrarEvento(dniAutor, "Se creo un usuario nuevo", Criticidad55CA.Medio, Modulos55CA.Usuario);
         }
 
+        public void activarDesactivar(string dni)
+        {
+            List<UsuarioModelo55CA> todosLosUsuarios = obtenerTodos();
+ 
+            UsuarioModelo55CA usuario = todosLosUsuarios.FirstOrDefault(u => u.DNI == dni);
+
+            string evento = "";
+
+            if (usuario.Activo == true)
+            {
+                dal.DesactivarUsuario(dni);
+                evento = $"Se desactivó la cuenta del usuario: {usuario.User}";
+            }
+            else
+            {
+                dal.ActivarUsuario(dni);
+                evento = $"Se activó la cuenta del usuario: {usuario.User}";
+            }
+
+            string dniAutor = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+
+            bit.registrarEvento(dniAutor, evento, Criticidad55CA.Alto, Modulos55CA.Usuario);
+        }
 
         private UsuarioModelo55CA MapearUsuario(DataRow row)
         {

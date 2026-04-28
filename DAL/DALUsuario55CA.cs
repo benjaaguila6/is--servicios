@@ -31,6 +31,20 @@ namespace DAL
             return resultado;
         }
 
+        public void DesactivarUsuario(string dni)
+        {
+            string query = "UPDATE Usuario SET Activo = 0 WHERE DNI = @dni";
+            var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
+            acceso.executeNonQuery(query, parametros);
+        }
+
+        public void ActivarUsuario(string dni)
+        {
+            string query = "UPDATE Usuario SET Activo = 1 WHERE DNI = @dni";
+            var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
+            acceso.executeNonQuery(query, parametros);
+        }
+
         #region ObtenerUsuarios
         public DataTable obtenerTodos()
         {
