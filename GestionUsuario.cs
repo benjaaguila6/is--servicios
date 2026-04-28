@@ -1,0 +1,172 @@
+﻿using BE;
+using BLL;
+using Services;
+using Services.Modelos;
+using System;
+using System.CodeDom;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace Servicios
+{
+    public partial class GestionUsuario : Form
+    {
+        UsuarioService usuarioService = new UsuarioService();
+        List<UsuarioModelo55CA> listUsuarios = new List<UsuarioModelo55CA>();
+
+        //un enum para que el boton guardar sepa que hacer
+        private enum ModoOperacion
+        { Ninguno,
+          Crear,
+          Modificar,
+          ActDesact,
+          Desbloquear
+        }
+
+        private ModoOperacion modoActual = ModoOperacion.Ninguno; //inicializamos el modo en Ninguno
+        public GestionUsuario()
+        {
+            InitializeComponent();
+            CargarGrilla();
+        }
+
+        private void CrearUsuario_Load(object sender, EventArgs e)
+        {
+            cmbRol.Items.Add("Rol1");
+            cmbRol.Items.Add("Rol2");
+        }
+
+        private void LimpiarCampos()
+        {
+            txtNombre.Clear();
+            txtApellido.Clear();
+            txtDNI.Clear();
+            txtEmail.Clear();
+
+            cmbRol.SelectedIndex = 0;
+            txtNombre.Focus();
+        }
+
+        private void CargarGrilla()
+        {
+            dgvUsuarios.DataSource = null;
+            
+            listUsuarios = usuarioService.obtenerTodos();
+
+            dgvUsuarios.DataSource = listUsuarios;
+        }
+
+        private void btnCrear_Click(object sender, EventArgs e)
+        {
+            modoActual = ModoOperacion.Crear;
+            gbDatos.Visible = true;
+
+            LimpiarCampos();
+        }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+            modoActual = ModoOperacion.Modificar;
+            gbDatos.Visible = true;
+
+            //se bloquea porque solo se puede modificar el rol y el email.
+            txtNombre.Enabled = false;
+            txtApellido.Enabled = false;
+            txtDNI.Enabled = false;
+
+            LimpiarCampos();
+        }
+
+        private void rbTodos_CheckedChanged(object sender, EventArgs e)
+        {
+            dgvUsuarios.DataSource = listUsuarios;
+        }
+
+        private void rbActivos_CheckedChanged(object sender, EventArgs e)
+        {
+            dgvUsuarios.DataSource = listUsuarios.Where(u => u.Activo == true);
+        }
+
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            string email = txtEmail.Text;
+            string nombre = txtNombre.Text;
+            string apellido = txtApellido.Text;
+            string dNI = txtDNI.Text;
+            TipoRol55CA rol = (TipoRol55CA)cmbRol.SelectedIndex;
+
+            if (cmbRol.SelectedIndex == -1)
+            {
+                MessageBox.Show("Seleccione un rol.");
+                return;
+            }
+
+            if (email.Length <= 0 || nombre.Length <= 0 || apellido.Length <= 0 || dNI.Length <= 0)
+            {
+                MessageBox.Show("Debe completar todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            if (!EsEmailValido(email))
+            {
+                MessageBox.Show("El email no tiene el formato correcto.");
+                return;
+            }
+            if (!EsDNIValido(dNI))
+            {
+                MessageBox.Show("El DNI no tiene el formato correcto.");
+                return;
+            }
+
+            try
+            {
+                if (modoActual == ModoOperacion.Crear)
+                {
+                    usuarioService.CrearUsuario(dNI, nombre, apellido, email, rol);
+                    MessageBox.Show("Usuario creado con éxito.");
+                }
+                else if (modoActual == ModoOperacion.Modificar)
+                {
+
+                }
+
+                gbDatos.Visible = false;
+                modoActual = ModoOperacion.Ninguno;
+
+                CargarGrilla();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+       
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            gbDatos.Visible = false;
+            modoActual = ModoOperacion.Ninguno;
+        }
+
+        #region Validaciones
+        private bool EsEmailValido(string email)
+        {
+            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+        }
+
+        private bool EsDNIValido(string dni)
+        {
+            return Regex.IsMatch(dni, @"^\d{7,8}$");
+        }
+
+        #endregion Validaciones
+
+    }
+}

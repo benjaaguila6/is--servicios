@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitacoraEventosService.cs" />
+    <Compile Include="Enum\Criticidad55CA.cs" />
+    <Compile Include="Enum\Modulos55CA.cs" />
     <Compile Include="Modelos\BitacoraEventosModelo55CA.cs" />
     <Compile Include="Modelos\UsuarioModelo55CA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
