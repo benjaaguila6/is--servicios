@@ -45,6 +45,21 @@ namespace DAL
             acceso.executeNonQuery(query, parametros);
         }
 
+        public void ModificarUsuario(string dni, string email, int rol)
+        {
+            string query = @"UPDTAE Usuario SET Email = @mail, Rol = @rol WHERE DNI = @dni";
+
+            var parametros = new List<SqlParameter>
+            {
+            new SqlParameter("@mail", email),
+            new SqlParameter("@rol", rol),
+             new SqlParameter("@dni", dni)
+            };
+
+            acceso.executeNonQuery(query,parametros);
+        }
+
+
         #region ObtenerUsuarios
         public DataTable obtenerTodos()
         {
