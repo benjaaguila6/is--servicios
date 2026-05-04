@@ -145,6 +145,27 @@ namespace Services
             );
         }
 
+        public void cambiarPassword(string passwordActual, string passwordNueva)
+        {
+            string passwordActualHash = ServiceSeguridad55CA.Hashear(passwordActual);
+
+            UsuarioModelo55CA usuarioActivo = ServiceSessionManager55CA.getIntancia().usuarioActivo;
+
+            if(passwordActualHash != usuarioActivo.Password)
+            {
+                throw new Exception("La contraseña actual es incorrecta.");
+            }
+
+            string passwordNuevaHash = ServiceSeguridad55CA.Hashear(passwordNueva);
+
+            if(passwordActualHash == passwordNuevaHash)
+            {
+                throw new Exception("La contraesña nueva no puede ser igual a la actual.");
+            }
+
+            
+        }
+
         private UsuarioModelo55CA MapearUsuario(DataRow row)
         {
             if(row == null)
