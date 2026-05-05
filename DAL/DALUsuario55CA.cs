@@ -68,6 +68,8 @@ namespace DAL
             acceso.executeNonQuery(query, parametros);
         }
 
+
+
         #region ObtenerUsuarios
         public DataTable obtenerTodos()
         {
@@ -143,6 +145,23 @@ namespace DAL
             int resultado = acceso.executeNonQuery(query, parametros);
 
             return resultado;
+        }
+
+        public int desbloquearUsuario(string dni, string password)
+        {
+            string query = @"UPDATE Usuario 
+                     SET Intentos = 0,
+                         Bloqueo = 0,
+                         Password = @pass
+                     WHERE DNI = @dni";
+
+            var parametros = new List<SqlParameter>
+        {
+            new SqlParameter("@dni", dni),
+            new SqlParameter("@pass", password)
+        };
+
+            return acceso.executeNonQuery(query, parametros);
         }
 
         #endregion IntentosFallidos
