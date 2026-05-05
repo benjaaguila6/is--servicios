@@ -187,6 +187,35 @@ namespace Services
             };
         }
 
+        public void DesbloquearUsuario(string dni)
+        {
+            var row = dal.obtenerPorDNI(dni);
+            var usuario = MapearUsuario(row);
+
+            if (usuario == null)
+                throw new Exception("Usuario no encontrado.");
+
+            if (!usuario.Bloqueo)
+                throw new Exception("El usuario no está bloqueado.");
+
+            // password default
+            string nuevaPass = GenerarPassword(usuario.Apellido, usuario.DNI);
+            string nuevaPassHash = ServiceSeguridad55CA.Hashear(nuevaPass);
+
+            // desbloqueo
+            dal.desbloquearUsuario(dni, nuevaPassHash);
+
+            // bitácora
+            string dniAutor = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+
+            bit.registrarEvento(
+                dniAutor,
+                $"Se desbloqueó el usuario: {usuario.User}",
+                Criticidad55CA.Alto,
+                Modulos55CA.Usuario
+            );
+        }
+
         #region Credenciales
         public string GenerarUsuario(string nombre, string dni)
         {
