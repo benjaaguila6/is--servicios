@@ -52,13 +52,13 @@
     <Compile Include="UsuarioService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BE\BE.csproj">
+    <ProjectReference Include="..\BE\BE55_CA.csproj">
       <Project>{1dce08c7-4239-4595-9712-bac2bbec9de8}</Project>
-      <Name>BE</Name>
+      <Name>BE55_CA</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DAL\DAL.csproj">
+    <ProjectReference Include="..\DAL\DAL_55CA.csproj">
       <Project>{5afbc41d-c246-4b92-b434-5ee293b75a44}</Project>
-      <Name>DAL</Name>
+      <Name>DAL_55CA</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
