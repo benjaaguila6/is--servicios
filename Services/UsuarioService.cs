@@ -58,7 +58,7 @@ namespace Services
             {
                 usuario.Intentos++;
 
-                dal.aumentarIntento(usuario.DNI);
+              
 
                 if (usuario.Intentos >= 4)
                 {
