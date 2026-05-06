@@ -68,6 +68,8 @@ namespace DAL
             acceso.executeNonQuery(query, parametros);
         }
 
+
+
         #region ObtenerUsuarios
         public DataTable obtenerTodos()
         {
@@ -78,16 +80,18 @@ namespace DAL
             return dt;
         }
 
-        public bool obtenerPorDNI(string dni)
+        public DataRow obtenerPorDNI(string dni)
         {
             string query = "SELECT * FROM Usuario WHERE DNI = @dni";
 
-            List<SqlParameter> p = new List<SqlParameter>();
-            p.Add(new SqlParameter("@dni", dni));
+            var parametros = new List<SqlParameter>
+        {
+        new SqlParameter("@dni", dni)
+        };
 
-            DataTable dt = acceso.executeDataTable(query, p);
+            DataTable dt = acceso.executeDataTable(query, parametros);
 
-            return dt.Rows.Count > 0;
+            return dt.Rows.Count > 0 ? dt.Rows[0] : null;
         }
 
         public bool obtenerPorEmail(string email)
@@ -117,7 +121,7 @@ namespace DAL
 
         public int aumentarIntento(string dni)
         {
-            string query = "UPDATE Usuarios SET Intentos = Intentos + 1 WHERE DNI = @dni";
+            string query = "UPDATE Usuario SET Intentos = Intentos + 1 WHERE DNI = @dni";
             var parametros = new List<SqlParameter> { new SqlParameter ("@dni", dni) };
 
             int resultado = acceso.executeNonQuery(query, parametros);
@@ -127,7 +131,7 @@ namespace DAL
 
         public int reiniciarIntentos(string dni)
         {
-            string query = "UPDATE Usuarios SET Intentos = 0 WHERE DNI = @dni";
+            string query = "UPDATE Usuario SET Intentos = 0 WHERE DNI = @dni";
             var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
 
             int resultado = acceso.executeNonQuery(query, parametros);
@@ -137,12 +141,25 @@ namespace DAL
 
         public int bloquearUsuario(string dni)
         {
-            string query = "UPDATE Usuarios SET Bloqueo = 1 WHERE DNI = @dni";
+            string query = "UPDATE Usuario SET Bloqueo = 1 WHERE DNI = @dni";
             var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
 
             int resultado = acceso.executeNonQuery(query, parametros);
 
             return resultado;
+        }
+
+        public int desbloquearUsuario(string dni, string password)
+        {
+            string query = @"UPDATE Usuario  SET Intentos = 0, Bloqueo = 0, Password = @pass WHERE DNI = @dni";
+
+            var parametros = new List<SqlParameter>
+        {
+            new SqlParameter("@dni", dni),
+            new SqlParameter("@pass", password)
+        };
+
+            return acceso.executeNonQuery(query, parametros);
         }
 
         #endregion IntentosFallidos

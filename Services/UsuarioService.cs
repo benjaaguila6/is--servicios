@@ -80,7 +80,7 @@ namespace Services
         public void CrearUsuario(string dni, string nombre, string apellido, string email, TipoRol55CA rol)
         {
 
-            if (dal.obtenerPorDNI(dni)) //true si existe
+            if (dal.obtenerPorDNI(dni) != null)
             {
                 throw new Exception("Ya existe un usuario con ese DNI.");
             }
@@ -185,6 +185,35 @@ namespace Services
                 Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
                 Activo = Convert.ToBoolean(row["Activo"])
             };
+        }
+
+        public void DesbloquearUsuario(string dni)
+        {
+            var row = dal.obtenerPorDNI(dni);
+            var usuario = MapearUsuario(row);
+
+            if (usuario == null)
+                throw new Exception("Usuario no encontrado.");
+
+            if (!usuario.Bloqueo)
+                throw new Exception("El usuario no está bloqueado.");
+
+            // password default
+            string nuevaPass = GenerarPassword(usuario.Apellido, usuario.DNI);
+            string nuevaPassHash = ServiceSeguridad55CA.Hashear(nuevaPass);
+
+            // desbloqueo
+            dal.desbloquearUsuario(dni, nuevaPassHash);
+
+            // bitácora
+            string dniAutor = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+
+            bit.registrarEvento(
+                dniAutor,
+                $"Se desbloqueó el usuario: {usuario.User}",
+                Criticidad55CA.Alto,
+                Modulos55CA.Usuario
+            );
         }
 
         #region Credenciales

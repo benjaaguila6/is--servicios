@@ -67,6 +67,12 @@ namespace Servicios
             modoActual = ModoOperacion.Crear;
             gbDatos.Visible = true;
 
+            txtDNI.Enabled = true;
+            txtNombre.Enabled = true;
+            txtApellido.Enabled = true;
+            txtEmail.Enabled = true;
+            cmbRol.Enabled = true;
+
             LimpiarCampos();
         }
 
@@ -82,12 +88,22 @@ namespace Servicios
             modoActual = ModoOperacion.Modificar;
             gbDatos.Visible = true;
 
-            dgvUsuarios_CellClick(null, null);
+            DataGridViewRow fila = dgvUsuarios.CurrentRow;
+
+            txtDNI.Text = fila.Cells["DNI"].Value.ToString();
+            txtNombre.Text = fila.Cells["Nombre"].Value.ToString();
+            txtApellido.Text = fila.Cells["Apellido"].Value.ToString();
+            txtEmail.Text = fila.Cells["Email"].Value.ToString();
+
+            int rol = Convert.ToInt32(fila.Cells["Rol"].Value);
+            cmbRol.SelectedIndex = rol - 1;
 
             //se bloquea porque solo se puede modificar el rol y el email.
+            txtDNI.Enabled = false;
             txtNombre.Enabled = false;
             txtApellido.Enabled = false;
-            txtDNI.Enabled = false;
+            txtEmail.Enabled = true;
+            cmbRol.Enabled = true;
 
             //LimpiarCampos();
         }
@@ -110,6 +126,7 @@ namespace Servicios
             string apellido = txtApellido.Text;
             string dNI = txtDNI.Text;
             TipoRol55CA rol = (TipoRol55CA)cmbRol.SelectedIndex;
+            
 
             if (cmbRol.SelectedIndex == -1)
             {
@@ -142,7 +159,8 @@ namespace Servicios
                 }
                 else if (modoActual == ModoOperacion.Modificar)
                 {
-
+                    usuarioService.ModificarUsuario(dNI, email, rol);
+                    MessageBox.Show("Usuario modificado correctamente.");
                 }
                 else if(modoActual == ModoOperacion.ActDesact)
                 {
@@ -189,17 +207,61 @@ namespace Servicios
 
         private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            
+        }
+
+        private void btnDesbloquear_Click(object sender, EventArgs e)
+        {
+            if (dgvUsuarios.CurrentRow == null)
             {
-                DataGridViewRow fila = dgvUsuarios.Rows[e.RowIndex];
+                MessageBox.Show("Seleccione un usuario.");
+                return;
+            }
 
-                txtDNI.Text = fila.Cells["DNI"].Value.ToString();
-                txtNombre.Text = fila.Cells["Nombre"].Value.ToString();
-                txtApellido.Text = fila.Cells["Apellido"].Value.ToString();
-                txtEmail.Text = fila.Cells["Email"].Value.ToString();
+            string dni = dgvUsuarios.CurrentRow.Cells["DNI"].Value.ToString();
+            bool bloqueado = Convert.ToBoolean(dgvUsuarios.CurrentRow.Cells["Bloqueo"].Value);
 
-                cmbRol.SelectedIndex = Convert.ToInt32(fila.Cells["Rol"].Value) - 1;
+            if (!bloqueado)
+            {
+                MessageBox.Show("El usuario no está bloqueado.");
+                return;
+            }
+
+            DialogResult r = MessageBox.Show(
+                "¿Seguro que desea desbloquear este usuario?",
+                "Confirmar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (r != DialogResult.Yes)
+                return;
+
+            try
+            {
+                usuarioService.DesbloquearUsuario(dni);
+
+                MessageBox.Show("Usuario desbloqueado correctamente.");
+
+                CargarGrilla(); // refresca la tabla
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
+
+        //private void dgvUsuarios_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        //{
+        //    if (dgvUsuarios.Columns[e.ColumnIndex].Name == "Bloqueo")
+        //    {
+        //        bool bloqueado = (bool)e.Value;
+
+        //        if (bloqueado)
+        //        {
+        //            dgvUsuarios.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightCoral;
+        //        }
+        //    }
+        //}
     }
 }
