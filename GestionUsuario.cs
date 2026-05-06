@@ -209,5 +209,59 @@ namespace Servicios
         {
             
         }
+
+        private void btnDesbloquear_Click(object sender, EventArgs e)
+        {
+            if (dgvUsuarios.CurrentRow == null)
+            {
+                MessageBox.Show("Seleccione un usuario.");
+                return;
+            }
+
+            string dni = dgvUsuarios.CurrentRow.Cells["DNI"].Value.ToString();
+            bool bloqueado = Convert.ToBoolean(dgvUsuarios.CurrentRow.Cells["Bloqueo"].Value);
+
+            if (!bloqueado)
+            {
+                MessageBox.Show("El usuario no está bloqueado.");
+                return;
+            }
+
+            DialogResult r = MessageBox.Show(
+                "¿Seguro que desea desbloquear este usuario?",
+                "Confirmar",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
+
+            if (r != DialogResult.Yes)
+                return;
+
+            try
+            {
+                usuarioService.DesbloquearUsuario(dni);
+
+                MessageBox.Show("Usuario desbloqueado correctamente.");
+
+                CargarGrilla(); // refresca la tabla
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        //private void dgvUsuarios_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        //{
+        //    if (dgvUsuarios.Columns[e.ColumnIndex].Name == "Bloqueo")
+        //    {
+        //        bool bloqueado = (bool)e.Value;
+
+        //        if (bloqueado)
+        //        {
+        //            dgvUsuarios.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightCoral;
+        //        }
+        //    }
+        //}
     }
 }

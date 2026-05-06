@@ -155,9 +155,9 @@
             this.gbUsuarios.Controls.Add(this.dgvUsuarios);
             this.gbUsuarios.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbUsuarios.Location = new System.Drawing.Point(24, 36);
-            this.gbUsuarios.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbUsuarios.Margin = new System.Windows.Forms.Padding(2);
             this.gbUsuarios.Name = "gbUsuarios";
-            this.gbUsuarios.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbUsuarios.Padding = new System.Windows.Forms.Padding(2);
             this.gbUsuarios.Size = new System.Drawing.Size(786, 268);
             this.gbUsuarios.TabIndex = 12;
             this.gbUsuarios.TabStop = false;
@@ -169,7 +169,7 @@
             this.rbActivos.Checked = true;
             this.rbActivos.Font = new System.Drawing.Font("Verdana", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbActivos.Location = new System.Drawing.Point(832, 44);
-            this.rbActivos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbActivos.Margin = new System.Windows.Forms.Padding(2);
             this.rbActivos.Name = "rbActivos";
             this.rbActivos.Size = new System.Drawing.Size(82, 21);
             this.rbActivos.TabIndex = 13;
@@ -183,7 +183,7 @@
             this.rbTodos.AutoSize = true;
             this.rbTodos.Font = new System.Drawing.Font("Verdana", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTodos.Location = new System.Drawing.Point(935, 44);
-            this.rbTodos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.rbTodos.Margin = new System.Windows.Forms.Padding(2);
             this.rbTodos.Name = "rbTodos";
             this.rbTodos.Size = new System.Drawing.Size(74, 21);
             this.rbTodos.TabIndex = 14;
@@ -198,7 +198,7 @@
             this.btnCrear.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCrear.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnCrear.Location = new System.Drawing.Point(832, 98);
-            this.btnCrear.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCrear.Margin = new System.Windows.Forms.Padding(2);
             this.btnCrear.Name = "btnCrear";
             this.btnCrear.Size = new System.Drawing.Size(170, 69);
             this.btnCrear.TabIndex = 15;
@@ -212,12 +212,13 @@
             this.btnDesbloquear.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDesbloquear.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnDesbloquear.Location = new System.Drawing.Point(832, 179);
-            this.btnDesbloquear.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnDesbloquear.Margin = new System.Windows.Forms.Padding(2);
             this.btnDesbloquear.Name = "btnDesbloquear";
             this.btnDesbloquear.Size = new System.Drawing.Size(170, 69);
             this.btnDesbloquear.TabIndex = 16;
             this.btnDesbloquear.Text = "DESBLOQUEAR";
             this.btnDesbloquear.UseVisualStyleBackColor = false;
+            this.btnDesbloquear.Click += new System.EventHandler(this.btnDesbloquear_Click);
             // 
             // btnModificar
             // 
@@ -225,7 +226,7 @@
             this.btnModificar.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnModificar.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnModificar.Location = new System.Drawing.Point(832, 259);
-            this.btnModificar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnModificar.Margin = new System.Windows.Forms.Padding(2);
             this.btnModificar.Name = "btnModificar";
             this.btnModificar.Size = new System.Drawing.Size(170, 69);
             this.btnModificar.TabIndex = 17;
@@ -239,7 +240,7 @@
             this.btnActDesact.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnActDesact.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnActDesact.Location = new System.Drawing.Point(832, 340);
-            this.btnActDesact.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnActDesact.Margin = new System.Windows.Forms.Padding(2);
             this.btnActDesact.Name = "btnActDesact";
             this.btnActDesact.Size = new System.Drawing.Size(170, 69);
             this.btnActDesact.TabIndex = 18;
@@ -253,7 +254,7 @@
             this.btnGuardar.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGuardar.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnGuardar.Location = new System.Drawing.Point(832, 421);
-            this.btnGuardar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnGuardar.Margin = new System.Windows.Forms.Padding(2);
             this.btnGuardar.Name = "btnGuardar";
             this.btnGuardar.Size = new System.Drawing.Size(170, 69);
             this.btnGuardar.TabIndex = 19;
@@ -267,7 +268,7 @@
             this.btnCancelar.Font = new System.Drawing.Font("Verdana", 13.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCancelar.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.btnCancelar.Location = new System.Drawing.Point(832, 501);
-            this.btnCancelar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCancelar.Margin = new System.Windows.Forms.Padding(2);
             this.btnCancelar.Name = "btnCancelar";
             this.btnCancelar.Size = new System.Drawing.Size(170, 69);
             this.btnCancelar.TabIndex = 20;
@@ -289,9 +290,9 @@
             this.gbDatos.Controls.Add(this.label5);
             this.gbDatos.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbDatos.Location = new System.Drawing.Point(24, 322);
-            this.gbDatos.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbDatos.Margin = new System.Windows.Forms.Padding(2);
             this.gbDatos.Name = "gbDatos";
-            this.gbDatos.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.gbDatos.Padding = new System.Windows.Forms.Padding(2);
             this.gbDatos.Size = new System.Drawing.Size(442, 248);
             this.gbDatos.TabIndex = 21;
             this.gbDatos.TabStop = false;

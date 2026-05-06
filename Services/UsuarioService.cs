@@ -80,7 +80,7 @@ namespace Services
         public void CrearUsuario(string dni, string nombre, string apellido, string email, TipoRol55CA rol)
         {
 
-            if (dal.obtenerPorDNI(dni)) //true si existe
+            if (dal.obtenerPorDNI(dni) != null)
             {
                 throw new Exception("Ya existe un usuario con ese DNI.");
             }
