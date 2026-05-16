@@ -67,14 +67,14 @@
             // cambiarClaveToolStripMenuItem
             // 
             this.cambiarClaveToolStripMenuItem.Name = "cambiarClaveToolStripMenuItem";
-            this.cambiarClaveToolStripMenuItem.Size = new System.Drawing.Size(359, 46);
+            this.cambiarClaveToolStripMenuItem.Size = new System.Drawing.Size(328, 46);
             this.cambiarClaveToolStripMenuItem.Text = "Cambiar Clave";
             this.cambiarClaveToolStripMenuItem.Click += new System.EventHandler(this.cambiarClaveToolStripMenuItem_Click);
             // 
             // cerrarSesionToolStripMenuItem
             // 
             this.cerrarSesionToolStripMenuItem.Name = "cerrarSesionToolStripMenuItem";
-            this.cerrarSesionToolStripMenuItem.Size = new System.Drawing.Size(359, 46);
+            this.cerrarSesionToolStripMenuItem.Size = new System.Drawing.Size(328, 46);
             this.cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
             // 
             // administradorToolStripMenuItem
@@ -90,6 +90,7 @@
             this.gestionUsuariosToolStripMenuItem.Name = "gestionUsuariosToolStripMenuItem";
             this.gestionUsuariosToolStripMenuItem.Size = new System.Drawing.Size(360, 46);
             this.gestionUsuariosToolStripMenuItem.Text = "Gestion Usuarios";
+            this.gestionUsuariosToolStripMenuItem.Click += new System.EventHandler(this.gestionUsuariosToolStripMenuItem_Click);
             // 
             // ayudaToolStripMenuItem
             // 

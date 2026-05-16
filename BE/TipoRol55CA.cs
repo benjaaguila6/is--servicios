@@ -8,7 +8,7 @@ namespace BE
 {
     public enum TipoRol55CA
     {
-        Basico = 1,
-        Admin = 2
+        Administrador = 1,
+        Basico = 2
     }
 }

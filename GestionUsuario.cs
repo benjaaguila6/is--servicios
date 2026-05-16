@@ -38,8 +38,7 @@ namespace Servicios
 
         private void CrearUsuario_Load(object sender, EventArgs e)
         {
-            cmbRol.Items.Add("Rol1");
-            cmbRol.Items.Add("Rol2");
+            cmbRol.DataSource = Enum.GetValues(typeof(TipoRol55CA));
         }
 
         private void LimpiarCampos()
@@ -125,8 +124,8 @@ namespace Servicios
             string nombre = txtNombre.Text;
             string apellido = txtApellido.Text;
             string dNI = txtDNI.Text;
-            TipoRol55CA rol = (TipoRol55CA)cmbRol.SelectedIndex;
-            
+            TipoRol55CA rol = (TipoRol55CA)cmbRol.SelectedItem;
+
 
             if (cmbRol.SelectedIndex == -1)
             {
