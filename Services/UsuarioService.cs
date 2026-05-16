@@ -31,7 +31,7 @@ namespace Services
             return null;
         }
 
-        public void login(string user, string password)
+        public bool login(string user, string password)
         {
 
             var usuario = MapearUsuario(dal.obtenerPorUser(user));
@@ -54,27 +54,28 @@ namespace Services
 
             string passwordHash = ServiceSeguridad55CA.Hashear(password);
 
-            if (usuario.Password != passwordHash)
-            {
-                usuario.Intentos++;
+            //if (usuario.Password != passwordHash)
+            //{
+            //    usuario.Intentos++;
 
               
 
-                if (usuario.Intentos >= 4)
-                {
-                    dal.bloquearUsuario(usuario.DNI);
-                    bit.registrarEvento(usuario.DNI, $"Usuario: {usuario.User} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
-                    throw new Exception("Su cuenta ha sido bloqueada tras 4 intentos fallidos. Contacte al administrador.");
-                }
+            //    if (usuario.Intentos >= 4)
+            //    {
+            //        dal.bloquearUsuario(usuario.DNI);
+            //        bit.registrarEvento(usuario.DNI, $"Usuario: {usuario.User} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
+            //        throw new Exception("Su cuenta ha sido bloqueada tras 4 intentos fallidos. Contacte al administrador.");
+            //    }
 
-                throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos}. Al cuarto intento fallido se bloqueará la cuenta.");
-            }
+            //    throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos}. Al cuarto intento fallido se bloqueará la cuenta.");
+            //}
 
             //login ok
             ServiceSessionManager55CA.getIntancia().Login(usuario);
             bit.registrarEvento(usuario.DNI, $"Realizo login exitoso.", Criticidad55CA.Alto, Modulos55CA.Usuario);
             dal.reiniciarIntentos(usuario.DNI);
 
+            return true;
         }
 
         public void CrearUsuario(string dni, string nombre, string apellido, string email, TipoRol55CA rol)
@@ -179,10 +180,10 @@ namespace Services
                 Apellido = row["Apellido"].ToString(),
                 Email = row["Email"].ToString(),
                 Rol = (TipoRol55CA)Convert.ToInt32(row["IdRol"]), //Toma el numero del rol y automaticamente sabe que rol le corresponde
-                User = row["User"].ToString(),
-                Password = row["Password"].ToString(),
+                User = row["Username"].ToString(),
+                Password = row["PasswordHash"].ToString(),
                 Intentos = Convert.ToInt32(row["Intentos"]),
-                Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
+                //Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
                 Activo = Convert.ToBoolean(row["Activo"])
             };
         }

@@ -15,8 +15,8 @@ namespace DAL
 
         public int insertarLog(Dictionary<string, object> datos)
         {
-            string query = @"INSERT INTO BitacoraEventos (DNI, Evento, Criticidad, FechaHora, Modulo) VALUES (@id, @accion, @fecha)";
-            
+            string query = @"INSERT INTO BitacoraEventos (DNI, Evento, Criticidad, Modulo) VALUES (@dni, @evento, @criticidad, @modulo)";
+
             List<SqlParameter> parametros = new List<SqlParameter>();
 
             foreach (var item in datos)

@@ -16,7 +16,7 @@ namespace DAL
 
         public int InsertarUsuario(Dictionary<string, object> datos)
         {
-            string query = @"INSERT INTO Usuario (DNI, Nombre, Apellido, Email, Rol, User, Password) 
+            string query = @"INSERT INTO Usuario (DNI, Nombre, Apellido, Email, IdRol, Username, PasswordHash) 
                      VALUES (@dni, @nom, @ape, @mail, @rol, @user, @pass)";
 
             List<SqlParameter> parametros = new List<SqlParameter>();
@@ -47,7 +47,7 @@ namespace DAL
 
         public void ModificarUsuario(string dni, string email, int rol)
         {
-            string query = @"UPDATE Usuario SET Email = @mail, Rol = @rol WHERE DNI = @dni";
+            string query = @"UPDATE Usuario SET Email = @mail, IdRol = @rol WHERE DNI = @dni";
 
             var parametros = new List<SqlParameter>
             {
@@ -61,7 +61,7 @@ namespace DAL
 
         public void CambiarPassword(string password)
         {
-            string query = @"UPDATE Usuario SET Password = @password";
+            string query = @"UPDATE Usuario SET PasswordHash = @password";
 
             var parametros = new List<SqlParameter> { new SqlParameter("@password", password) };
 
@@ -107,7 +107,7 @@ namespace DAL
 
         public DataRow obtenerPorUser(string user)
         {
-            string query = "SELECT * FROM USUARIO WHERE User = @user";
+            string query = "SELECT * FROM USUARIO WHERE Username = @user";
             var parametros = new List<SqlParameter> { new SqlParameter("@user", user) };
 
             DataTable dt = acceso.executeDataTable(query, parametros);
@@ -118,16 +118,6 @@ namespace DAL
         #endregion ObtenerUsuarios
 
         #region IntentosFallidos
-
-        public int aumentarIntento(string dni)
-        {
-            string query = "UPDATE Usuario SET Intentos = Intentos + 1 WHERE DNI = @dni";
-            var parametros = new List<SqlParameter> { new SqlParameter ("@dni", dni) };
-
-            int resultado = acceso.executeNonQuery(query, parametros);
-
-            return resultado;
-        }
 
         public int reiniciarIntentos(string dni)
         {
@@ -151,7 +141,7 @@ namespace DAL
 
         public int desbloquearUsuario(string dni, string password)
         {
-            string query = @"UPDATE Usuario  SET Intentos = 0, Bloqueo = 0, Password = @pass WHERE DNI = @dni";
+            string query = @"UPDATE Usuario SET Intentos = 0, Bloqueo = 0, PasswordHash = @pass WHERE DNI = @dni";
 
             var parametros = new List<SqlParameter>
         {

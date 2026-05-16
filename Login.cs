@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Services;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ namespace Servicios
 {
     public partial class Login : Form
     {
+        UsuarioService _userService = new UsuarioService();
         public Login()
         {
             InitializeComponent();
@@ -24,7 +26,15 @@ namespace Servicios
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            string username = txtUser.Text;
+            string password = txtPassword.Text;
 
+            if(_userService.login(username, password))
+            {
+                MenuPrincipal form = new MenuPrincipal();
+                form.ShowDialog();
+                this.Hide();
+            }
         }
     }
 }

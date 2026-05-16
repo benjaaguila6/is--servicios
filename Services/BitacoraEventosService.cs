@@ -19,9 +19,8 @@ namespace Services
             {
                 { "@dni", dni },
                 { "@evento", evento },
-                { "@crit", (int)criticidad },
-                { "@fecha", DateTime.Now },
-                { "@mod", (int)modulo }
+                { "@criticidad", (int)criticidad },
+                { "@modulo", (int)modulo }
             }; //diccionario para que el metodo DAL no tenga muchos parametros
 
             dal.insertarLog(datos);
