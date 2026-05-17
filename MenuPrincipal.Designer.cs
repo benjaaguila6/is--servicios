@@ -67,14 +67,14 @@
             // cambiarClaveToolStripMenuItem
             // 
             this.cambiarClaveToolStripMenuItem.Name = "cambiarClaveToolStripMenuItem";
-            this.cambiarClaveToolStripMenuItem.Size = new System.Drawing.Size(328, 46);
+            this.cambiarClaveToolStripMenuItem.Size = new System.Drawing.Size(359, 46);
             this.cambiarClaveToolStripMenuItem.Text = "Cambiar Clave";
             this.cambiarClaveToolStripMenuItem.Click += new System.EventHandler(this.cambiarClaveToolStripMenuItem_Click);
             // 
             // cerrarSesionToolStripMenuItem
             // 
             this.cerrarSesionToolStripMenuItem.Name = "cerrarSesionToolStripMenuItem";
-            this.cerrarSesionToolStripMenuItem.Size = new System.Drawing.Size(328, 46);
+            this.cerrarSesionToolStripMenuItem.Size = new System.Drawing.Size(359, 46);
             this.cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
             // 
             // administradorToolStripMenuItem
@@ -103,7 +103,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Verdana", 19.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.MintCream;
-            this.label1.Location = new System.Drawing.Point(274, 511);
+            this.label1.Location = new System.Drawing.Point(236, 462);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(417, 65);
             this.label1.TabIndex = 1;

@@ -25,10 +25,10 @@ namespace Services
             {
                 lista.Add(MapearUsuario(row));
 
-                return lista;
+                
             }
 
-            return null;
+            return lista;
         }
 
         public bool login(string user, string password)
@@ -54,21 +54,21 @@ namespace Services
 
             string passwordHash = ServiceSeguridad55CA.Hashear(password);
 
-            //if (usuario.Password != passwordHash)
-            //{
-            //    usuario.Intentos++;
+            if (usuario.Password != passwordHash)
+            {
+                usuario.Intentos++;
 
-              
 
-            //    if (usuario.Intentos >= 4)
-            //    {
-            //        dal.bloquearUsuario(usuario.DNI);
-            //        bit.registrarEvento(usuario.DNI, $"Usuario: {usuario.User} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
-            //        throw new Exception("Su cuenta ha sido bloqueada tras 4 intentos fallidos. Contacte al administrador.");
-            //    }
 
-            //    throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos}. Al cuarto intento fallido se bloqueará la cuenta.");
-            //}
+                if (usuario.Intentos >= 4)
+                {
+                    dal.bloquearUsuario(usuario.DNI);
+                    bit.registrarEvento(usuario.DNI, $"Usuario: {usuario.User} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
+                    throw new Exception("Su cuenta ha sido bloqueada tras 4 intentos fallidos. Contacte al administrador.");
+                }
+
+                throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos}. Al cuarto intento fallido se bloqueará la cuenta.");
+            }
 
             //login ok
             ServiceSessionManager55CA.getIntancia().Login(usuario);

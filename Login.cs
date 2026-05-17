@@ -29,11 +29,21 @@ namespace Servicios
             string username = txtUser.Text;
             string password = txtPassword.Text;
 
-            if(_userService.login(username, password))
+            try
             {
-                MenuPrincipal form = new MenuPrincipal();
-                form.ShowDialog();
-                this.Hide();
+                if (_userService.login(username, password))
+                {
+                    MenuPrincipal form = new MenuPrincipal();
+                    this.Hide();
+
+                    form.FormClosed += (s, args) => this.Close();
+
+                    form.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al iniciar sesion: " + ex.Message);
             }
         }
     }

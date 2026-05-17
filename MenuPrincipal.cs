@@ -33,8 +33,7 @@ namespace Servicios
         private void gestionUsuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GestionUsuario form = new GestionUsuario();
-            form.ShowDialog();
-            this.Hide();
+            form.Show();
         }
     }
 }

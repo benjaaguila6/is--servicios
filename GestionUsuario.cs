@@ -66,6 +66,11 @@ namespace Servicios
             modoActual = ModoOperacion.Crear;
             gbDatos.Visible = true;
 
+            btnCrear.Enabled = false;
+            btnActDesact.Enabled = false;
+            btnDesbloquear.Enabled = false;
+            btnModificar.Enabled = false;
+
             txtDNI.Enabled = true;
             txtNombre.Enabled = true;
             txtApellido.Enabled = true;
@@ -96,6 +101,11 @@ namespace Servicios
 
             int rol = Convert.ToInt32(fila.Cells["Rol"].Value);
             cmbRol.SelectedIndex = rol - 1;
+
+            btnCrear.Enabled = false;
+            btnActDesact.Enabled = false;
+            btnDesbloquear.Enabled = false;
+            btnModificar.Enabled = false;
 
             //se bloquea porque solo se puede modificar el rol y el email.
             txtDNI.Enabled = false;
@@ -184,6 +194,11 @@ namespace Servicios
         {
             gbDatos.Visible = false;
             modoActual = ModoOperacion.Ninguno;
+
+            btnCrear.Enabled = true;
+            btnActDesact.Enabled = true;
+            btnDesbloquear.Enabled = true;
+            btnModificar.Enabled = true;
         }
 
         #region Validaciones
@@ -250,17 +265,6 @@ namespace Servicios
             }
         }
 
-        //private void dgvUsuarios_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        //{
-        //    if (dgvUsuarios.Columns[e.ColumnIndex].Name == "Bloqueo")
-        //    {
-        //        bool bloqueado = (bool)e.Value;
 
-        //        if (bloqueado)
-        //        {
-        //            dgvUsuarios.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightCoral;
-        //        }
-        //    }
-        //}
     }
 }
