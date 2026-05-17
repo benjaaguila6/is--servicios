@@ -109,9 +109,9 @@
             // 
             // txtNueva
             // 
-            this.txtNueva.Enabled = false;
             this.txtNueva.Location = new System.Drawing.Point(37, 269);
             this.txtNueva.Name = "txtNueva";
+            this.txtNueva.PasswordChar = '*';
             this.txtNueva.Size = new System.Drawing.Size(288, 31);
             this.txtNueva.TabIndex = 4;
             // 

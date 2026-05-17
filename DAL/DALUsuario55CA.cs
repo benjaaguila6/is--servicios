@@ -59,11 +59,11 @@ namespace DAL
             acceso.executeNonQuery(query,parametros);
         }
 
-        public void CambiarPassword(string password)
+        public void CambiarPassword(string password, string dni)
         {
-            string query = @"UPDATE Usuario SET PasswordHash = @password";
+            string query = @"UPDATE Usuario SET PasswordHash = @password WHERE DNI = @dni";
 
-            var parametros = new List<SqlParameter> { new SqlParameter("@password", password) };
+            var parametros = new List<SqlParameter> { new SqlParameter("@password", password), new SqlParameter("@dni", dni)};
 
             acceso.executeNonQuery(query, parametros);
         }

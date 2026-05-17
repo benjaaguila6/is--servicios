@@ -25,9 +25,7 @@ namespace Servicios
         private void cambiarClaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CambiarContraseña form = new CambiarContraseña();
-            form.ShowDialog();
-
-            this.Hide();
+            form.Show();
         }
 
         private void gestionUsuariosToolStripMenuItem_Click(object sender, EventArgs e)

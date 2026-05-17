@@ -24,8 +24,6 @@ namespace Services
             foreach(DataRow row in dt.Rows)
             {
                 lista.Add(MapearUsuario(row));
-
-                
             }
 
             return lista;
@@ -146,7 +144,7 @@ namespace Services
             );
         }
 
-        public void cambiarPassword(string passwordActual, string passwordNueva)
+        public bool cambiarPassword(string passwordActual, string passwordNueva)
         {
             string passwordActualHash = ServiceSeguridad55CA.Hashear(passwordActual);
 
@@ -164,6 +162,9 @@ namespace Services
                 throw new Exception("La contraesña nueva no puede ser igual a la actual.");
             }
 
+            dal.CambiarPassword(passwordNuevaHash, usuarioActivo.DNI);
+
+            return true;
             
         }
 
