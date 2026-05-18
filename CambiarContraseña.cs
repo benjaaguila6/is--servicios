@@ -27,12 +27,26 @@ namespace Servicios
             string passwordActual = txtContraseñaActual.Text;
             string confirmacion = txtConfirmacion.Text;
 
-            if(passwordNueva != confirmacion)
+            try
             {
-                throw new Exception("Las contraseñas no coinciden.");
-            }
+                if (passwordNueva != confirmacion)
+                {
+                    MessageBox.Show("Las contraseñas no coinciden.");
+                }
+                else
+                {
+                    if(_usuarioService.cambiarPassword(passwordActual, passwordNueva))
+                    {
+                        MessageBox.Show("Contraseña modificada con exito.");
+                    }
+                }
 
-            _usuarioService.cambiarPassword(passwordActual, passwordNueva);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al cambiar contraseña: " + ex.Message);
+                return;
+            }
         }
     }
 }
