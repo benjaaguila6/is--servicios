@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BE;
 
 namespace Servicios
 {
@@ -19,6 +20,12 @@ namespace Servicios
         public MenuPrincipal()
         {
             InitializeComponent();
+
+            if (usuarioActual.Rol == TipoRol55CA.Basico)
+            {
+                administradorToolStripMenuItem.Enabled = false;
+            }
+
             label1.Text = $"Bienvenido: {usuarioActual.Nombre}, {usuarioActual.Apellido} !";
         }
 

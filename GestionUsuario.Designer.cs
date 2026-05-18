@@ -177,14 +177,12 @@
             // rbActivos
             // 
             this.rbActivos.AutoSize = true;
-            this.rbActivos.Checked = true;
             this.rbActivos.Font = new System.Drawing.Font("Verdana", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbActivos.Location = new System.Drawing.Point(1664, 85);
             this.rbActivos.Margin = new System.Windows.Forms.Padding(4);
             this.rbActivos.Name = "rbActivos";
             this.rbActivos.Size = new System.Drawing.Size(156, 36);
             this.rbActivos.TabIndex = 13;
-            this.rbActivos.TabStop = true;
             this.rbActivos.Text = "Activos";
             this.rbActivos.UseVisualStyleBackColor = true;
             this.rbActivos.CheckedChanged += new System.EventHandler(this.rbActivos_CheckedChanged);
@@ -192,6 +190,7 @@
             // rbTodos
             // 
             this.rbTodos.AutoSize = true;
+            this.rbTodos.Checked = true;
             this.rbTodos.Font = new System.Drawing.Font("Verdana", 10.125F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rbTodos.Location = new System.Drawing.Point(1870, 85);
             this.rbTodos.Margin = new System.Windows.Forms.Padding(4);
