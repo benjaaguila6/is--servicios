@@ -15,6 +15,7 @@ namespace Services
     {
         DALUsuario55CA dal = new DALUsuario55CA();
         BitacoraEventosService bit = new BitacoraEventosService();
+        int intentos = 0;
 
         public List<UsuarioModelo55CA> obtenerTodos()
         {
@@ -24,8 +25,6 @@ namespace Services
             foreach(DataRow row in dt.Rows)
             {
                 lista.Add(MapearUsuario(row));
-
-                
             }
 
             return lista;
@@ -52,22 +51,25 @@ namespace Services
                 throw new Exception("El usuario esta bloqueado por intentos fallidos. Contacte a un administrador.");
             }
 
+            if (usuario.Activo == false)
+            {
+                throw new Exception("El usuario no esta activo");
+            }
+
             string passwordHash = ServiceSeguridad55CA.Hashear(password);
 
             if (usuario.Password != passwordHash)
             {
-                usuario.Intentos++;
+                intentos++;
 
-
-
-                if (usuario.Intentos >= 4)
+                if (intentos >= 4)
                 {
                     dal.bloquearUsuario(usuario.DNI);
                     bit.registrarEvento(usuario.DNI, $"Usuario: {usuario.User} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
                     throw new Exception("Su cuenta ha sido bloqueada tras 4 intentos fallidos. Contacte al administrador.");
                 }
 
-                throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos}. Al cuarto intento fallido se bloqueará la cuenta.");
+                throw new Exception($"Contraseña incorrecta. Intento {intentos}. Al cuarto intento fallido se bloqueará la cuenta.");
             }
 
             //login ok
@@ -146,7 +148,7 @@ namespace Services
             );
         }
 
-        public void cambiarPassword(string passwordActual, string passwordNueva)
+        public bool cambiarPassword(string passwordActual, string passwordNueva)
         {
             string passwordActualHash = ServiceSeguridad55CA.Hashear(passwordActual);
 
@@ -164,6 +166,9 @@ namespace Services
                 throw new Exception("La contraesña nueva no puede ser igual a la actual.");
             }
 
+            dal.CambiarPassword(passwordNuevaHash, usuarioActivo.DNI);
+
+            return true;
             
         }
 
@@ -183,7 +188,7 @@ namespace Services
                 User = row["Username"].ToString(),
                 Password = row["PasswordHash"].ToString(),
                 Intentos = Convert.ToInt32(row["Intentos"]),
-                //Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
+                Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
                 Activo = Convert.ToBoolean(row["Activo"])
             };
         }

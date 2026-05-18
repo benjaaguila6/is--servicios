@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BE;
 
 namespace Servicios
 {
@@ -19,21 +20,31 @@ namespace Servicios
         public MenuPrincipal()
         {
             InitializeComponent();
+
+            if (usuarioActual.Rol == TipoRol55CA.Basico)
+            {
+                administradorToolStripMenuItem.Enabled = false;
+            }
+
             label1.Text = $"Bienvenido: {usuarioActual.Nombre}, {usuarioActual.Apellido} !";
         }
 
         private void cambiarClaveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CambiarContraseña form = new CambiarContraseña();
-            form.ShowDialog();
-
-            this.Hide();
+            form.Show();
         }
 
         private void gestionUsuariosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             GestionUsuario form = new GestionUsuario();
             form.Show();
+        }
+
+        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ServiceSessionManager55CA.getIntancia().Logout();
+            this.Close();
         }
     }
 }

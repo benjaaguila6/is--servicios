@@ -33,17 +33,21 @@ namespace Servicios
             {
                 if (_userService.login(username, password))
                 {
-                    MenuPrincipal form = new MenuPrincipal();
+                    MenuPrincipal menu = new MenuPrincipal();
+
+                    menu.Show();
+
                     this.Hide();
 
-                    form.FormClosed += (s, args) => this.Close();
-
-                    form.Show();
+                    menu.FormClosed += (s, args) =>
+                    {
+                        this.Show();
+                    };
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al iniciar sesion: " + ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
     }
