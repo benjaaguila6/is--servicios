@@ -40,5 +40,11 @@ namespace Servicios
             GestionUsuario form = new GestionUsuario();
             form.Show();
         }
+
+        private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ServiceSessionManager55CA.getIntancia().Logout();
+            this.Close();
+        }
     }
 }
