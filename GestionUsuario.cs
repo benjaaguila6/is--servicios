@@ -119,12 +119,13 @@ namespace Servicios
 
         private void rbTodos_CheckedChanged(object sender, EventArgs e)
         {
-            dgvUsuarios.DataSource = listUsuarios;
+            CargarGrilla();
         }
 
         private void rbActivos_CheckedChanged(object sender, EventArgs e)
         {
-            dgvUsuarios.DataSource = listUsuarios.Where(u => u.Activo == true);
+            CargarGrilla();
+            dgvUsuarios.DataSource = listUsuarios.Where(u => u.Activo == true).ToList();
         }
 
 
@@ -171,12 +172,6 @@ namespace Servicios
                     usuarioService.ModificarUsuario(dNI, email, rol);
                     MessageBox.Show("Usuario modificado correctamente.");
                 }
-                else if(modoActual == ModoOperacion.ActDesact)
-                {
-                    string dniSeleccionado = dgvUsuarios.CurrentRow.Cells["DNI"].Value.ToString();
-                    usuarioService.activarDesactivar(dniSeleccionado);
-                    MessageBox.Show("El estado del usuario se actualizó correctamente.");
-                }
 
                 gbDatos.Visible = false;
                 modoActual = ModoOperacion.Ninguno;
@@ -216,7 +211,19 @@ namespace Servicios
 
         private void btnActDesact_Click(object sender, EventArgs e)
         {
-            modoActual = ModoOperacion.ActDesact;
+            try
+            {
+                string dniSeleccionado = dgvUsuarios.CurrentRow.Cells["DNI"].Value.ToString();
+                usuarioService.activarDesactivar(dniSeleccionado);
+                MessageBox.Show("El estado del usuario se actualizó correctamente.");
+
+                CargarGrilla();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            
         }
 
         private void dgvUsuarios_CellClick(object sender, DataGridViewCellEventArgs e)
