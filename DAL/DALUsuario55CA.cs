@@ -121,9 +121,31 @@ namespace DAL
 
         #region IntentosFallidos
 
+        public void aumentarIntento(string dni)
+        {
+            string query = @"
+                            UPDATE Usuario
+                            SET 
+                                Intentos = Intentos + 1,
+                                UltimoIntentoFallido = GETDATE()
+                            WHERE DNI = @dni";
+
+            var parametros = new List<SqlParameter>
+            {
+                new SqlParameter("@dni", dni)
+            };
+
+            acceso.executeNonQuery(query, parametros);
+        }
         public int reiniciarIntentos(string dni)
         {
-            string query = "UPDATE Usuario SET Intentos = 0 WHERE DNI = @dni";
+            string query = @"
+                            UPDATE Usuario
+                            SET 
+                                Intentos = 0,
+                                UltimoIntentoFallido = NULL
+                            WHERE DNI = @dni";
+
             var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
 
             int resultado = acceso.executeNonQuery(query, parametros);

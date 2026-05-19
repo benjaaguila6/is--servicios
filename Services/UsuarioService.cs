@@ -15,7 +15,6 @@ namespace Services
     {
         DALUsuario55CA dal = new DALUsuario55CA();
         BitacoraEventosService bit = new BitacoraEventosService();
-        int intentos = 0;
 
         public List<UsuarioModelo55CA> obtenerTodos()
         {
@@ -56,20 +55,36 @@ namespace Services
                 throw new Exception("El usuario no esta activo");
             }
 
+            if (usuario.UltimoIntentoFallido.HasValue)
+            {
+                TimeSpan tiempo = DateTime.Now - usuario.UltimoIntentoFallido.Value;
+
+                // si pasaron más de 30 minutos se reinicia
+                if (tiempo.TotalMinutes >= 30)
+                {
+                    dal.reiniciarIntentos(usuario.DNI);
+
+                    usuario.Intentos = 0;
+                }
+            }
+
             string passwordHash = ServiceSeguridad55CA.Hashear(password);
 
             if (usuario.Password != passwordHash)
             {
-                intentos++;
+                dal.aumentarIntento(usuario.DNI);
 
-                if (intentos >= 4)
+                usuario.Intentos++;
+
+                if (usuario.Intentos >= 4)
                 {
                     dal.bloquearUsuario(usuario.DNI);
-                    bit.registrarEvento(usuario.DNI, $"Usuario: {usuario.User} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
-                    throw new Exception("Su cuenta ha sido bloqueada tras 4 intentos fallidos. Contacte al administrador.");
+                    bit.registrarEvento(usuario.DNI, $"Usuario {usuario.User} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
+
+                    throw new Exception("Cuenta bloqueada por intentos fallidos.");
                 }
 
-                throw new Exception($"Contraseña incorrecta. Intento {intentos}. Al cuarto intento fallido se bloqueará la cuenta.");
+                throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos}.");
             }
 
             //login ok
@@ -189,7 +204,8 @@ namespace Services
                 Password = row["PasswordHash"].ToString(),
                 Intentos = Convert.ToInt32(row["Intentos"]),
                 Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
-                Activo = Convert.ToBoolean(row["Activo"])
+                Activo = Convert.ToBoolean(row["Activo"]),
+                UltimoIntentoFallido = row["UltimoIntentoFallido"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["UltimoIntentoFallido"]),
             };
         }
 
