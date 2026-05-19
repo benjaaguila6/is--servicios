@@ -43,8 +43,25 @@ namespace Servicios
 
         private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            DialogResult resultado = MessageBox.Show("¿Está seguro que desea cerrar sesión?", "Confirmar cierre de sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.Yes)
+            {
+                this.Close();
+            }
+        }
+
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
             ServiceSessionManager55CA.getIntancia().Logout();
-            this.Close();
+
+            base.OnFormClosing(e);
+        }
+
+        private void iniciarSesionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Login form = new Login();
+            form.Show();
         }
     }
 }
