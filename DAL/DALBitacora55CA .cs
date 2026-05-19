@@ -16,8 +16,8 @@ namespace DAL
 
         public int insertarLog(Dictionary<string, object> datos)
         {
-            string query = @"INSERT INTO Bitacora
-            (DNIUsuario, Evento, Criticidad, Modulo, Fecha) 
+            string query = @"INSERT INTO BitacoraEventos
+            (DNI, Evento, Criticidad, Modulo, FechaHora) 
             VALUES (@dni, @evento, @criticidad, @modulo, @fecha)";
 
             List<SqlParameter> parametros = new List<SqlParameter>();
@@ -34,7 +34,7 @@ namespace DAL
 
         public DataTable obtenerBitacora(DateTime desde, DateTime hasta)
         {
-            string query = @"SELECT * FROM Bitacora
+            string query = @"SELECT * FROM BitacoraEventos
                      WHERE Fecha BETWEEN @desde AND @hasta";
 
             var parametros = new List<SqlParameter>

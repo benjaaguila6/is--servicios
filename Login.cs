@@ -33,6 +33,9 @@ namespace Servicios
             {
                 if (_userService.login(username, password))
                 {
+                    txtUser.Text = null;
+                    txtPassword.Text = null;
+
                     MenuPrincipal menu = new MenuPrincipal();
 
                     menu.Show();

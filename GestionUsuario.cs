@@ -1,13 +1,16 @@
 ﻿using BE;
+using BLL;
 using Services;
 using Services.Modelos;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -19,6 +22,7 @@ namespace Servicios
     {
         UsuarioService usuarioService = new UsuarioService();
         List<UsuarioModelo55CA> listUsuarios = new List<UsuarioModelo55CA>();
+        BLLRol _bllRol = new BLLRol();
 
         //un enum para que el boton guardar sepa que hacer
         private enum ModoOperacion
@@ -38,7 +42,11 @@ namespace Servicios
 
         private void CrearUsuario_Load(object sender, EventArgs e)
         {
-            cmbRol.DataSource = Enum.GetValues(typeof(TipoRol55CA));
+            cmbRol.DataSource = _bllRol.obtenerTodos();
+            cmbRol.DisplayMember = "Nombre";
+            cmbRol.ValueMember = "Id";
+
+            btnCancelar.Enabled = false;
         }
 
         private void LimpiarCampos()
@@ -54,8 +62,19 @@ namespace Servicios
 
         private void CargarGrilla()
         {
-            dgvUsuarios.DataSource = null;
-            
+            dgvUsuarios.AutoGenerateColumns = false;
+
+            dgvUsuarios.Columns.Clear();
+
+            dgvUsuarios.Columns.Add(new DataGridViewTextBoxColumn{Name = "DNI", DataPropertyName = "DNI", HeaderText = "DNI"});
+            dgvUsuarios.Columns.Add(new DataGridViewTextBoxColumn{Name = "Nombre", DataPropertyName = "Nombre", HeaderText = "Nombre"});
+            dgvUsuarios.Columns.Add(new DataGridViewTextBoxColumn{Name = "Apellido", DataPropertyName = "Apellido", HeaderText = "Apellido"});
+            dgvUsuarios.Columns.Add(new DataGridViewTextBoxColumn{Name = "Email", DataPropertyName = "Email", HeaderText = "Email"});
+            dgvUsuarios.Columns.Add(new DataGridViewTextBoxColumn{Name = "Rol", DataPropertyName = "Rol", HeaderText = "Rol"});
+            dgvUsuarios.Columns.Add(new DataGridViewTextBoxColumn{Name = "User", DataPropertyName = "User", HeaderText = "Username"});
+            dgvUsuarios.Columns.Add(new DataGridViewCheckBoxColumn{Name = "Activo", DataPropertyName = "Activo", HeaderText = "Activo"});
+            dgvUsuarios.Columns.Add(new DataGridViewCheckBoxColumn{Name = "Bloqueo", DataPropertyName = "Bloqueo", HeaderText = "Bloqueado"});
+
             listUsuarios = usuarioService.obtenerTodos();
 
             dgvUsuarios.DataSource = listUsuarios;
@@ -70,12 +89,14 @@ namespace Servicios
             btnActDesact.Enabled = false;
             btnDesbloquear.Enabled = false;
             btnModificar.Enabled = false;
+            btnCancelar.Enabled = true;
 
             txtDNI.Enabled = true;
             txtNombre.Enabled = true;
             txtApellido.Enabled = true;
             txtEmail.Enabled = true;
             cmbRol.Enabled = true;
+
 
             LimpiarCampos();
         }
@@ -88,33 +109,45 @@ namespace Servicios
                 return;
             }
 
-
             modoActual = ModoOperacion.Modificar;
+
             gbDatos.Visible = true;
 
             DataGridViewRow fila = dgvUsuarios.CurrentRow;
 
-            txtDNI.Text = fila.Cells["DNI"].Value.ToString();
-            txtNombre.Text = fila.Cells["Nombre"].Value.ToString();
-            txtApellido.Text = fila.Cells["Apellido"].Value.ToString();
-            txtEmail.Text = fila.Cells["Email"].Value.ToString();
+            try
+            {
+                txtDNI.Text = fila.Cells["DNI"].Value.ToString();
 
-            int rol = Convert.ToInt32(fila.Cells["Rol"].Value);
-            cmbRol.SelectedIndex = rol - 1;
+                txtNombre.Text = fila.Cells["Nombre"].Value.ToString();
 
-            btnCrear.Enabled = false;
-            btnActDesact.Enabled = false;
-            btnDesbloquear.Enabled = false;
-            btnModificar.Enabled = false;
+                txtApellido.Text = fila.Cells["Apellido"].Value.ToString();
 
-            //se bloquea porque solo se puede modificar el rol y el email.
-            txtDNI.Enabled = false;
-            txtNombre.Enabled = false;
-            txtApellido.Enabled = false;
-            txtEmail.Enabled = true;
-            cmbRol.Enabled = true;
+                txtEmail.Text = fila.Cells["Email"].Value.ToString();
 
-            //LimpiarCampos();
+                Rol55CA rol = (Rol55CA)fila.Cells["Rol"].Value;
+
+                cmbRol.SelectedValue = rol.Id;
+
+                btnCrear.Enabled = false;
+                btnActDesact.Enabled = false;
+                btnDesbloquear.Enabled = false;
+                btnModificar.Enabled = false;
+                btnCancelar.Enabled = true;
+
+                // solo modificables
+                txtDNI.Enabled = false;
+                txtNombre.Enabled = false;
+                txtApellido.Enabled = false;
+
+                txtEmail.Enabled = true;
+
+                cmbRol.Enabled = true;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al modificar usuario: " + ex.Message);
+            }
         }
 
         private void rbTodos_CheckedChanged(object sender, EventArgs e)
@@ -131,60 +164,100 @@ namespace Servicios
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
-            string email = txtEmail.Text;
-            string nombre = txtNombre.Text;
-            string apellido = txtApellido.Text;
-            string dNI = txtDNI.Text;
-            TipoRol55CA rol = (TipoRol55CA)cmbRol.SelectedItem;
-
-
-            if (cmbRol.SelectedIndex == -1)
-            {
-                MessageBox.Show("Seleccione un rol.");
-                return;
-            }
-
-            if (email.Length <= 0 || nombre.Length <= 0 || apellido.Length <= 0 || dNI.Length <= 0)
-            {
-                MessageBox.Show("Debe completar todos los campos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            if (!EsEmailValido(email))
-            {
-                MessageBox.Show("El email no tiene el formato correcto.");
-                return;
-            }
-            if (!EsDNIValido(dNI))
-            {
-                MessageBox.Show("El DNI no tiene el formato correcto.");
-                return;
-            }
-
             try
             {
                 if (modoActual == ModoOperacion.Crear)
                 {
+                    string email = txtEmail.Text;
+                    string nombre = txtNombre.Text;
+                    string apellido = txtApellido.Text;
+                    string dNI = txtDNI.Text;
+
+                    Rol55CA rol = (Rol55CA)cmbRol.SelectedItem;
+
+                    if (cmbRol.SelectedIndex == -1)
+                    {
+                        MessageBox.Show("Seleccione un rol.");
+                        return;
+                    }
+
+                    if (email.Length <= 0 || nombre.Length <= 0 || apellido.Length <= 0 || dNI.Length <= 0)
+                    {
+                        MessageBox.Show("Debe completar todos los campos.");
+                        return;
+                    }
+
+                    if (!EsEmailValido(email))
+                    {
+                        MessageBox.Show("El email no tiene el formato correcto.");
+                        return;
+                    }
+
+                    if (!EsDNIValido(dNI))
+                    {
+                        MessageBox.Show("El DNI no tiene el formato correcto.");
+                        return;
+                    }
+
                     usuarioService.CrearUsuario(dNI, nombre, apellido, email, rol);
+
                     MessageBox.Show("Usuario creado con éxito.");
                 }
+
                 else if (modoActual == ModoOperacion.Modificar)
                 {
+                    string email = txtEmail.Text;
+                    string dNI = txtDNI.Text;
+
+                    Rol55CA rol = (Rol55CA)cmbRol.SelectedItem;
+
                     usuarioService.ModificarUsuario(dNI, email, rol);
+
                     MessageBox.Show("Usuario modificado correctamente.");
                 }
 
+                else if (modoActual == ModoOperacion.Desbloquear)
+                {
+                    string dni = dgvUsuarios.CurrentRow.Cells["DNI"].Value.ToString();
+
+                    bool bloqueado = Convert.ToBoolean(dgvUsuarios.CurrentRow.Cells["Bloqueo"].Value);
+
+                    if (!bloqueado)
+                    {
+                        MessageBox.Show("El usuario no está bloqueado.");
+                        return;
+                    }
+
+                    DialogResult r = MessageBox.Show("¿Seguro que desea desbloquear este usuario?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (r != DialogResult.Yes)
+                    {
+                        return;
+                    }
+
+                    usuarioService.DesbloquearUsuario(dni);
+
+                    MessageBox.Show("Usuario desbloqueado correctamente.");
+                }
+
                 gbDatos.Visible = false;
+
                 modoActual = ModoOperacion.Ninguno;
+
+                btnCrear.Enabled = true;
+                btnActDesact.Enabled = true;
+                btnDesbloquear.Enabled = true;
+                btnModificar.Enabled = true;
+                btnCancelar.Enabled = false;
 
                 CargarGrilla();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-       
         private void btnCancelar_Click(object sender, EventArgs e)
         {
             gbDatos.Visible = false;
@@ -194,6 +267,8 @@ namespace Servicios
             btnActDesact.Enabled = true;
             btnDesbloquear.Enabled = true;
             btnModificar.Enabled = true;
+
+            btnCancelar.Enabled = false;
         }
 
         #region Validaciones
@@ -233,43 +308,20 @@ namespace Servicios
 
         private void btnDesbloquear_Click(object sender, EventArgs e)
         {
+            modoActual = ModoOperacion.Desbloquear;
+
             if (dgvUsuarios.CurrentRow == null)
             {
                 MessageBox.Show("Seleccione un usuario.");
                 return;
             }
 
-            string dni = dgvUsuarios.CurrentRow.Cells["DNI"].Value.ToString();
-            bool bloqueado = Convert.ToBoolean(dgvUsuarios.CurrentRow.Cells["Bloqueo"].Value);
+            btnCrear.Enabled = false;
+            btnActDesact.Enabled = false;
+            btnDesbloquear.Enabled = false;
+            btnModificar.Enabled = false;
 
-            if (!bloqueado)
-            {
-                MessageBox.Show("El usuario no está bloqueado.");
-                return;
-            }
-
-            DialogResult r = MessageBox.Show(
-                "¿Seguro que desea desbloquear este usuario?",
-                "Confirmar",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question
-            );
-
-            if (r != DialogResult.Yes)
-                return;
-
-            try
-            {
-                usuarioService.DesbloquearUsuario(dni);
-
-                MessageBox.Show("Usuario desbloqueado correctamente.");
-
-                CargarGrilla(); // refresca la tabla
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            btnCancelar.Enabled = true;
         }
 
 

@@ -73,7 +73,7 @@ namespace DAL
         #region ObtenerUsuarios
         public DataTable obtenerTodos()
         {
-            string query = "SELECT * FROM Usuario";
+            string query = "SELECT U.*, R.Id AS IdRol, R.Nombre AS NombreRol FROM Usuario U INNER JOIN Rol R ON U.IdRol = R.Id";
 
             DataTable dt = acceso.executeDataTable(query);
 
@@ -82,7 +82,8 @@ namespace DAL
 
         public DataRow obtenerPorDNI(string dni)
         {
-            string query = "SELECT * FROM Usuario WHERE DNI = @dni";
+            
+            string query = "SELECT U.*, R.Id AS IdRol, R.Nombre AS NombreRol FROM Usuario U INNER JOIN Rol R ON U.IdRol = R.Id WHERE U.DNI = @dni";
 
             var parametros = new List<SqlParameter>
         {
@@ -96,7 +97,7 @@ namespace DAL
 
         public bool obtenerPorEmail(string email)
         {
-            string query = "SELECT * FROM USUARIO WHERE Email = @email";
+            string query = "SELECT 1 FROM Usuario WHERE Email = @email";
 
             var parametros = new List<SqlParameter> { new SqlParameter("@email", email) };
 
@@ -107,7 +108,8 @@ namespace DAL
 
         public DataRow obtenerPorUser(string user)
         {
-            string query = "SELECT * FROM USUARIO WHERE Username = @user";
+            string query = @"SELECT U.*, R.Id AS IdRol, R.Nombre AS NombreRol FROM Usuario U INNER JOIN Rol R ON U.IdRol = R.Id WHERE U.Username = @user";
+
             var parametros = new List<SqlParameter> { new SqlParameter("@user", user) };
 
             DataTable dt = acceso.executeDataTable(query, parametros);
@@ -119,9 +121,31 @@ namespace DAL
 
         #region IntentosFallidos
 
+        public void aumentarIntento(string dni)
+        {
+            string query = @"
+                            UPDATE Usuario
+                            SET 
+                                Intentos = Intentos + 1,
+                                UltimoIntentoFallido = GETDATE()
+                            WHERE DNI = @dni";
+
+            var parametros = new List<SqlParameter>
+            {
+                new SqlParameter("@dni", dni)
+            };
+
+            acceso.executeNonQuery(query, parametros);
+        }
         public int reiniciarIntentos(string dni)
         {
-            string query = "UPDATE Usuario SET Intentos = 0 WHERE DNI = @dni";
+            string query = @"
+                            UPDATE Usuario
+                            SET 
+                                Intentos = 0,
+                                UltimoIntentoFallido = NULL
+                            WHERE DNI = @dni";
+
             var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
 
             int resultado = acceso.executeNonQuery(query, parametros);
