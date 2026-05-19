@@ -80,7 +80,7 @@ namespace Services
             return true;
         }
 
-        public void CrearUsuario(string dni, string nombre, string apellido, string email, TipoRol55CA rol)
+        public void CrearUsuario(string dni, string nombre, string apellido, string email, Rol55CA rol)
         {
 
             if (dal.obtenerPorDNI(dni) != null)
@@ -98,7 +98,7 @@ namespace Services
                 { "@nom", nombre },
                 { "@ape", apellido },
                 { "@mail", email },
-                { "@rol", (int)rol }, //lo convertimos en int para que guarde el pk del rol,
+                { "@rol", rol.Id },
                 { "@user", user },
                 { "@pass", passwordHash }
             }; //diccionario para que el metodo DAL no tenga muchos parametros
@@ -134,9 +134,9 @@ namespace Services
             bit.registrarEvento(dniAutor, evento, Criticidad55CA.Alto, Modulos55CA.Usuario);
         }
 
-        public void ModificarUsuario(string dni, string email, TipoRol55CA rol)
+        public void ModificarUsuario(string dni, string email, Rol55CA rol)
         {
-            dal.ModificarUsuario(dni, email, (int)rol);
+            dal.ModificarUsuario(dni, email, rol.Id);
 
             string dniAutor = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
@@ -184,7 +184,7 @@ namespace Services
                 Nombre = row["Nombre"].ToString(),
                 Apellido = row["Apellido"].ToString(),
                 Email = row["Email"].ToString(),
-                Rol = (TipoRol55CA)Convert.ToInt32(row["IdRol"]), //Toma el numero del rol y automaticamente sabe que rol le corresponde
+                Rol = new Rol55CA{ Id = Convert.ToInt32(row["IdRol"]), Nombre = row["NombreRol"].ToString() },
                 User = row["Username"].ToString(),
                 Password = row["PasswordHash"].ToString(),
                 Intentos = Convert.ToInt32(row["Intentos"]),

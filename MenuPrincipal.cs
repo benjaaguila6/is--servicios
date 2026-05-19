@@ -21,7 +21,7 @@ namespace Servicios
         {
             InitializeComponent();
 
-            if (usuarioActual.Rol == TipoRol55CA.Basico)
+            if (usuarioActual.Rol.Id == 2)
             {
                 administradorToolStripMenuItem.Enabled = false;
             }

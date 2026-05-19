@@ -1,4 +1,5 @@
 ﻿using BE;
+using BLL;
 using Services;
 using Services.Modelos;
 using System;
@@ -19,6 +20,7 @@ namespace Servicios
     {
         UsuarioService usuarioService = new UsuarioService();
         List<UsuarioModelo55CA> listUsuarios = new List<UsuarioModelo55CA>();
+        BLLRol _bllRol = new BLLRol();
 
         //un enum para que el boton guardar sepa que hacer
         private enum ModoOperacion
@@ -38,7 +40,9 @@ namespace Servicios
 
         private void CrearUsuario_Load(object sender, EventArgs e)
         {
-            cmbRol.DataSource = Enum.GetValues(typeof(TipoRol55CA));
+            cmbRol.DataSource = _bllRol.obtenerTodos();
+            cmbRol.DisplayMember = "Nombre";
+            cmbRol.ValueMember = "Id";
         }
 
         private void LimpiarCampos()
@@ -135,7 +139,7 @@ namespace Servicios
             string nombre = txtNombre.Text;
             string apellido = txtApellido.Text;
             string dNI = txtDNI.Text;
-            TipoRol55CA rol = (TipoRol55CA)cmbRol.SelectedItem;
+            Rol55CA rol = (Rol55CA)cmbRol.SelectedItem;
 
 
             if (cmbRol.SelectedIndex == -1)

@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="DALAcceso55CA.cs" />
     <Compile Include="DALBitacora55CA .cs" />
+    <Compile Include="DALRol.cs" />
     <Compile Include="DALUsuario55CA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
