@@ -3,6 +3,7 @@ using Services.Enum;
 using Services.Modelos;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,14 +17,24 @@ namespace Services
         {
 
             Dictionary<string, object> datos = new Dictionary<string, object>
-            {
-                { "@dni", dni },
-                { "@evento", evento },
-                { "@criticidad", (int)criticidad },
-                { "@modulo", (int)modulo }
-            }; //diccionario para que el metodo DAL no tenga muchos parametros
+            {   
+            { "@dni", dni },
+            { "@evento", evento },
+            { "@criticidad", (int)criticidad },
+            { "@modulo", (int)modulo },
+            { "@fecha", DateTime.Now }
+            };  
 
             dal.insertarLog(datos);
+        }
+
+
+        public DataTable obtenerUltimos3Dias()
+        {
+            DateTime desde = DateTime.Now.AddDays(-3);
+            DateTime hasta = DateTime.Now;
+
+            return dal.obtenerBitacora(desde, hasta);
         }
     }
 }

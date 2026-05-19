@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -15,7 +16,9 @@ namespace DAL
 
         public int insertarLog(Dictionary<string, object> datos)
         {
-            string query = @"INSERT INTO BitacoraEventos (DNI, Evento, Criticidad, Modulo) VALUES (@dni, @evento, @criticidad, @modulo)";
+            string query = @"INSERT INTO Bitacora
+            (DNIUsuario, Evento, Criticidad, Modulo, Fecha) 
+            VALUES (@dni, @evento, @criticidad, @modulo, @fecha)";
 
             List<SqlParameter> parametros = new List<SqlParameter>();
 
@@ -27,6 +30,20 @@ namespace DAL
             int resultado = acceso.executeNonQuery(query, parametros);
 
             return resultado;
+        }
+
+        public DataTable obtenerBitacora(DateTime desde, DateTime hasta)
+        {
+            string query = @"SELECT * FROM Bitacora
+                     WHERE Fecha BETWEEN @desde AND @hasta";
+
+            var parametros = new List<SqlParameter>
+        {
+        new SqlParameter("@desde", desde),
+        new SqlParameter("@hasta", hasta)
+        };
+
+            return acceso.executeDataTable(query, parametros);
         }
     }
 }
