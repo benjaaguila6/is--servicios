@@ -32,11 +32,12 @@
             this.usuarioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cambiarClaveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cerrarSesionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.iniciarSesionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.administradorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gestionUsuariosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bitacoraEventosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ayudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
-            this.iniciarSesionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,7 +53,6 @@
             this.ayudaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(6, 2, 0, 2);
             this.menuStrip1.Size = new System.Drawing.Size(1596, 45);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
@@ -70,21 +70,29 @@
             // cambiarClaveToolStripMenuItem
             // 
             this.cambiarClaveToolStripMenuItem.Name = "cambiarClaveToolStripMenuItem";
-            this.cambiarClaveToolStripMenuItem.Size = new System.Drawing.Size(359, 46);
+            this.cambiarClaveToolStripMenuItem.Size = new System.Drawing.Size(328, 46);
             this.cambiarClaveToolStripMenuItem.Text = "Cambiar Clave";
             this.cambiarClaveToolStripMenuItem.Click += new System.EventHandler(this.cambiarClaveToolStripMenuItem_Click);
             // 
             // cerrarSesionToolStripMenuItem
             // 
             this.cerrarSesionToolStripMenuItem.Name = "cerrarSesionToolStripMenuItem";
-            this.cerrarSesionToolStripMenuItem.Size = new System.Drawing.Size(359, 46);
+            this.cerrarSesionToolStripMenuItem.Size = new System.Drawing.Size(328, 46);
             this.cerrarSesionToolStripMenuItem.Text = "Cerrar Sesion";
             this.cerrarSesionToolStripMenuItem.Click += new System.EventHandler(this.cerrarSesionToolStripMenuItem_Click);
+            // 
+            // iniciarSesionToolStripMenuItem
+            // 
+            this.iniciarSesionToolStripMenuItem.Name = "iniciarSesionToolStripMenuItem";
+            this.iniciarSesionToolStripMenuItem.Size = new System.Drawing.Size(328, 46);
+            this.iniciarSesionToolStripMenuItem.Text = "Iniciar Sesion";
+            this.iniciarSesionToolStripMenuItem.Click += new System.EventHandler(this.iniciarSesionToolStripMenuItem_Click);
             // 
             // administradorToolStripMenuItem
             // 
             this.administradorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gestionUsuariosToolStripMenuItem});
+            this.gestionUsuariosToolStripMenuItem,
+            this.bitacoraEventosToolStripMenuItem});
             this.administradorToolStripMenuItem.Name = "administradorToolStripMenuItem";
             this.administradorToolStripMenuItem.Size = new System.Drawing.Size(213, 41);
             this.administradorToolStripMenuItem.Text = "Administrador";
@@ -95,6 +103,13 @@
             this.gestionUsuariosToolStripMenuItem.Size = new System.Drawing.Size(360, 46);
             this.gestionUsuariosToolStripMenuItem.Text = "Gestion Usuarios";
             this.gestionUsuariosToolStripMenuItem.Click += new System.EventHandler(this.gestionUsuariosToolStripMenuItem_Click);
+            // 
+            // bitacoraEventosToolStripMenuItem
+            // 
+            this.bitacoraEventosToolStripMenuItem.Name = "bitacoraEventosToolStripMenuItem";
+            this.bitacoraEventosToolStripMenuItem.Size = new System.Drawing.Size(360, 46);
+            this.bitacoraEventosToolStripMenuItem.Text = "Bitacora Eventos";
+            this.bitacoraEventosToolStripMenuItem.Click += new System.EventHandler(this.bitacoraEventosToolStripMenuItem_Click);
             // 
             // ayudaToolStripMenuItem
             // 
@@ -107,19 +122,12 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Verdana", 19.875F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.MintCream;
-            this.label1.Location = new System.Drawing.Point(236, 462);
+            this.label1.Location = new System.Drawing.Point(233, 405);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(417, 65);
             this.label1.TabIndex = 1;
             this.label1.Text = "Bienvenido: !";
-            // 
-            // iniciarSesionToolStripMenuItem
-            // 
-            this.iniciarSesionToolStripMenuItem.Name = "iniciarSesionToolStripMenuItem";
-            this.iniciarSesionToolStripMenuItem.Size = new System.Drawing.Size(359, 46);
-            this.iniciarSesionToolStripMenuItem.Text = "Iniciar Sesion";
-            this.iniciarSesionToolStripMenuItem.Click += new System.EventHandler(this.iniciarSesionToolStripMenuItem_Click);
             // 
             // MenuPrincipal
             // 
@@ -131,7 +139,7 @@
             this.Controls.Add(this.menuStrip1);
             this.ForeColor = System.Drawing.Color.MintCream;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MenuPrincipal";
             this.Text = "MenuPrincipal";
             this.menuStrip1.ResumeLayout(false);
@@ -152,5 +160,6 @@
         private System.Windows.Forms.ToolStripMenuItem ayudaToolStripMenuItem;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem iniciarSesionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bitacoraEventosToolStripMenuItem;
     }
 }

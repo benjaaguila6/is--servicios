@@ -63,5 +63,11 @@ namespace Servicios
             Login form = new Login();
             form.Show();
         }
+
+        private void bitacoraEventosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AuditoriaBitacora form = new AuditoriaBitacora();
+            form.Show();
+        }
     }
 }
