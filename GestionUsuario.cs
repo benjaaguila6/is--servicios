@@ -76,6 +76,12 @@ namespace Servicios
 
             listUsuarios = usuarioService.obtenerTodos();
 
+            // usuario logueado
+            string dniUsuarioActivo = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+
+            // para que no se pueda automodificar
+            listUsuarios = listUsuarios.Where(u => u.DNI != dniUsuarioActivo).ToList();
+
             dgvUsuarios.DataSource = listUsuarios;
         }
 

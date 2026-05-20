@@ -36,8 +36,12 @@ namespace Servicios
                 else
                 {
                     if(_usuarioService.cambiarPassword(passwordActual, passwordNueva))
-                    {
-                        MessageBox.Show("Contraseña modificada con exito.");
+        {
+                        MessageBox.Show("Contraseña modificada con éxito. Debe volver a iniciar sesión.");
+
+                        // cerrar sesión
+                        ServiceSessionManager55CA.getIntancia().Logout();
+                        this.Close();
                     }
                 }
 
