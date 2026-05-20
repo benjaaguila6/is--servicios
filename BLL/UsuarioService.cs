@@ -1,7 +1,8 @@
 ﻿using BE;
 using DAL;
-using Services.Enum;
+using BE.Enum;
 using Services.Modelos;
+//using Services;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -9,7 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services
+namespace BLL
 {
     public class UsuarioService
     {
@@ -21,7 +22,7 @@ namespace Services
             var dt = dal.obtenerTodos();
             List<UsuarioModelo55CA> lista = new List<UsuarioModelo55CA>();
 
-            foreach(DataRow row in dt.Rows)
+            foreach (DataRow row in dt.Rows)
             {
                 lista.Add(MapearUsuario(row));
             }
@@ -35,7 +36,7 @@ namespace Services
             var usuario = MapearUsuario(dal.obtenerPorUser(user));
 
             //validaciones
-            if (ServiceSessionManager55CA.getIntancia().estaLogueado())
+            if (Services_55CA.ServiceSessionManager55CA.getIntancia().estaLogueado())
             {
                 throw new Exception("Ya existe una sesión activa.");
             }
@@ -68,7 +69,7 @@ namespace Services
                 }
             }
 
-            string passwordHash = ServiceSeguridad55CA.Hashear(password);
+            string passwordHash = Services_55CA.ServiceSeguridad55CA.Hashear(password);
 
             if (usuario.Password != passwordHash)
             {
@@ -88,7 +89,7 @@ namespace Services
             }
 
             //login ok
-            ServiceSessionManager55CA.getIntancia().Login(usuario);
+            Services_55CA.ServiceSessionManager55CA.getIntancia().Login(usuario);
 
             bit.registrarEvento(usuario.DNI, $"Realizo login exitoso.", Criticidad55CA.Medio, Modulos55CA.Usuario);
 
@@ -97,7 +98,7 @@ namespace Services
             // verificamos si sigue usando password por defecto
             string passwordDefault = GenerarPassword(usuario.Apellido, usuario.DNI);
 
-            string passwordDefaultHash = ServiceSeguridad55CA.Hashear(passwordDefault);
+            string passwordDefaultHash = Services_55CA.ServiceSeguridad55CA.Hashear(passwordDefault);
 
             bool usaPasswordDefault =
                 usuario.Password == passwordDefaultHash;
@@ -115,7 +116,7 @@ namespace Services
 
             string user = GenerarUsuario(nombre, dni);
             string password = GenerarPassword(apellido, dni);
-            string passwordHash = ServiceSeguridad55CA.Hashear(password);
+            string passwordHash = Services_55CA.ServiceSeguridad55CA.Hashear(password);
 
             Dictionary<string, object> datos = new Dictionary<string, object>
             {
@@ -130,7 +131,7 @@ namespace Services
 
             dal.InsertarUsuario(datos);
 
-            string dniAutor = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+            string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
             bit.registrarEvento(dniAutor, "Se creo un usuario nuevo", Criticidad55CA.Medio, Modulos55CA.Usuario);
         }
@@ -138,7 +139,7 @@ namespace Services
         public void activarDesactivar(string dni)
         {
             List<UsuarioModelo55CA> todosLosUsuarios = obtenerTodos();
- 
+
             UsuarioModelo55CA usuario = todosLosUsuarios.FirstOrDefault(u => u.DNI == dni);
 
             string evento = "";
@@ -154,7 +155,7 @@ namespace Services
                 evento = $"Se activó la cuenta del usuario: {usuario.User}";
             }
 
-            string dniAutor = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+            string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
             bit.registrarEvento(dniAutor, evento, Criticidad55CA.Alto, Modulos55CA.Usuario);
         }
@@ -163,7 +164,7 @@ namespace Services
         {
             dal.ModificarUsuario(dni, email, rol.Id);
 
-            string dniAutor = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+            string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
             bit.registrarEvento(
             dniAutor,
@@ -175,18 +176,18 @@ namespace Services
 
         public bool cambiarPassword(string passwordActual, string passwordNueva)
         {
-            string passwordActualHash = ServiceSeguridad55CA.Hashear(passwordActual);
+            string passwordActualHash = Services_55CA.ServiceSeguridad55CA.Hashear(passwordActual);
 
-            UsuarioModelo55CA usuarioActivo = ServiceSessionManager55CA.getIntancia().usuarioActivo;
+            UsuarioModelo55CA usuarioActivo = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo;
 
-            if(passwordActualHash != usuarioActivo.Password)
+            if (passwordActualHash != usuarioActivo.Password)
             {
                 throw new Exception("La contraseña actual es incorrecta.");
             }
 
-            string passwordNuevaHash = ServiceSeguridad55CA.Hashear(passwordNueva);
+            string passwordNuevaHash = Services_55CA.ServiceSeguridad55CA.Hashear(passwordNueva);
 
-            if(passwordActualHash == passwordNuevaHash)
+            if (passwordActualHash == passwordNuevaHash)
             {
                 throw new Exception("La contraesña nueva no puede ser igual a la actual.");
             }
@@ -194,12 +195,12 @@ namespace Services
             dal.CambiarPassword(passwordNuevaHash, usuarioActivo.DNI);
 
             return true;
-            
+
         }
 
         private UsuarioModelo55CA MapearUsuario(DataRow row)
         {
-            if(row == null)
+            if (row == null)
             {
                 return null;
             }
@@ -209,7 +210,7 @@ namespace Services
                 Nombre = row["Nombre"].ToString(),
                 Apellido = row["Apellido"].ToString(),
                 Email = row["Email"].ToString(),
-                Rol = new Rol55CA{ Id = Convert.ToInt32(row["IdRol"]), Nombre = row["NombreRol"].ToString() },
+                Rol = new Rol55CA { Id = Convert.ToInt32(row["IdRol"]), Nombre = row["NombreRol"].ToString() },
                 User = row["Username"].ToString(),
                 Password = row["PasswordHash"].ToString(),
                 Intentos = Convert.ToInt32(row["Intentos"]),
@@ -232,13 +233,13 @@ namespace Services
 
             // password default
             string nuevaPass = GenerarPassword(usuario.Apellido, usuario.DNI);
-            string nuevaPassHash = ServiceSeguridad55CA.Hashear(nuevaPass);
+            string nuevaPassHash = Services_55CA.ServiceSeguridad55CA.Hashear(nuevaPass);
 
             // desbloqueo
             dal.desbloquearUsuario(dni, nuevaPassHash);
 
             // bitácora
-            string dniAutor = ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+            string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
             bit.registrarEvento(
                 dniAutor,
