@@ -34,8 +34,9 @@ namespace DAL
 
         public DataTable obtenerBitacora(DateTime desde, DateTime hasta)
         {
-            string query = @"SELECT * FROM BitacoraEventos
-                 WHERE FechaHora BETWEEN @desde AND @hasta";
+            string query = @"SELECT B.Id, B.DNI, U.Nombre, U.Apellido, B.Evento, B.Criticidad,
+            B.Modulo, B.FechaHora FROM BitacoraEventos B LEFT JOIN Usuario U ON B.DNI = U.DNI
+            WHERE B.FechaHora BETWEEN @desde AND @hasta";
 
             var parametros = new List<SqlParameter>
         {

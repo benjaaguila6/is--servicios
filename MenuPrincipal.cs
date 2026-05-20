@@ -15,7 +15,7 @@ namespace Servicios
 {
     public partial class MenuPrincipal : Form
     {
-        UsuarioModelo55CA usuarioActual = ServiceSessionManager55CA.getIntancia().usuarioActivo;
+        UsuarioModelo55CA usuarioActual = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo;
 
         public MenuPrincipal()
         {
@@ -53,7 +53,7 @@ namespace Servicios
 
         protected override void OnFormClosing(FormClosingEventArgs e)
         {
-            ServiceSessionManager55CA.getIntancia().Logout();
+            Services_55CA.ServiceSessionManager55CA.getIntancia().Logout();
 
             base.OnFormClosing(e);
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using BE;
 using Services.Modelos;
 
-namespace Services
+namespace Services_55CA
 {
     public sealed class ServiceSessionManager55CA
     {

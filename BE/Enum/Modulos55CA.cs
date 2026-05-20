@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Enum
+namespace BE.Enum
 {
-    public enum Criticidad55CA
+    public enum Modulos55CA
     {
-        Bajo = 1,
-        Medio = 2,
-        Alto = 3
+        Usuario = 1,
+        Seguridad = 2
     }
 }

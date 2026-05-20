@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services
+namespace Services_55CA
 {
     public class ServiceSeguridad55CA
     {
