@@ -31,31 +31,40 @@ namespace Servicios
 
             try
             {
-                if (_userService.login(username, password))
+                bool usaPasswordDefault = _userService.login(username, password);
+
+                txtUser.Text = "";
+                txtPassword.Text = "";
+
+                this.Hide();
+
+                if (usaPasswordDefault)
                 {
-                    txtUser.Text = null;
-                    txtPassword.Text = null;
+                    CambiarContraseña form = new CambiarContraseña();
 
+                    form.FormClosed += (s, args) =>
+                    {
+                        this.Show();
+                    };
+
+                    form.Show();
+                }
+                else
+                {
                     MenuPrincipal menu = new MenuPrincipal();
-
-                    menu.Show();
-
-                    this.Hide();
 
                     menu.FormClosed += (s, args) =>
                     {
                         this.Show();
                     };
+
+                    menu.Show();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                MessageBox.Show(ex.Message);
             }
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(ex.Message);
-            //}
         }
     }
 }

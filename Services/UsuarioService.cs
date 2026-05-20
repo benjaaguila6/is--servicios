@@ -89,10 +89,20 @@ namespace Services
 
             //login ok
             ServiceSessionManager55CA.getIntancia().Login(usuario);
-            bit.registrarEvento(usuario.DNI, $"Realizo login exitoso.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+
+            bit.registrarEvento(usuario.DNI, $"Realizo login exitoso.", Criticidad55CA.Medio, Modulos55CA.Usuario);
+
             dal.reiniciarIntentos(usuario.DNI);
 
-            return true;
+            // verificamos si sigue usando password por defecto
+            string passwordDefault = GenerarPassword(usuario.Apellido, usuario.DNI);
+
+            string passwordDefaultHash = ServiceSeguridad55CA.Hashear(passwordDefault);
+
+            bool usaPasswordDefault =
+                usuario.Password == passwordDefaultHash;
+
+            return usaPasswordDefault;
         }
 
         public void CrearUsuario(string dni, string nombre, string apellido, string email, Rol55CA rol)
