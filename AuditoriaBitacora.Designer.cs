@@ -34,12 +34,16 @@
             this.dgvBitacora = new System.Windows.Forms.DataGridView();
             this.dtpHasta = new System.Windows.Forms.DateTimePicker();
             this.dtpDesde = new System.Windows.Forms.DateTimePicker();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBitacora)).BeginInit();
             this.SuspendLayout();
             // 
             // btnPDF
             // 
             this.btnPDF.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnPDF.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPDF.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnPDF.Location = new System.Drawing.Point(33, 216);
             this.btnPDF.Name = "btnPDF";
             this.btnPDF.Size = new System.Drawing.Size(108, 24);
@@ -51,6 +55,8 @@
             // btnLimpiat
             // 
             this.btnLimpiat.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnLimpiat.Font = new System.Drawing.Font("Verdana", 8.25F);
+            this.btnLimpiat.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.btnLimpiat.Location = new System.Drawing.Point(33, 187);
             this.btnLimpiat.Name = "btnLimpiat";
             this.btnLimpiat.Size = new System.Drawing.Size(108, 23);
@@ -62,6 +68,7 @@
             // btnFiltrar
             // 
             this.btnFiltrar.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnFiltrar.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFiltrar.ForeColor = System.Drawing.Color.AliceBlue;
             this.btnFiltrar.Location = new System.Drawing.Point(33, 158);
             this.btnFiltrar.Name = "btnFiltrar";
@@ -93,12 +100,32 @@
             this.dtpDesde.Size = new System.Drawing.Size(200, 20);
             this.dtpDesde.TabIndex = 6;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 95);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 12;
+            this.label1.Text = "Hasta";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(30, 44);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(38, 13);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Desde";
+            // 
             // AuditoriaBitacora
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightSteelBlue;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(774, 377);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnPDF);
             this.Controls.Add(this.btnLimpiat);
             this.Controls.Add(this.btnFiltrar);
@@ -109,6 +136,7 @@
             this.Text = "AuditoriaBitacora";
             ((System.ComponentModel.ISupportInitialize)(this.dgvBitacora)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -120,5 +148,7 @@
         private System.Windows.Forms.DataGridView dgvBitacora;
         private System.Windows.Forms.DateTimePicker dtpHasta;
         private System.Windows.Forms.DateTimePicker dtpDesde;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }
