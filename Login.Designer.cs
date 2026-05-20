@@ -96,7 +96,7 @@
             this.btnLogin.Location = new System.Drawing.Point(90, 354);
             this.btnLogin.Margin = new System.Windows.Forms.Padding(2);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(118, 19);
+            this.btnLogin.Size = new System.Drawing.Size(118, 34);
             this.btnLogin.TabIndex = 5;
             this.btnLogin.Text = "Iniciar Sesion";
             this.btnLogin.UseVisualStyleBackColor = false;

@@ -28,20 +28,97 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.btnPDF = new System.Windows.Forms.Button();
+            this.btnLimpiat = new System.Windows.Forms.Button();
+            this.btnFiltrar = new System.Windows.Forms.Button();
+            this.dgvBitacora = new System.Windows.Forms.DataGridView();
+            this.dtpHasta = new System.Windows.Forms.DateTimePicker();
+            this.dtpDesde = new System.Windows.Forms.DateTimePicker();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBitacora)).BeginInit();
             this.SuspendLayout();
+            // 
+            // btnPDF
+            // 
+            this.btnPDF.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnPDF.Location = new System.Drawing.Point(33, 216);
+            this.btnPDF.Name = "btnPDF";
+            this.btnPDF.Size = new System.Drawing.Size(108, 24);
+            this.btnPDF.TabIndex = 11;
+            this.btnPDF.Text = "Exportar en PDF";
+            this.btnPDF.UseVisualStyleBackColor = false;
+            this.btnPDF.Click += new System.EventHandler(this.btnPDF_Click);
+            // 
+            // btnLimpiat
+            // 
+            this.btnLimpiat.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnLimpiat.Location = new System.Drawing.Point(33, 187);
+            this.btnLimpiat.Name = "btnLimpiat";
+            this.btnLimpiat.Size = new System.Drawing.Size(108, 23);
+            this.btnLimpiat.TabIndex = 10;
+            this.btnLimpiat.Text = "Limpiar";
+            this.btnLimpiat.UseVisualStyleBackColor = false;
+            this.btnLimpiat.Click += new System.EventHandler(this.btnLimpiat_Click_1);
+            // 
+            // btnFiltrar
+            // 
+            this.btnFiltrar.BackColor = System.Drawing.Color.SteelBlue;
+            this.btnFiltrar.ForeColor = System.Drawing.Color.AliceBlue;
+            this.btnFiltrar.Location = new System.Drawing.Point(33, 158);
+            this.btnFiltrar.Name = "btnFiltrar";
+            this.btnFiltrar.Size = new System.Drawing.Size(108, 23);
+            this.btnFiltrar.TabIndex = 9;
+            this.btnFiltrar.Text = "Filtrar";
+            this.btnFiltrar.UseVisualStyleBackColor = false;
+            this.btnFiltrar.Click += new System.EventHandler(this.btnFiltrar_Click);
+            // 
+            // dgvBitacora
+            // 
+            this.dgvBitacora.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvBitacora.Location = new System.Drawing.Point(262, 60);
+            this.dgvBitacora.Name = "dgvBitacora";
+            this.dgvBitacora.Size = new System.Drawing.Size(472, 252);
+            this.dgvBitacora.TabIndex = 8;
+            // 
+            // dtpHasta
+            // 
+            this.dtpHasta.Location = new System.Drawing.Point(33, 111);
+            this.dtpHasta.Name = "dtpHasta";
+            this.dtpHasta.Size = new System.Drawing.Size(200, 20);
+            this.dtpHasta.TabIndex = 7;
+            // 
+            // dtpDesde
+            // 
+            this.dtpDesde.Location = new System.Drawing.Point(33, 60);
+            this.dtpDesde.Name = "dtpDesde";
+            this.dtpDesde.Size = new System.Drawing.Size(200, 20);
+            this.dtpDesde.TabIndex = 6;
             // 
             // AuditoriaBitacora
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.BackColor = System.Drawing.Color.LightSteelBlue;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btnPDF);
+            this.Controls.Add(this.btnLimpiat);
+            this.Controls.Add(this.btnFiltrar);
+            this.Controls.Add(this.dgvBitacora);
+            this.Controls.Add(this.dtpHasta);
+            this.Controls.Add(this.dtpDesde);
             this.Name = "AuditoriaBitacora";
             this.Text = "AuditoriaBitacora";
+            ((System.ComponentModel.ISupportInitialize)(this.dgvBitacora)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private System.Windows.Forms.Button btnPDF;
+        private System.Windows.Forms.Button btnLimpiat;
+        private System.Windows.Forms.Button btnFiltrar;
+        private System.Windows.Forms.DataGridView dgvBitacora;
+        private System.Windows.Forms.DateTimePicker dtpHasta;
+        private System.Windows.Forms.DateTimePicker dtpDesde;
     }
 }

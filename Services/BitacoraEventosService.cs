@@ -36,5 +36,10 @@ namespace Services
 
             return dal.obtenerBitacora(desde, hasta);
         }
+
+        public DataTable obtenerBitacora(DateTime desde, DateTime hasta)
+        {
+            return dal.obtenerBitacora(desde, hasta);
+        }
     }
 }
