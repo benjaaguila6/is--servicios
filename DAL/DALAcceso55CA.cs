@@ -12,7 +12,7 @@ namespace DAL
     public class DALAcceso55CA
     {
         private readonly string _stringConnection = "Data Source=LAPTOP-8BNKG482\\SQLEXPRESS;Initial Catalog=is--servicios;Integrated Security=True";
-        public DataTable executeDataTable(string query, List<SqlParameter> parametros = null)
+        public DataTable executeDataTable(string query, Dictionary<string, object> parametros = null)
         {
             DataTable dt = new DataTable();
             using (SqlConnection conn = new SqlConnection(_stringConnection))
@@ -21,7 +21,10 @@ namespace DAL
                 {
                     if(parametros != null)
                     {
-                        cmd.Parameters.AddRange(parametros.ToArray());  
+                        foreach (var p in parametros)
+                        {
+                            cmd.Parameters.AddWithValue(p.Key, p.Value ?? DBNull.Value);
+                        } 
                     }
 
                     SqlDataAdapter da = new SqlDataAdapter(cmd);
@@ -39,7 +42,7 @@ namespace DAL
             return dt;
         }
 
-        public int executeNonQuery(string consulta, List<SqlParameter> parametros)
+        public int executeNonQuery(string consulta, Dictionary<string, object> parametros = null)
         {
             using (SqlConnection conn = new SqlConnection(_stringConnection))
             {

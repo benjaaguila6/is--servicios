@@ -26,7 +26,7 @@ namespace DAL
                 parametros.Add(new SqlParameter(item.Key, item.Value));
             }
 
-            int resultado = acceso.executeNonQuery(query, parametros);
+            int resultado = acceso.executeNonQuery(query, datos);
 
             return resultado;
         }
@@ -34,14 +34,25 @@ namespace DAL
         public void DesactivarUsuario(string dni)
         {
             string query = "UPDATE Usuario SET Activo = 0 WHERE DNI = @dni";
-            var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
+
+            var parametros = new Dictionary<string, object>
+            {
+                {
+                    "@dni", dni
+                }
+            };
             acceso.executeNonQuery(query, parametros);
         }
 
         public void ActivarUsuario(string dni)
         {
             string query = "UPDATE Usuario SET Activo = 1 WHERE DNI = @dni";
-            var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
+            var parametros = new Dictionary<string, object> 
+            {
+                { 
+                    "@dni", dni 
+                } 
+            };
             acceso.executeNonQuery(query, parametros);
         }
 
@@ -49,11 +60,11 @@ namespace DAL
         {
             string query = @"UPDATE Usuario SET Email = @mail, IdRol = @rol WHERE DNI = @dni";
 
-            var parametros = new List<SqlParameter>
+            var parametros = new Dictionary<string, object>
             {
-            new SqlParameter("@mail", email),
-            new SqlParameter("@rol", rol),
-             new SqlParameter("@dni", dni)
+                { "@mail", email },
+                { "@rol", rol },
+                { "@dni", dni }
             };
 
             acceso.executeNonQuery(query,parametros);
@@ -63,7 +74,15 @@ namespace DAL
         {
             string query = @"UPDATE Usuario SET PasswordHash = @password WHERE DNI = @dni";
 
-            var parametros = new List<SqlParameter> { new SqlParameter("@password", password), new SqlParameter("@dni", dni)};
+            var parametros = new Dictionary<string, object>
+            { 
+                { 
+                    "@password", password 
+                },
+                { 
+                    "@dni", dni 
+                }
+            };
 
             acceso.executeNonQuery(query, parametros);
         }
@@ -85,10 +104,12 @@ namespace DAL
             
             string query = "SELECT U.*, R.Id AS IdRol, R.Nombre AS NombreRol FROM Usuario U INNER JOIN Rol R ON U.IdRol = R.Id WHERE U.DNI = @dni";
 
-            var parametros = new List<SqlParameter>
-        {
-        new SqlParameter("@dni", dni)
-        };
+            var parametros = new Dictionary<string, object>
+            {
+                {
+                    "@dni", dni
+                }
+            };
 
             DataTable dt = acceso.executeDataTable(query, parametros);
 
@@ -99,7 +120,13 @@ namespace DAL
         {
             string query = "SELECT 1 FROM Usuario WHERE Email = @email";
 
-            var parametros = new List<SqlParameter> { new SqlParameter("@email", email) };
+            var parametros = new Dictionary<string, object>
+            { 
+                
+                { 
+                    "@email", email 
+                } 
+            };
 
             DataTable dt = acceso.executeDataTable(query, parametros);
 
@@ -110,11 +137,17 @@ namespace DAL
         {
             string query = @"SELECT U.*, R.Id AS IdRol, R.Nombre AS NombreRol FROM Usuario U INNER JOIN Rol R ON U.IdRol = R.Id WHERE U.Username = @user";
 
-            var parametros = new List<SqlParameter> { new SqlParameter("@user", user) };
+            var parametros = new Dictionary<string, object> 
+            {
+                {
+                    "@user", user
+                }
+                
+            };
 
             DataTable dt = acceso.executeDataTable(query, parametros);
 
-            return dt.Rows.Count > 0 ? dt.Rows[0] : null; //si hay datos, devuelve la unica fila. sino devuelve null
+            return dt.Rows.Count > 0 ? dt.Rows[0] : null; 
         }
 
         #endregion ObtenerUsuarios
@@ -130,9 +163,11 @@ namespace DAL
                                 UltimoIntentoFallido = GETDATE()
                             WHERE DNI = @dni";
 
-            var parametros = new List<SqlParameter>
+            var parametros = new Dictionary<string, object>
             {
-                new SqlParameter("@dni", dni)
+                {
+                    "@dni", dni
+                }
             };
 
             acceso.executeNonQuery(query, parametros);
@@ -146,7 +181,12 @@ namespace DAL
                                 UltimoIntentoFallido = NULL
                             WHERE DNI = @dni";
 
-            var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
+            var parametros = new Dictionary<string, object>
+            {
+                {
+                    "@dni", dni
+                }
+            };
 
             int resultado = acceso.executeNonQuery(query, parametros);
 
@@ -156,7 +196,12 @@ namespace DAL
         public int bloquearUsuario(string dni)
         {
             string query = "UPDATE Usuario SET Bloqueo = 1 WHERE DNI = @dni";
-            var parametros = new List<SqlParameter> { new SqlParameter("@dni", dni) };
+            var parametros = new Dictionary<string, object>
+            {
+                {
+                    "@dni", dni
+                }
+            };
 
             int resultado = acceso.executeNonQuery(query, parametros);
 
@@ -167,11 +212,15 @@ namespace DAL
         {
             string query = @"UPDATE Usuario SET Intentos = 0, Bloqueo = 0, PasswordHash = @pass WHERE DNI = @dni";
 
-            var parametros = new List<SqlParameter>
-        {
-            new SqlParameter("@dni", dni),
-            new SqlParameter("@pass", password)
-        };
+            var parametros = new Dictionary<string, object>
+            {
+                {
+                    "@password", password
+                },
+                {
+                    "@dni", dni
+                }
+            };
 
             return acceso.executeNonQuery(query, parametros);
         }

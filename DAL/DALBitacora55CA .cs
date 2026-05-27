@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -27,22 +28,29 @@ namespace DAL
                 parametros.Add(new SqlParameter(item.Key, item.Value));
             }
 
-            int resultado = acceso.executeNonQuery(query, parametros);
+            int resultado = acceso.executeNonQuery(query, datos);
 
             return resultado;
         }
 
         public DataTable obtenerBitacora(DateTime desde, DateTime hasta)
         {
-            string query = @"SELECT B.Id, B.DNI, U.Nombre, U.Apellido, B.Evento, B.Criticidad,
-            B.Modulo, B.FechaHora FROM BitacoraEventos B LEFT JOIN Usuario U ON B.DNI = U.DNI
+            string query = @"SELECT B.Id, B.DNI, U.Username, U.Nombre, U.Apellido, B.Evento,
+            B.Criticidad, B.Modulo, B.FechaHora FROM BitacoraEventos B LEFT JOIN Usuario U ON B.DNI = U.DNI
             WHERE B.FechaHora BETWEEN @desde AND @hasta";
 
-            var parametros = new List<SqlParameter>
-        {
-        new SqlParameter("@desde", desde),
-        new SqlParameter("@hasta", hasta)
-        };
+
+            var parametros = new Dictionary<string, object>
+            {
+                {
+                    "@desde", desde
+                },
+                {
+                    "@hasta", hasta
+                }
+            };
+
+           
 
             return acceso.executeDataTable(query, parametros);
         }

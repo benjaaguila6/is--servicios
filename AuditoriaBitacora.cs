@@ -39,6 +39,9 @@ namespace Servicios
             {
                 dgvBitacora.Columns["Id"].Visible = false;
             }
+
+            dgvBitacora.Columns["Nombre"].Visible = false;
+            dgvBitacora.Columns["Apellido"].Visible = false;
         }
 
         private void btnFiltrar_Click(object sender, EventArgs e)
@@ -46,7 +49,22 @@ namespace Servicios
             DateTime desde = dtpDesde.Value.Date;
             DateTime hasta = dtpHasta.Value.Date.AddDays(1).AddSeconds(-1);
 
+
+            if (desde > hasta)
+            {
+                MessageBox.Show(
+                    "La fecha 'Desde' no puede ser mayor que la fecha 'Hasta'.",
+                    "Error en fechas",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+
+                return;
+            }
+
             dgvBitacora.DataSource = bitService.obtenerBitacora(desde, hasta);
+            dgvBitacora.Columns["Nombre"].Visible = false;
+            dgvBitacora.Columns["Apellido"].Visible = false;
         }
 
 
