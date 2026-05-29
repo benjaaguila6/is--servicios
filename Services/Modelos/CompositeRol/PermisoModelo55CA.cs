@@ -8,9 +8,9 @@ namespace Services.Modelos
 {
     public class PermisoModelo55CA : Componente55CA
     {
-        public override List<Componente55CA> obtenerHijos()
+        public override List<Componente55CA> obtenerPermisos()
         {
-            return new List<Componente55CA>(); // Devuelvo una lista vacia. 
+            return new List<Componente55CA> { this }; // se devuelve a si mismo
         }
     }
 }

@@ -19,9 +19,9 @@ namespace Services.Modelos
         {
             throw new NotImplementedException();
         }
-        public virtual List<Componente55CA> obtenerHijos()
+        public virtual List<Componente55CA> obtenerPermisos()
         {
-            return new List<Componente55CA>();
+            throw new NotImplementedException();
         }
     }
 }

@@ -6,11 +6,22 @@ using System.Threading.Tasks;
 
 namespace Services.Modelos
 {
-    public class RolModelo55CA : Componente55CA
+    public class RolModelo55CA
     {
-        
         public int Id { get; set; }
         public string Nombre { get; set; }
         public List<Componente55CA> Permisos { get; set; } = new List<Componente55CA>();
+
+        public List<Componente55CA> ObtenerPermisos()
+        {
+            List<Componente55CA> permisos = new List<Componente55CA >();
+
+            foreach (Componente55CA hijo in permisos)
+            {
+                permisos.AddRange(hijo.obtenerPermisos());
+            }
+
+            return permisos;
+        }
     }
 }

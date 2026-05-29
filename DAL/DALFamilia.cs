@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -27,7 +28,13 @@ namespace DAL
 
             return resultado;
         }
+        
+        public DataTable obtenerTodos()
+        {
+            string query = "SELECT * FROM Familia";
 
+            return dal.executeDataTable(query);
+        }
         public int asignarFamiliaAFamilia(int idPadre, int idHija)
         {
             string query = "INSERT INTO Familia_Familia (IdFamiliaPadre, IdFamiliaHija) VALUES (@padre, @hija)";

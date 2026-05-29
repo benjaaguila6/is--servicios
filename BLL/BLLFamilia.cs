@@ -15,6 +15,6 @@ namespace BLL
         //No permitir asignarse a sí misma o que ni aparezca
         //No permitir permisos duplicados indirectos, o sea, si la familia que quiero agregar tiene un permiso que familia ya tiene, no se deberia de duplicar
         //No poder eliminar si la familia tiene dependencias (Hay un metodo en la DAL que verifica si tiene alguna dependencia)
-        //Si queres crea en alguna de las clases un metodo Contiene para que te sea mas facil verificarlo, whaterver you wanttt
+        //creo que con el metodo obtenerPermisos podes hacer bastantes verificaciones.
     }
 }
