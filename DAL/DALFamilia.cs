@@ -1,0 +1,88 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace DAL
+{
+    public class DALFamilia
+    {
+        DALAcceso55CA dal = new DALAcceso55CA();
+
+        public int asignarPatenteAFamilia(int idPatente, int idFamilia)
+        {
+            string query = @"IF NOT EXISTS(SELECT * FROM Familia_Patente WHERE IdFamilia = @familia AND IdPatente = @)
+                            BEGIN
+                                INSERT INTO Familia_Patente(IdFamilia, IdPatente) VALUES(@familia, @patente)
+                            END";
+            var parametros = new Dictionary<string, object>
+            {
+                {"@idPatente", idPatente },
+                {"@idFamilia", idFamilia }
+            };
+            
+            int resultado = dal.executeNonQuery(query, parametros);
+
+            return resultado;
+        }
+
+        public int asignarFamiliaAFamilia(int idPadre, int idHija)
+        {
+            string query = "INSERT INTO Familia_Familia (IdFamiliaPadre, IdFamiliaHija) VALUES (@padre, @hija)";
+
+            var parametros = new Dictionary<string, object>
+            {
+                {"@idPadre", idPadre },
+                {"@idHija", idHija }
+            };
+
+            int resultado = dal.executeNonQuery(query, parametros);
+
+            return resultado;
+        }
+
+        public bool tieneDependencias(int idFamilia)
+        {
+            string query = @"SELECT COUNT(*) FROM Rol_Familia WHERE IdFamilia = @id UNION ALL SELECT COUNT(*) FROM Familia_Familia WHERE IdFamiliaHija = @id";
+
+            var parametros = new Dictionary<string, object>
+            {
+                {"@id", idFamilia }
+            };
+
+            int resultado = dal.executeNonQuery(query, parametros);
+
+            return resultado > 0;
+        }
+
+        public int eliminarFamilia(int idFamilia)
+        {
+            string query = "DELETE FROM Familia WHERE Id = @id";
+
+            var parametros = new Dictionary<string, object>
+            {
+                {"id", idFamilia }
+            };
+
+            int resultado = dal.executeNonQuery(query, parametros);
+
+            return resultado;
+        }
+
+        public int insertarFamilia(string nombre)
+        {
+            string query = "INSERT INTO Familia (Nombre) VALUES (@nombre)";
+
+            var parametros = new Dictionary<string, object>
+            {
+                {"@nombre", nombre }
+            };
+
+            int resultado = dal.executeNonQuery(query, parametros);
+
+            return resultado;
+        }
+    }
+}

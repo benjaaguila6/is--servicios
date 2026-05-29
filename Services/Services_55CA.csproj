@@ -42,6 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Modelos\BitacoraEventosModelo55CA.cs" />
+    <Compile Include="Modelos\CompositeRol\Componente55CA.cs" />
+    <Compile Include="Modelos\CompositeRol\FamiliaModelo55CA.cs" />
+    <Compile Include="Modelos\CompositeRol\PermisoModelo55CA.cs" />
+    <Compile Include="Modelos\CompositeRol\RolModelo55CA.cs" />
     <Compile Include="Modelos\UsuarioModelo55CA.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceSeguridad55CA.cs" />

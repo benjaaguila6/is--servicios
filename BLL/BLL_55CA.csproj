@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitacoraEventosService.cs" />
+    <Compile Include="BLLFamilia.cs" />
+    <Compile Include="BLLPatente.cs" />
     <Compile Include="BLLRol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UsuarioService.cs" />
