@@ -20,9 +20,16 @@ namespace Services.Modelos
             hijos.Remove(c);
         }
 
-        public override List<Componente55CA> obtenerHijos()
+        public override List<Componente55CA> obtenerPermisos()
         {
-            return hijos;
+            List<Componente55CA> permisos = new List<Componente55CA>();
+
+            foreach (Componente55CA hijo in hijos)
+            {
+                permisos.AddRange(hijo.obtenerPermisos());
+            }
+
+            return permisos;
         }
     }
 }
