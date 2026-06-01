@@ -1,4 +1,5 @@
 ﻿using BLL;
+using Services.Modelos.Idioma;
 using Services_55CA;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ using System.Windows.Forms;
 
 namespace Servicios
 {
-    public partial class CambiarContraseña : Form
+    public partial class CambiarContraseña : Form, IIdiomaObserver
     {
         UsuarioService _usuarioService = new UsuarioService();
         ServiceSessionManager55CA instancia = ServiceSessionManager55CA.getIntancia();
@@ -20,6 +21,11 @@ namespace Servicios
         {
             InitializeComponent();
             txtUser.Text = instancia.usuarioActivo.User;
+        }
+
+        public void actualizarIdioma()
+        {
+            throw new NotImplementedException();
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)

@@ -34,7 +34,14 @@ namespace Services
 
         public void CargarIdioma(string codIdioma)
         {
-            string json = File.ReadAllText($"Languages/{codIdioma}.json");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Languages", $"{codIdioma}.json");
+
+            if (!File.Exists(path))
+            {
+                throw new FileNotFoundException($"No se encontró el idioma '{codIdioma}'",path);
+            }
+                
+            string json = File.ReadAllText(path);
 
             JavaScriptSerializer serializer = new JavaScriptSerializer(); //Serializador sin usar Paquetes
 
