@@ -11,11 +11,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Printing;
+using Services.Modelos.Idioma;
 
 
 namespace Servicios
 {
-    public partial class AuditoriaBitacora : Form
+    public partial class AuditoriaBitacora : Form, IIdiomaObserver
     {
         BitacoraEventosService bitService = new BitacoraEventosService();
         PrintDocument printDoc = new PrintDocument();
@@ -29,7 +30,6 @@ namespace Servicios
             this.dgvBitacora.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvBitacora_CellFormatting);
         }
 
-        
 
         private void CargarGrillaInicial()
         {
@@ -66,9 +66,6 @@ namespace Servicios
             dgvBitacora.Columns["Nombre"].Visible = false;
             dgvBitacora.Columns["Apellido"].Visible = false;
         }
-
-
-
 
 
         private void printDoc_PrintPage(object sender, PrintPageEventArgs e)
@@ -212,6 +209,11 @@ namespace Servicios
                     e.FormattingApplied = true;
                 }
             }
+        }
+
+        public void actualizarIdioma()
+        {
+            throw new NotImplementedException();
         }
     }
 }
