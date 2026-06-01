@@ -2,6 +2,7 @@
 using BLL;
 using Services;
 using Services.Modelos;
+using Services.Modelos.Idioma;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ using System.Windows.Forms;
 
 namespace Servicios
 {
-    public partial class GestionUsuario : Form
+    public partial class GestionUsuario : Form, IIdiomaObserver
     {
         UsuarioService usuarioService = new UsuarioService();
         List<UsuarioModelo55CA> listUsuarios = new List<UsuarioModelo55CA>();
@@ -329,6 +330,9 @@ namespace Servicios
             btnCancelar.Enabled = true;
         }
 
-
+        public void actualizarIdioma()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

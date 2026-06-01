@@ -10,10 +10,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BE;
+using Services.Modelos.Idioma;
 
 namespace Servicios
 {
-    public partial class MenuPrincipal : Form
+    public partial class MenuPrincipal : Form, IIdiomaObserver
     {
         UsuarioModelo55CA usuarioActual = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo;
 
@@ -68,6 +69,11 @@ namespace Servicios
         {
             AuditoriaBitacora form = new AuditoriaBitacora();
             form.Show();
+        }
+
+        public void actualizarIdioma()
+        {
+            throw new NotImplementedException();
         }
     }
 }
