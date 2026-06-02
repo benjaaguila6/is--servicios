@@ -16,7 +16,7 @@ namespace Services.Modelos
         {
             List<Componente55CA> permisos = new List<Componente55CA >();
 
-            foreach (Componente55CA hijo in permisos)
+            foreach (Componente55CA hijo in this.Permisos)
             {
                 permisos.AddRange(hijo.obtenerPermisos());
             }

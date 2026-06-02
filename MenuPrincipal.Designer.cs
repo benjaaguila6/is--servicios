@@ -38,6 +38,8 @@
             this.bitacoraEventosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ayudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
+            this.gestionFamiliaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gestionRolToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -92,7 +94,9 @@
             // 
             this.administradorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gestionUsuariosToolStripMenuItem,
-            this.bitacoraEventosToolStripMenuItem});
+            this.bitacoraEventosToolStripMenuItem,
+            this.gestionFamiliaToolStripMenuItem,
+            this.gestionRolToolStripMenuItem});
             this.administradorToolStripMenuItem.Name = "administradorToolStripMenuItem";
             this.administradorToolStripMenuItem.Size = new System.Drawing.Size(213, 41);
             this.administradorToolStripMenuItem.Text = "Administrador";
@@ -129,6 +133,20 @@
             this.label1.TabIndex = 1;
             this.label1.Text = "Bienvenido: !";
             // 
+            // gestionFamiliaToolStripMenuItem
+            // 
+            this.gestionFamiliaToolStripMenuItem.Name = "gestionFamiliaToolStripMenuItem";
+            this.gestionFamiliaToolStripMenuItem.Size = new System.Drawing.Size(360, 46);
+            this.gestionFamiliaToolStripMenuItem.Text = "Gestion Familia";
+            this.gestionFamiliaToolStripMenuItem.Click += new System.EventHandler(this.gestionFamiliaToolStripMenuItem_Click);
+            // 
+            // gestionRolToolStripMenuItem
+            // 
+            this.gestionRolToolStripMenuItem.Name = "gestionRolToolStripMenuItem";
+            this.gestionRolToolStripMenuItem.Size = new System.Drawing.Size(360, 46);
+            this.gestionRolToolStripMenuItem.Text = "Gestion Rol";
+            this.gestionRolToolStripMenuItem.Click += new System.EventHandler(this.gestionRolToolStripMenuItem_Click);
+            // 
             // MenuPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
@@ -161,5 +179,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem iniciarSesionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bitacoraEventosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gestionFamiliaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gestionRolToolStripMenuItem;
     }
 }

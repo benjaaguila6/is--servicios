@@ -118,18 +118,7 @@ namespace BLL
             string password = GenerarPassword(apellido, dni);
             string passwordHash = Services_55CA.ServiceSeguridad55CA.Hashear(password);
 
-            Dictionary<string, object> datos = new Dictionary<string, object>
-            {
-                { "@dni", dni },
-                { "@nom", nombre },
-                { "@ape", apellido },
-                { "@mail", email },
-                { "@rol", rol.Id },
-                { "@user", user },
-                { "@pass", passwordHash }
-            }; //diccionario para que el metodo DAL no tenga muchos parametros
-
-            dal.InsertarUsuario(datos);
+            dal.InsertarUsuario(dni, nombre, apellido, email, rol.Id, user, passwordHash);
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
