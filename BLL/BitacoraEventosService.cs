@@ -14,18 +14,8 @@ namespace BLL
     {
         DALBitacora55CA dal = new DALBitacora55CA();
         public void registrarEvento(string dni, string evento, Criticidad55CA criticidad, Modulos55CA modulo)
-        {
-
-            Dictionary<string, object> datos = new Dictionary<string, object>
-            {   
-            { "@dni", dni },
-            { "@evento", evento },
-            { "@criticidad", (int)criticidad },
-            { "@modulo", (int)modulo },
-            { "@fecha", DateTime.Now }
-            };  
-
-            dal.insertarLog(datos);
+        { 
+            dal.insertarLog(dni, evento, (int)criticidad, (int)modulo, DateTime.Now);
         }
 
 

@@ -1,4 +1,5 @@
-﻿using DAL;
+﻿using BE.Enum;
+using DAL;
 using Services.Modelos;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
-    internal class BLLFamilia
+    public class BLLFamilia
     {
         DALFamilia _dal = new DALFamilia();
         DALPatente dalPatente = new DALPatente();
-
+        BitacoraEventosService BLLBit = new BitacoraEventosService();
         public List<FamiliaModelo55CA> ObtenerTodos()
         {
             DataTable dtFamilias = _dal.obtenerTodos();
@@ -39,6 +40,9 @@ namespace BLL
                 throw new Exception($"Ya existe una familia registrada con el nombre '{nombre}'.");
             }
 
+            string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+            BLLBit.registrarEvento(dniAutor, $"Creo una nueva familia", Criticidad55CA.Alto, Modulos55CA.Usuario);
+
             return _dal.insertarFamilia(nombre);
         }
 
@@ -48,8 +52,11 @@ namespace BLL
 
             if (permisosAplanados.Any(p => p.Id == patente.Id))
             {
-                throw new Exception($"La familia:{familia.Nombre} ya contiene el permiso {patente.Nombre}.");
+                throw new Exception($"La familia: {familia.Nombre} ya contiene el permiso {patente.Nombre}.");
             }
+
+            string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+            BLLBit.registrarEvento(dniAutor, $"Asigno la patente {patente.Nombre} a la familia {familia.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
 
             _dal.asignarPatenteAFamilia(patente.Id, familia.Id);
         }
@@ -73,6 +80,9 @@ namespace BLL
                 }
             }
 
+            string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+            BLLBit.registrarEvento(dniAutor, $"Asigno la familia {familiaHija.Nombre} a la familia {familiaPadre.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+
             _dal.asignarFamiliaAFamilia(familiaPadre.Id, familiaHija.Id);
         }
 
@@ -82,6 +92,9 @@ namespace BLL
             {
                 throw new Exception("No se puede eliminar la familia porque está asignada a un Rol o es parte de otra Familia.");
             }
+
+            string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+            BLLBit.registrarEvento(dniAutor, $"Elimino una familia.", Criticidad55CA.Alto, Modulos55CA.Usuario);
 
             _dal.eliminarFamilia(idFamilia);
         }

@@ -75,5 +75,17 @@ namespace Servicios
         {
             throw new NotImplementedException();
         }
+
+        private void gestionFamiliaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionFamilia form = new GestionFamilia();
+            form.Show();
+        }
+
+        private void gestionRolToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionRol form = new GestionRol();
+            form.Show();
+        }
     }
 }

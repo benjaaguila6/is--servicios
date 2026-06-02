@@ -14,19 +14,23 @@ namespace DAL
     {
         DALAcceso55CA acceso = new DALAcceso55CA();
 
-        public int InsertarUsuario(Dictionary<string, object> datos)
+        public int InsertarUsuario(string dni, string nom, string ape, string mail, int idRol, string user, string passHash)
         {
             string query = @"INSERT INTO Usuario (DNI, Nombre, Apellido, Email, IdRol, Username, PasswordHash) 
                      VALUES (@dni, @nom, @ape, @mail, @rol, @user, @pass)";
 
-            List<SqlParameter> parametros = new List<SqlParameter>();
-
-            foreach (var item in datos)
+            var parametros = new Dictionary<string, object>
             {
-                parametros.Add(new SqlParameter(item.Key, item.Value));
-            }
+                { "@dni", dni },
+                { "@nom", nom },
+                { "@ape", ape },
+                { "@mail", mail },
+                { "@rol", idRol },
+                { "@user", user },
+                { "@pass", passHash }
+            };
 
-            int resultado = acceso.executeNonQuery(query, datos);
+            int resultado = acceso.executeNonQuery(query, parametros);
 
             return resultado;
         }
