@@ -14,26 +14,48 @@ namespace DAL
 
         public int asignarPatenteAFamilia(int idPatente, int idFamilia)
         {
-            string query = @"IF NOT EXISTS(SELECT * FROM Familia_Patente WHERE IdFamilia = @familia AND IdPatente = @)
-                            BEGIN
-                                INSERT INTO Familia_Patente(IdFamilia, IdPatente) VALUES(@familia, @patente)
-                            END";
+            string query = @"IF NOT EXISTS(SELECT * FROM Familia_Patente WHERE IdFamilia = @idFamilia AND IdPatente = @idPatente)
+                     BEGIN
+                         INSERT INTO Familia_Patente(IdFamilia, IdPatente) VALUES(@idFamilia, @idPatente)
+                     END";
             var parametros = new Dictionary<string, object>
             {
                 {"@idPatente", idPatente },
                 {"@idFamilia", idFamilia }
             };
-            
-            int resultado = dal.executeNonQuery(query, parametros);
 
-            return resultado;
+            return dal.executeNonQuery(query, parametros);
         }
-        
+
+        public DataTable obtenerRelacionesFamiliaPatente()
+        {
+            string query = "SELECT IdFamilia, IdPatente FROM Familia_Patente";
+
+            return dal.executeDataTable(query);
+        }
+        public DataTable obtenerRelacionesFamiliaFamilia()
+        {
+            string query = "SELECT IdFamiliaPadre, IdFamiliaHija FROM Familia_Familia";
+
+            return dal.executeDataTable(query);
+        }
         public DataTable obtenerTodos()
         {
             string query = "SELECT * FROM Familia";
 
             return dal.executeDataTable(query);
+        }
+
+        public DataTable obtenerPorNombre(string nombre)
+        {
+            string query = "SELECT Id, Nombre FROM Familia WHERE Nombre = @nombre";
+
+            var parametros = new Dictionary<string, object>
+            {
+                {"@nombre", nombre }
+            };
+
+            return dal.executeDataTable(query, parametros);
         }
         public int asignarFamiliaAFamilia(int idPadre, int idHija)
         {
@@ -91,5 +113,7 @@ namespace DAL
 
             return resultado;
         }
+
+
     }
 }
