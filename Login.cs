@@ -25,12 +25,10 @@ namespace Servicios
         public Login()
         {
             InitializeComponent();
-            System.Diagnostics.Debug.WriteLine($"Constructor Login - _ultimoIdIdioma: {_ultimoIdIdioma}");
             CargarIdiomas();
             ServiceSessionManager55CA.getIntancia().Idioma.Suscribir(this);
 
             string codIdioma = _ultimoIdIdioma == 1 ? "es" : "en";
-            System.Diagnostics.Debug.WriteLine($"Cargando idioma en constructor: {codIdioma}");
             ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(codIdioma);
 
             _cargando = true;
@@ -55,25 +53,22 @@ namespace Servicios
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine($"--- INICIO LOGIN ---");
-            System.Diagnostics.Debug.WriteLine($"combo seleccionado: {((Idioma55CA)cmbIdioma.SelectedItem).Id}");
+            
             string username = txtUser.Text;
             string password = txtPassword.Text;
             try
             {
                 bool usaPasswordDefault = _userService.login(username, password);
 
-                // primero guardar el idioma elegido en el combo
+                
                 Idioma55CA idiomaSeleccionado = (Idioma55CA)cmbIdioma.SelectedItem;
                 _ultimoIdIdioma = idiomaSeleccionado.Id;
-                System.Diagnostics.Debug.WriteLine($"Guardando idioma: {idiomaSeleccionado.Id}");
 
 
                 _userService.GuardarIdioma(idiomaSeleccionado.Id);
 
-                System.Diagnostics.Debug.WriteLine($"IdIdioma en sesion: {ServiceSessionManager55CA.getIntancia().usuarioActivo.IdIdioma}");
 
-                // despues cargar el idioma guardado
+                
                 string codIdioma = idiomaSeleccionado.Id == 1 ? "es" : "en";
                 ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(codIdioma);
 
