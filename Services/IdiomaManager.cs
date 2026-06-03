@@ -34,7 +34,7 @@ namespace Services
 
         public void CargarIdioma(string codIdioma)
         {
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Languages", $"{codIdioma}.json");
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Lenguajes", $"{codIdioma}.json");
 
             if (!File.Exists(path))
             {

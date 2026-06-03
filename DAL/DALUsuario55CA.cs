@@ -91,6 +91,18 @@ namespace DAL
             acceso.executeNonQuery(query, parametros);
         }
 
+        public void GuardarIdioma(string dni, int idIdioma)
+        {
+            string query = "UPDATE Usuario SET IdIdioma = @idIdioma WHERE DNI = @dni";
+
+            var parametros = new Dictionary<string, object>
+            {
+                { "@idIdioma", idIdioma },
+                { "@dni", dni }
+            };
+
+            acceso.executeNonQuery(query, parametros);
+        }
 
 
         #region ObtenerUsuarios
@@ -199,17 +211,14 @@ namespace DAL
 
         public int bloquearUsuario(string dni)
         {
-            string query = "UPDATE Usuario SET Bloqueo = 1 WHERE DNI = @dni";
+            string query = "UPDATE Usuario SET Bloqueo = 1, IdIdioma = 1 WHERE DNI = @dni";
+            
             var parametros = new Dictionary<string, object>
             {
-                {
-                    "@dni", dni
-                }
+                { "@dni", dni }
             };
 
-            int resultado = acceso.executeNonQuery(query, parametros);
-
-            return resultado;
+            return acceso.executeNonQuery(query, parametros);
         }
 
         public int desbloquearUsuario(string dni, string password)
@@ -219,7 +228,7 @@ namespace DAL
             var parametros = new Dictionary<string, object>
             {
                 {
-                    "@password", password
+                    "@pass", password
                 },
                 {
                     "@dni", dni

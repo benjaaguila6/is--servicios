@@ -21,6 +21,9 @@ namespace Services.Modelos
         public bool Bloqueo { get; set; }
         public bool Activo { get; set; }
         public DateTime? UltimoIntentoFallido { get; set; }
+        public int IdIdioma { get; set; }
+
+
 
         public UsuarioModelo55CA()
         {

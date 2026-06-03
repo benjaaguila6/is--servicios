@@ -21,11 +21,20 @@ namespace Servicios
         {
             InitializeComponent();
             txtUser.Text = instancia.usuarioActivo.User;
+            instancia.Idioma.Suscribir(this);
+            actualizarIdioma();
         }
 
         public void actualizarIdioma()
         {
-            throw new NotImplementedException();
+            var t = instancia.Idioma;
+
+            this.Text = t.Translate("CambiarContraseña.formTitle");
+            label1.Text = t.Translate("CambiarContraseña.labelUser");
+            label2.Text = t.Translate("CambiarContraseña.labelContraseñaActual");
+            label4.Text = t.Translate("CambiarContraseña.labelContraseñaNueva");
+            label3.Text = t.Translate("CambiarContraseña.labelConfirmar");
+            btnAceptar.Text = t.Translate("CambiarContraseña.btnConfirmar");
         }
 
         private void btnAceptar_Click(object sender, EventArgs e)

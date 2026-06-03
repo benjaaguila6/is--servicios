@@ -201,6 +201,8 @@ namespace BLL
                 Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
                 Activo = Convert.ToBoolean(row["Activo"]),
                 UltimoIntentoFallido = row["UltimoIntentoFallido"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["UltimoIntentoFallido"]),
+                IdIdioma = Convert.ToInt32(row["IdIdioma"]) 
+
             };
         }
 
@@ -231,6 +233,14 @@ namespace BLL
                 Criticidad55CA.Alto,
                 Modulos55CA.Usuario
             );
+        }
+
+        public void GuardarIdioma(int idIdioma)
+        {
+            string dni = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+            dal.GuardarIdioma(dni, idIdioma);
+
+            Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.IdIdioma = idIdioma;
         }
 
         #region Credenciales
