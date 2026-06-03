@@ -1,17 +1,18 @@
-﻿using Services;
+﻿using BE.Enum;
 using BLL;
-using BE.Enum;
+using Services;
+using Services.Modelos.Idioma;
+using Services_55CA;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Printing;
-using Services.Modelos.Idioma;
 
 
 namespace Servicios
@@ -28,6 +29,8 @@ namespace Servicios
             this.Load += new System.EventHandler(this.AuditoriaBitacora_Load_1);
 
             this.dgvBitacora.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvBitacora_CellFormatting);
+            ServiceSessionManager55CA.getIntancia().Idioma.Suscribir(this);
+            actualizarIdioma();
         }
 
 
@@ -213,7 +216,16 @@ namespace Servicios
 
         public void actualizarIdioma()
         {
-            throw new NotImplementedException();
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
+
+            this.Text = t.Translate("AuditoriaBitacora.formTitle");
+            label2.Text = t.Translate("AuditoriaBitacora.labelDesde");
+            label1.Text = t.Translate("AuditoriaBitacora.labelHasta");
+            label3.Text = t.Translate("AuditoriaBitacora.labelNombre");
+            label4.Text = t.Translate("AuditoriaBitacora.labelApellido");
+            btnFiltrar.Text = t.Translate("AuditoriaBitacora.btnFiltrar");
+            btnLimpiat.Text = t.Translate("AuditoriaBitacora.btnLimpiar");
+            btnPDF.Text = t.Translate("AuditoriaBitacora.btnPDF");
         }
     }
 }

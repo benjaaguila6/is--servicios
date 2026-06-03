@@ -3,6 +3,7 @@ using BLL;
 using Services;
 using Services.Modelos;
 using Services.Modelos.Idioma;
+using Services_55CA;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -38,6 +39,9 @@ namespace Servicios
         {
             InitializeComponent();
             CargarGrilla();
+
+            ServiceSessionManager55CA.getIntancia().Idioma.Suscribir(this);
+            actualizarIdioma();
         }
 
         private void CrearUsuario_Load(object sender, EventArgs e)
@@ -332,7 +336,39 @@ namespace Servicios
 
         public void actualizarIdioma()
         {
-            throw new NotImplementedException();
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
+
+            this.Text = t.Translate("GestionUsuario.formTitle");
+            gbUsuarios.Text = t.Translate("GestionUsuario.gbUsuarios");
+            gbDatos.Text = t.Translate("GestionUsuario.gbDatos");
+            label1.Text = t.Translate("GestionUsuario.labelNombre");
+            label2.Text = t.Translate("GestionUsuario.labelApellido");
+            label3.Text = t.Translate("GestionUsuario.labelDNI");
+            label4.Text = t.Translate("GestionUsuario.labelEmail");
+            label5.Text = t.Translate("GestionUsuario.labelRol");
+            rbActivos.Text = t.Translate("GestionUsuario.rbActivos");
+            rbTodos.Text = t.Translate("GestionUsuario.rbTodos");
+            btnCrear.Text = t.Translate("GestionUsuario.btnCrear");
+            btnDesbloquear.Text = t.Translate("GestionUsuario.btnDesbloquear");
+            btnModificar.Text = t.Translate("GestionUsuario.btnModificar");
+            btnActDesact.Text = t.Translate("GestionUsuario.btnActDesact");
+            btnGuardar.Text = t.Translate("GestionUsuario.btnGuardar");
+            btnCancelar.Text = t.Translate("GestionUsuario.btnCancelar");
+
+            if (dgvUsuarios.Columns.Count > 0)
+            {
+                // columnas de la grilla
+                dgvUsuarios.Columns["DNI"].HeaderText = t.Translate("GestionUsuario.colDNI");
+                dgvUsuarios.Columns["Nombre"].HeaderText = t.Translate("GestionUsuario.colNombre");
+                dgvUsuarios.Columns["Apellido"].HeaderText = t.Translate("GestionUsuario.colApellido");
+                dgvUsuarios.Columns["Email"].HeaderText = t.Translate("GestionUsuario.colEmail");
+                dgvUsuarios.Columns["Rol"].HeaderText = t.Translate("GestionUsuario.colRol");
+                dgvUsuarios.Columns["User"].HeaderText = t.Translate("GestionUsuario.colUsername");
+                dgvUsuarios.Columns["Activo"].HeaderText = t.Translate("GestionUsuario.colActivo");
+                dgvUsuarios.Columns["Bloqueo"].HeaderText = t.Translate("GestionUsuario.colBloqueado");
+            }
+
+                
         }
     }
 }

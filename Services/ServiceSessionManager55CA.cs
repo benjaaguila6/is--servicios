@@ -1,16 +1,20 @@
-﻿using System;
+﻿using BE;
+using Services;
+using Services.Modelos;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BE;
-using Services.Modelos;
 
 namespace Services_55CA
 {
     public sealed class ServiceSessionManager55CA
     {
-        private ServiceSessionManager55CA() { }
+        private ServiceSessionManager55CA() 
+        {
+            Idioma = new IdiomaManager();
+        }
 
         private static ServiceSessionManager55CA _instancia;
 
@@ -40,6 +44,12 @@ namespace Services_55CA
         {
             return usuarioActivo != null;
         }
+
+        
+
+        
+
+        public IdiomaManager Idioma { get; private set; }
 
     }
 }

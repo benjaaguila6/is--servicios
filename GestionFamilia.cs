@@ -1,6 +1,7 @@
 ﻿using BLL;
 using Services.Modelos;
 using Services.Modelos.Idioma;
+using Services_55CA;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -33,6 +34,9 @@ namespace Servicios
         {
             InitializeComponent();
             cargarDatos();
+
+            ServiceSessionManager55CA.getIntancia().Idioma.Suscribir(this);
+            actualizarIdioma();
         }
 
         public void cargarDatos()
@@ -62,7 +66,18 @@ namespace Servicios
         }
         public void actualizarIdioma()
         {
-            throw new NotImplementedException();
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
+
+            this.Text = t.Translate("GestionFamilia.formTitle");
+            label1.Text = t.Translate("GestionFamilia.labelFamilias");
+            label2.Text = t.Translate("GestionFamilia.labelPermisosFamilias");
+            label3.Text = t.Translate("GestionFamilia.labelAsignados");
+            groupBox1.Text = t.Translate("GestionFamilia.groupBoxDatos");
+            label4.Text = t.Translate("GestionFamilia.labelNombre");
+            btnCrear.Text = t.Translate("GestionFamilia.btnCrear");
+            btnAsignar.Text = t.Translate("GestionFamilia.btnAsignar");
+            btnAplicar.Text = t.Translate("GestionFamilia.btnAplicar");
+            btnEliminar.Text = t.Translate("GestionFamilia.btnEliminar");
         }
 
         private void btnAsignar_Click(object sender, EventArgs e)

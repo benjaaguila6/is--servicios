@@ -1,5 +1,8 @@
-﻿using Services;
+﻿using BE;
+using Services;
 using Services.Modelos;
+using Services.Modelos.Idioma;
+using Services_55CA;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,8 +12,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BE;
-using Services.Modelos.Idioma;
 
 namespace Servicios
 {
@@ -28,6 +29,13 @@ namespace Servicios
             }
 
             label1.Text = $"Bienvenido: {usuarioActual.Nombre}, {usuarioActual.Apellido} !";
+
+            ServiceSessionManager55CA.getIntancia().Idioma.Suscribir(this);
+            actualizarIdioma();
+
+            
+
+
         }
 
         private void cambiarClaveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -44,7 +52,14 @@ namespace Servicios
 
         private void cerrarSesionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult resultado = MessageBox.Show("¿Está seguro que desea cerrar sesión?", "Confirmar cierre de sesión", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
+
+            DialogResult resultado = MessageBox.Show(
+                t.Translate("MenuPrincipal.msgConfirmarCierreSesion"),
+                t.Translate("MenuPrincipal.msgTituloCierreSesion"),
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question
+            );
 
             if (resultado == DialogResult.Yes)
             {
@@ -73,7 +88,20 @@ namespace Servicios
 
         public void actualizarIdioma()
         {
-            throw new NotImplementedException();
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
+
+            this.Text = t.Translate("MenuPrincipal.formTitle");
+            label1.Text = string.Format(t.Translate("MenuPrincipal.labelBienvenido"), usuarioActual.Nombre, usuarioActual.Apellido);
+            usuarioToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuUsuario");
+            cambiarClaveToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuCambiarClave");
+            cerrarSesionToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuCerrarSesion");
+            iniciarSesionToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuIniciarSesion");
+            administradorToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuAdministrador");
+            gestionUsuariosToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuGestionUsuarios");
+            bitacoraEventosToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuBitacoraEventos");
+            gestionFamiliaToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuGestionFamilia");
+            gestionRolToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuGestionRol");
+            ayudaToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuAyuda");
         }
 
         private void gestionFamiliaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -86,6 +114,11 @@ namespace Servicios
         {
             GestionRol form = new GestionRol();
             form.Show();
+        }
+
+        private void usuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
