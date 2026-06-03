@@ -85,18 +85,22 @@ namespace Servicios
             modoActual = ModoOperacionFamilia.Asignar;
 
             btnAplicar.Enabled = true;
+            btnCancelar.Enabled = true;
             btnEliminar.Enabled = false;
             btnCrear.Enabled = false ;
+            btnAsignar.Enabled = false;
         }
 
         private void btnCrear_Click(object sender, EventArgs e)
         {
             modoActual = ModoOperacionFamilia.Crear;
 
+
             groupBox1.Visible = true;
             txtNombre.Focus();
 
             btnAplicar.Enabled = true;
+            btnCancelar.Enabled = true;
             btnCrear.Enabled = false;
             btnEliminar.Enabled = false;
             btnAsignar.Enabled = false;
@@ -216,9 +220,22 @@ namespace Servicios
         {
             modoActual = ModoOperacionFamilia.Eliminar;
 
+            btnCancelar.Enabled = true;
             btnAplicar.Enabled = true;
             btnAsignar.Enabled = false;
             btnCrear.Enabled = false;
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            modoActual = ModoOperacionFamilia.Ninguno;
+
+            groupBox1.Visible = false;
+            btnCancelar.Enabled = false;
+            btnAplicar.Enabled = false;
+            btnCrear.Enabled = true;
+            btnAsignar.Enabled = true;
+            btnEliminar.Enabled = true;
         }
     }
 }

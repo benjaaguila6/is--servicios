@@ -67,5 +67,32 @@ namespace DAL
                 }
             }
         }
+
+        public object executeScalar(string consulta, Dictionary<string, object> parametros = null)
+        {
+            using (SqlConnection conn = new SqlConnection(_stringConnection))
+            {
+                using (SqlCommand cmd = new SqlCommand(consulta, conn))
+                {
+                    if (parametros != null)
+                    {
+                        foreach (var p in parametros)
+                        {
+                            cmd.Parameters.AddWithValue(p.Key, p.Value ?? DBNull.Value);
+                        }
+                    }
+
+                    try
+                    {
+                        conn.Open();
+                        return cmd.ExecuteScalar();
+                    }
+                    catch (SqlException ex)
+                    {
+                        throw new Exception("Error al leer valor escalar en la base de datos", ex);
+                    }
+                }
+            }
+        }
     }
 }
