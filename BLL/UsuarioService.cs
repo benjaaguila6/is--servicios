@@ -106,7 +106,7 @@ namespace BLL
             return usaPasswordDefault;
         }
 
-        public void CrearUsuario(string dni, string nombre, string apellido, string email, Rol55CA rol)
+        public void CrearUsuario(string dni, string nombre, string apellido, string email, RolModelo55CA rol)
         {
 
             if (dal.obtenerPorDNI(dni) != null)
@@ -149,18 +149,13 @@ namespace BLL
             bit.registrarEvento(dniAutor, evento, Criticidad55CA.Alto, Modulos55CA.Usuario);
         }
 
-        public void ModificarUsuario(string dni, string email, Rol55CA rol)
+        public void ModificarUsuario(string dni, string email, RolModelo55CA rol)
         {
             dal.ModificarUsuario(dni, email, rol.Id);
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
-            bit.registrarEvento(
-            dniAutor,
-            $"Se modificó usuario DNI {dni}",
-            Criticidad55CA.Medio,
-            Modulos55CA.Usuario
-            );
+            bit.registrarEvento(dniAutor, $"Se modificó usuario DNI {dni}", Criticidad55CA.Medio, Modulos55CA.Usuario);
         }
 
         public bool cambiarPassword(string passwordActual, string passwordNueva)
@@ -199,7 +194,7 @@ namespace BLL
                 Nombre = row["Nombre"].ToString(),
                 Apellido = row["Apellido"].ToString(),
                 Email = row["Email"].ToString(),
-                Rol = new Rol55CA { Id = Convert.ToInt32(row["IdRol"]), Nombre = row["NombreRol"].ToString() },
+                Rol = new RolModelo55CA { Id = Convert.ToInt32(row["IdRol"]), Nombre = row["NombreRol"].ToString() },
                 User = row["Username"].ToString(),
                 Password = row["PasswordHash"].ToString(),
                 Intentos = Convert.ToInt32(row["Intentos"]),

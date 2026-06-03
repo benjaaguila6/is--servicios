@@ -14,7 +14,7 @@ namespace Services.Modelos
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string Email { get; set; }
-        public Rol55CA Rol { get; set; }
+        public RolModelo55CA Rol { get; set; }
         public string User { get; set; }
         public string Password { get; set; }
         public int Intentos { get; set; }
@@ -28,7 +28,7 @@ namespace Services.Modelos
         }
 
         //ctor para new
-        public UsuarioModelo55CA(string dNI, string nombre, string apellido, string email, Rol55CA rol)
+        public UsuarioModelo55CA(string dNI, string nombre, string apellido, string email, RolModelo55CA rol)
         {
             DNI = dNI;
             Nombre = nombre;

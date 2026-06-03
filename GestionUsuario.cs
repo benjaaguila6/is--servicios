@@ -179,7 +179,7 @@ namespace Servicios
                     string apellido = txtApellido.Text;
                     string dNI = txtDNI.Text;
 
-                    Rol55CA rol = (Rol55CA)cmbRol.SelectedItem;
+                    RolModelo55CA rol = (RolModelo55CA)cmbRol.SelectedItem;
 
                     if (cmbRol.SelectedIndex == -1)
                     {
@@ -215,7 +215,7 @@ namespace Servicios
                     string email = txtEmail.Text;
                     string dNI = txtDNI.Text;
 
-                    Rol55CA rol = (Rol55CA)cmbRol.SelectedItem;
+                    RolModelo55CA rol = (RolModelo55CA)cmbRol.SelectedItem;
 
                     usuarioService.ModificarUsuario(dNI, email, rol);
 

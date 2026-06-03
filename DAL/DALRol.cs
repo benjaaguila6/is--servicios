@@ -20,6 +20,18 @@ namespace DAL
             return dt;
         }
 
+        public DataTable obtenerPorNombre(string nombre)
+        {
+            string query = "SELECT Id, Nombre FROM Rol WHERE Nombre = @nombre";
+
+            var parametros = new Dictionary<string, object>
+            {
+                {"@nombre", nombre }
+            };
+
+            return _dal.executeDataTable(query, parametros);
+        }
+
         public int asignarFamiliaARol(int idFamilia, int idRol)
         {
             string query = "INSERT INTO Rol_Familia (IdRol, IdFamilia) VALUES (@idRol, @idFamilia)";
@@ -62,6 +74,46 @@ namespace DAL
             int resultado = _dal.executeNonQuery(query, parametros);
 
             return resultado;
+        }
+
+        public void eliminarRol(int idRol)
+        {
+            string query = "DELETE FROM Rol WHERE Id = @idRol";
+
+            var parametros = new Dictionary<string, object>
+            {
+                { "@idRol", idRol }
+            };
+
+            _dal.executeNonQuery(query, parametros);
+        }
+
+        public bool tieneUsuariosAsignados(int idRol)
+        {
+            string query = "SELECT COUNT(*) FROM Usuario WHERE IdRol = @idRol";
+
+            var parametros = new Dictionary<string, object>
+            {
+                { "@idRol", idRol }
+            };
+
+            // Usas executeScalar para traer el conteo
+            int cantidad = Convert.ToInt32(_dal.executeScalar(query, parametros));
+
+            return cantidad > 0;
+        }
+
+        public DataTable obtenerRelacionesRolPatente()
+        {
+            string query = "SELECT IdRol, IdPatente FROM Rol_Patente";
+
+            return _dal.executeDataTable(query);
+        }
+        public DataTable obtenerRelacionesRolFamilia()
+        {
+            string query = "SELECT IdRol, IdFamilia FROM Rol_Familia";
+
+            return _dal.executeDataTable(query);
         }
     }
 }

@@ -59,7 +59,7 @@ namespace DAL
         }
         public int asignarFamiliaAFamilia(int idPadre, int idHija)
         {
-            string query = "INSERT INTO Familia_Familia (IdFamiliaPadre, IdFamiliaHija) VALUES (@padre, @hija)";
+            string query = "INSERT INTO Familia_Familia (IdFamiliaPadre, IdFamiliaHija) VALUES (@idPadre, @idHija)";
 
             var parametros = new Dictionary<string, object>
             {
