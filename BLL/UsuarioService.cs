@@ -87,6 +87,16 @@ namespace BLL
 
                 throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos}.");
             }
+            BLLRol gestorRol = new BLLRol();
+
+            List<RolModelo55CA> roles = gestorRol.ObtenerRolesConJerarquia();
+
+            var rolConPermisos = roles.FirstOrDefault(r => r.Id == usuario.Rol.Id);
+
+            if(rolConPermisos != null)
+            {
+                usuario.Rol = rolConPermisos;
+            }
 
             //login ok
             Services_55CA.ServiceSessionManager55CA.getIntancia().Login(usuario);

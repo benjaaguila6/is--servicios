@@ -54,7 +54,7 @@ namespace DAL
             var parametros = new Dictionary<string, object>
             {
                 {"@idRol", idRol },
-                {"@idFamilia", idPatente }
+                {"@idPatente", idPatente }
             };
 
             int resultado = _dal.executeNonQuery(query, parametros);
