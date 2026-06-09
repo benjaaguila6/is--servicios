@@ -50,19 +50,11 @@ namespace Servicios
             todosLosComponentes.AddRange(listaFamilias);
             todosLosComponentes.AddRange(bllPermiso.obtenerTodos());
 
-            var vistaComponentes = todosLosComponentes.Select(c => new
-            {
-                Id = c.Id,
-                Nombre = c.Nombre,
-                Tipo = c is FamiliaModelo55CA ? "Familia" : "Patente",
-                ObjetoReal = c
-            }).ToList();
+            checkListPermisosFamilias.DataSource = null;
+            checkListPermisosFamilias.DataSource = todosLosComponentes;
 
-            dgvPermisosFamilias.DataSource = null;
-            dgvPermisosFamilias.DataSource = vistaComponentes;
-            dgvPermisosFamilias.Columns["ObjetoReal"].Visible = false;
-
-            btnAplicar.Enabled = false;
+            btAplicar.Enabled = false;
+            btCancelar.Enabled = false;
         }
         public void actualizarIdioma()
         {
@@ -74,37 +66,12 @@ namespace Servicios
             label3.Text = t.Translate("GestionFamilia.labelAsignados");
             groupBox1.Text = t.Translate("GestionFamilia.groupBoxDatos");
             label4.Text = t.Translate("GestionFamilia.labelNombre");
-            btnCrear.Text = t.Translate("GestionFamilia.btnCrear");
-            btnAsignar.Text = t.Translate("GestionFamilia.btnAsignar");
-            btnAplicar.Text = t.Translate("GestionFamilia.btnAplicar");
-            btnEliminar.Text = t.Translate("GestionFamilia.btnEliminar");
+            btCrear.Text = t.Translate("GestionFamilia.btnCrear");
+            btAsignar.Text = t.Translate("GestionFamilia.btnAsignar");
+            btAplicar.Text = t.Translate("GestionFamilia.btnAplicar");
+            btEliminar.Text = t.Translate("GestionFamilia.btnEliminar");
         }
 
-        private void btnAsignar_Click(object sender, EventArgs e)
-        {
-            modoActual = ModoOperacionFamilia.Asignar;
-
-            btnAplicar.Enabled = true;
-            btnCancelar.Enabled = true;
-            btnEliminar.Enabled = false;
-            btnCrear.Enabled = false ;
-            btnAsignar.Enabled = false;
-        }
-
-        private void btnCrear_Click(object sender, EventArgs e)
-        {
-            modoActual = ModoOperacionFamilia.Crear;
-
-
-            groupBox1.Visible = true;
-            txtNombre.Focus();
-
-            btnAplicar.Enabled = true;
-            btnCancelar.Enabled = true;
-            btnCrear.Enabled = false;
-            btnEliminar.Enabled = false;
-            btnAsignar.Enabled = false;
-        }
 
         private void dgvFamilias_SelectionChanged(object sender, EventArgs e)
         {
@@ -141,7 +108,59 @@ namespace Servicios
             }
         }
 
-        private void btnAplicar_Click(object sender, EventArgs e)
+        private void btCrear_Click(object sender, EventArgs e)
+        {
+            modoActual = ModoOperacionFamilia.Crear;
+
+            groupBox1.Visible = true;
+            txtNombre.Focus();
+
+            btAplicar.Enabled = true;
+            btCancelar.Enabled = true;
+            btCrear.Enabled = false;
+            btEliminar.Enabled = false;
+            btAsignar.Enabled = false;
+        }
+
+        private void btAsignar_Click(object sender, EventArgs e)
+        {
+            if (dgvFamilias.CurrentRow == null)
+            {
+                MessageBox.Show("Debe seleccionar una Familia de la lista de Familias.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            FamiliaModelo55CA familiaDestino = (FamiliaModelo55CA)dgvFamilias.CurrentRow.DataBoundItem;
+
+            var todosLosComponentes = new List<Componente55CA>();
+            todosLosComponentes.AddRange(bllFamilia.ObtenerTodos());
+            todosLosComponentes.AddRange(bllPermiso.obtenerTodos());
+
+            var listaFiltrada = todosLosComponentes.Where(componente => !(componente is FamiliaModelo55CA && componente.Id == familiaDestino.Id)).ToList();
+
+            checkListPermisosFamilias.DataSource = null;
+            checkListPermisosFamilias.DataSource = listaFiltrada;
+
+            modoActual = ModoOperacionFamilia.Asignar;
+
+            btAplicar.Enabled = true;
+            btCancelar.Enabled = true;
+            btEliminar.Enabled = false;
+            btCrear.Enabled = false;
+            btAsignar.Enabled = false;
+        }
+
+        private void btEliminar_Click(object sender, EventArgs e)
+        {
+            modoActual = ModoOperacionFamilia.Eliminar;
+
+            btCancelar.Enabled = true;
+            btAplicar.Enabled = true;
+            btAsignar.Enabled = false;
+            btCrear.Enabled = false;
+        }
+
+        private void btAplicar_Click(object sender, EventArgs e)
         {
             try
             {
@@ -155,35 +174,62 @@ namespace Servicios
                         return;
                     }
 
-                    bllFamilia.CrearFamilia(nombre);
+                    if (checkListPermisosFamilias.CheckedItems.Count == 0)
+                    {
+                        MessageBox.Show("Debe marcar al menos un Componente (Familia/Permiso) de la lista.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    int nuevoFamiliaId = bllFamilia.CrearFamilia(nombre);
+
+                    FamiliaModelo55CA familiaCreada = new FamiliaModelo55CA { Id = nuevoFamiliaId, Nombre = nombre };
+
+                    foreach (Componente55CA componenteMarcado in checkListPermisosFamilias.CheckedItems)
+                    {
+                        if (componenteMarcado is PermisoModelo55CA patente)
+                        {
+                            bllFamilia.AsignarPatente(familiaCreada, patente);
+                        }
+                        else if (componenteMarcado is FamiliaModelo55CA familiaHija)
+                        {
+                            bllFamilia.AsignarFamilia(familiaCreada, familiaHija);
+                        }
+                    }
 
                     MessageBox.Show("Familia creada con éxito.");
                 }
 
                 else if (modoActual == ModoOperacionFamilia.Asignar)
                 {
-                    if (dgvFamilias.CurrentRow == null || dgvPermisosFamilias.CurrentRow == null)
+                    if (dgvFamilias.CurrentRow == null)
                     {
-                        MessageBox.Show("Debe seleccionar una familia destino y un componente a asignar.");
+                        MessageBox.Show("Debe seleccionar una Familia de la lista de Familias.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (checkListPermisosFamilias.CheckedItems.Count == 0)
+                    {
+                        MessageBox.Show("Debe marcar al menos un Componente (Familia/Permiso) de la lista.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
                     FamiliaModelo55CA familiaDestino = (FamiliaModelo55CA)dgvFamilias.CurrentRow.DataBoundItem;
-                    Componente55CA componenteAAsignar = (Componente55CA)dgvPermisosFamilias.CurrentRow.Cells["ObjetoReal"].Value;
 
-                    if (componenteAAsignar is PermisoModelo55CA patente)
+                    foreach (Componente55CA componenteMarcado in checkListPermisosFamilias.CheckedItems)
                     {
-                        bllFamilia.AsignarPatente(familiaDestino, patente);
-                    }
-                    else if (componenteAAsignar is FamiliaModelo55CA familiaHija)
-                    {
-                        bllFamilia.AsignarFamilia(familiaDestino, familiaHija);
+                        if (componenteMarcado is PermisoModelo55CA patente)
+                        {
+                            bllFamilia.AsignarPatente(familiaDestino, patente);
+                        }
+                        else if (componenteMarcado is FamiliaModelo55CA familiaHija)
+                        {
+                            bllFamilia.AsignarFamilia(familiaDestino, familiaHija);
+                        }
                     }
 
-                    MessageBox.Show("Componente asignado correctamente a la familia.");
+                    MessageBox.Show("Los componentes marcados fueron evaluados y asignados.");
                 }
 
-                else if(modoActual == ModoOperacionFamilia.Eliminar)
+                else if (modoActual == ModoOperacionFamilia.Eliminar)
                 {
                     if (dgvFamilias.CurrentRow == null)
                     {
@@ -193,9 +239,16 @@ namespace Servicios
 
                     FamiliaModelo55CA familiaSeleccionada = (FamiliaModelo55CA)dgvFamilias.CurrentRow.DataBoundItem;
 
-                    bllFamilia.EliminarFamilia(familiaSeleccionada.Id);
+                    try
+                    {
+                        bllFamilia.EliminarFamilia(familiaSeleccionada.Id);
+                        MessageBox.Show("Se elimino correctamente la familia.");
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message);
+                    }
 
-                    MessageBox.Show("Se elimino correctamente la familia.");
                 }
 
                 modoActual = ModoOperacionFamilia.Ninguno;
@@ -203,12 +256,14 @@ namespace Servicios
                 txtNombre.Clear();
                 groupBox1.Visible = false;
 
-                btnCrear.Enabled = true;
-                btnAsignar.Enabled = true;
-                btnEliminar.Enabled = true;
-                btnAplicar.Enabled = false;
+                btCrear.Enabled = true;
+                btAsignar.Enabled = true;
+                btEliminar.Enabled = true;
+                btAplicar.Enabled = false;
+                btCancelar.Enabled = false;
 
                 cargarDatos();
+                DesmarcarCheckList();
             }
             catch (Exception ex)
             {
@@ -216,26 +271,26 @@ namespace Servicios
             }
         }
 
-        private void btnEliminar_Click(object sender, EventArgs e)
-        {
-            modoActual = ModoOperacionFamilia.Eliminar;
-
-            btnCancelar.Enabled = true;
-            btnAplicar.Enabled = true;
-            btnAsignar.Enabled = false;
-            btnCrear.Enabled = false;
-        }
-
-        private void btnCancelar_Click(object sender, EventArgs e)
+        private void btCancelar_Click(object sender, EventArgs e)
         {
             modoActual = ModoOperacionFamilia.Ninguno;
 
             groupBox1.Visible = false;
-            btnCancelar.Enabled = false;
-            btnAplicar.Enabled = false;
-            btnCrear.Enabled = true;
-            btnAsignar.Enabled = true;
-            btnEliminar.Enabled = true;
+            btCancelar.Enabled = false;
+            btAplicar.Enabled = false;
+            btCrear.Enabled = true;
+            btAsignar.Enabled = true;
+            btEliminar.Enabled = true;
+
+            DesmarcarCheckList();
+        }
+
+        private void DesmarcarCheckList()
+        {
+            for (int i = 0; i < checkListPermisosFamilias.Items.Count; i++)
+            {
+                checkListPermisosFamilias.SetItemChecked(i, false);
+            }
         }
     }
 }
