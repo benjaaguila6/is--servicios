@@ -54,7 +54,7 @@ namespace DAL
             var parametros = new Dictionary<string, object>
             {
                 {"@idRol", idRol },
-                {"@idFamilia", idPatente }
+                {"@idPatente", idPatente }
             };
 
             int resultado = _dal.executeNonQuery(query, parametros);
@@ -64,16 +64,16 @@ namespace DAL
 
         public int insertarRol(string nombre)
         {
-            string query = "INSERT INTO Rol (Nombre) VALUES (@nombre)";
+            string query = "INSERT INTO Rol (Nombre) VALUES (@nombre); SELECT SCOPE_IDENTITY();";
 
             var parametros = new Dictionary<string, object>
             {
                 {"@nombre", nombre }
             };
 
-            int resultado = _dal.executeNonQuery(query, parametros);
+            int idGenerado = Convert.ToInt32(_dal.executeScalar(query, parametros));
 
-            return resultado;
+            return idGenerado;
         }
 
         public void eliminarRol(int idRol)

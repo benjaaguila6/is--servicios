@@ -12,5 +12,10 @@ namespace Services.Modelos
         {
             return new List<Componente55CA> { this }; // se devuelve a si mismo
         }
+
+        public override string ToString()
+        {
+            return $"Patente {this.Nombre}";
+        }
     }
 }

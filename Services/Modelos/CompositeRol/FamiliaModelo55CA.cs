@@ -31,5 +31,10 @@ namespace Services.Modelos
 
             return permisos;
         }
+
+        public override string ToString()
+        {
+            return $"Familia {this.Nombre}";
+        }
     }
 }

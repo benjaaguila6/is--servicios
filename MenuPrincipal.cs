@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Collections.Specialized.BitVector32;
 
 namespace Servicios
 {
@@ -22,20 +23,38 @@ namespace Servicios
         public MenuPrincipal()
         {
             InitializeComponent();
-
-            if (usuarioActual.Rol.Id == 2)
-            {
-                administradorToolStripMenuItem.Enabled = false;
-            }
+            configurarAcceso();
 
             label1.Text = $"Bienvenido: {usuarioActual.Nombre}, {usuarioActual.Apellido} !";
 
             ServiceSessionManager55CA.getIntancia().Idioma.Suscribir(this);
             actualizarIdioma();
 
-            
+        }
 
 
+        private void configurarAcceso()
+        {
+
+            if(ServiceSessionManager55CA.getIntancia().usuarioActivo.Rol.Id == 1)
+            {
+                administradorToolStripMenuItem.Enabled = true;
+
+                cambiarClaveToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cambiar Clave");
+                cerrarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cerrar Sesion");
+                gestionUsuariosToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Gestion Usuario");
+                iniciarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Iniciar Sesion");
+                bitacoraEventosToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Auditoria Eventos");
+                gestionRolToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Gestion Roles");
+                gestionFamiliaToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Gestion Familia");
+            }
+            else
+            {
+                cambiarClaveToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cambiar Clave");
+                cerrarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cerrar Sesion");
+                iniciarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Iniciar Sesion");
+                administradorToolStripMenuItem.Enabled = false;
+            }
         }
 
         private void cambiarClaveToolStripMenuItem_Click(object sender, EventArgs e)

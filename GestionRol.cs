@@ -41,21 +41,12 @@ namespace Servicios
             dgvFamilias.DataSource = listaRol;
 
             var todosLosComponentes = new List<Componente55CA>();
+
             todosLosComponentes.AddRange(bllFamilia.ObtenerTodos());
             todosLosComponentes.AddRange(bllPatente.obtenerTodos());
 
-            var vistaComponentes = todosLosComponentes.Select(c => new
-            {
-                Id = c.Id,
-                Nombre = c.Nombre,
-                Tipo = c is FamiliaModelo55CA ? "Familia" : "Patente",
-                ObjetoReal = c
-            }).ToList();
-
-            dgvPermisosFamilias.DataSource = null;
-            dgvPermisosFamilias.DataSource = vistaComponentes;
-            dgvPermisosFamilias.Columns["ObjetoReal"].Visible = false;
-
+            checkListPermisosFamilias.DataSource = null;
+            checkListPermisosFamilias.DataSource = todosLosComponentes;
         }
 
         private enum ModoOperacionFamilia
@@ -163,61 +154,87 @@ namespace Servicios
         {
             try
             {
-                if(modoActual == ModoOperacionFamilia.Crear)
+                if (modoActual == ModoOperacionFamilia.Crear)
                 {
                     string nombre = txtNombre.Text;
 
                     if (string.IsNullOrEmpty(nombre))
                     {
-                        MessageBox.Show("El nombre no puede estar vacio.");
+                        MessageBox.Show("El nombre no puede estar vacío.");
                         return;
                     }
 
-                    bllRol.crearRol(nombre);
+                    if (checkListPermisosFamilias.CheckedItems.Count == 0)
+                    {
+                        MessageBox.Show("Debe marcar al menos un permiso o familia para crear el rol.");
+                        return;
+                    }
 
-                    MessageBox.Show("El rol fue creado con exito");
+                    int nuevoRolId = bllRol.crearRol(nombre);
+
+                    RolModelo55CA rolCreado = new RolModelo55CA { Id = nuevoRolId, Nombre = nombre };
+
+                    foreach (Componente55CA componenteMarcado in checkListPermisosFamilias.CheckedItems)
+                    {
+                        if (componenteMarcado is PermisoModelo55CA patente)
+                        {
+                            bllRol.AsignarPatente(rolCreado, patente);
+                        }
+                        else if (componenteMarcado is FamiliaModelo55CA familiaHija)
+                        {
+                            bllRol.AsignarFamilia(rolCreado, familiaHija);
+                        }
+                    }
+
+                    MessageBox.Show("El rol fue creado y sus permisos fueron asignados con éxito.");
                 }
 
-                else if(modoActual == ModoOperacionFamilia.Asignar)
+                else if (modoActual == ModoOperacionFamilia.Asignar)
                 {
-                    if (dgvFamilias.CurrentRow == null || dgvPermisosFamilias.CurrentRow == null)
+                    if (dgvFamilias.CurrentRow == null)
                     {
-                        MessageBox.Show("Debe seleccionar un Rol de la lista y un Componente (Familia/Permiso) para asignar.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Debe seleccionar un Rol de la lista de roles.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    if (checkListPermisosFamilias.CheckedItems.Count == 0)
+                    {
+                        MessageBox.Show("Debe marcar al menos un Componente (Familia/Permiso) de la lista.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
                     RolModelo55CA rolDestino = (RolModelo55CA)dgvFamilias.CurrentRow.DataBoundItem;
-                    Componente55CA componenteAAsignar = (Componente55CA)dgvPermisosFamilias.CurrentRow.Cells["ObjetoReal"].Value;
 
-                    if (componenteAAsignar is PermisoModelo55CA patente)
+                    foreach (Componente55CA componenteMarcado in checkListPermisosFamilias.CheckedItems)
                     {
-                        bllRol.AsignarPatente(rolDestino, patente);
-                    }
-                    else if (componenteAAsignar is FamiliaModelo55CA familiaHija)
-                    {
-                        bllRol.AsignarFamilia(rolDestino, familiaHija);
+                        if (componenteMarcado is PermisoModelo55CA patente)
+                        {
+                            bllRol.AsignarPatente(rolDestino, patente);
+                        }
+                        else if (componenteMarcado is FamiliaModelo55CA familiaHija)
+                        {
+                            bllRol.AsignarFamilia(rolDestino, familiaHija);
+                        }
                     }
 
-                    MessageBox.Show("El componente fue asignado correctamente al rol.");
+                    MessageBox.Show("Los componentes marcados fueron evaluados y asignados.");
                 }
 
-                else if(modoActual == ModoOperacionFamilia.Eliminar)
+                else if (modoActual == ModoOperacionFamilia.Eliminar)
                 {
+                    // (La lógica de eliminar queda igual que la tuya)
                     if (dgvFamilias.CurrentRow == null)
                     {
-                        MessageBox.Show("Debe seleccionar una familia destino y un componente a asignar.");
+                        MessageBox.Show("Debe seleccionar un rol destino para eliminar.");
                         return;
                     }
 
                     RolModelo55CA rolSeleccionado = (RolModelo55CA)dgvFamilias.CurrentRow.DataBoundItem;
-
                     bllRol.EliminarRol(rolSeleccionado.Id);
-
-                    MessageBox.Show("Se elimino correctamente el Rol.");
+                    MessageBox.Show("Se eliminó correctamente el Rol.");
                 }
 
                 modoActual = ModoOperacionFamilia.Ninguno;
-
                 groupBox1.Visible = false;
                 btnCancelar.Enabled = false;
                 btnAplicar.Enabled = false;
@@ -225,11 +242,20 @@ namespace Servicios
                 btnAsignar.Enabled = true;
                 btnEliminar.Enabled = true;
 
+                DesmarcarCheckList();
                 cargarDatos();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al realizar la operacion: " + ex.Message);
+                MessageBox.Show("Error al realizar la operación: " + ex.Message);
+            }
+        }
+
+        private void DesmarcarCheckList()
+        {
+            for (int i = 0; i < checkListPermisosFamilias.Items.Count; i++)
+            {
+                checkListPermisosFamilias.SetItemChecked(i, false);
             }
         }
 
@@ -242,6 +268,8 @@ namespace Servicios
             btnCrear.Enabled = true;
             btnAsignar.Enabled = true;
             btnEliminar.Enabled = true;
+
+            DesmarcarCheckList();
         }
 
         private void btnEliminar_Click(object sender, EventArgs e)

@@ -45,9 +45,23 @@ namespace Services_55CA
             return usuarioActivo != null;
         }
 
-        
 
-        
+        public bool TienePermiso(string nombrePermiso)
+        {
+            List<Componente55CA> todosLosPermisos = usuarioActivo.Rol.ObtenerPermisos();
+
+            //recorremos la lista buscando coincidencia por el nombre de la patente
+            foreach (Componente55CA componente in todosLosPermisos)
+            {
+                if (string.Equals(componente.Nombre, nombrePermiso, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 
         public IdiomaManager Idioma { get; private set; }
 

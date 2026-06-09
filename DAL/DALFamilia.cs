@@ -74,16 +74,21 @@ namespace DAL
 
         public bool tieneDependencias(int idFamilia)
         {
-            string query = @"SELECT COUNT(*) FROM Rol_Familia WHERE IdFamilia = @id UNION ALL SELECT COUNT(*) FROM Familia_Familia WHERE IdFamiliaHija = @id";
+            string query = @"
+                        IF EXISTS (SELECT 1 FROM Rol_Familia WHERE IdFamilia = @id)
+                           OR EXISTS (SELECT 1 FROM Familia_Familia WHERE IdFamiliaHija = @id)
+                            SELECT 1;
+                        ELSE
+                            SELECT 0;";
 
             var parametros = new Dictionary<string, object>
             {
                 {"@id", idFamilia }
             };
 
-            int resultado = dal.executeNonQuery(query, parametros);
+            int resultado = Convert.ToInt32(dal.executeScalar(query, parametros));
 
-            return resultado > 0;
+            return resultado == 1;
         }
 
         public int eliminarFamilia(int idFamilia)
@@ -102,16 +107,16 @@ namespace DAL
 
         public int insertarFamilia(string nombre)
         {
-            string query = "INSERT INTO Familia (Nombre) VALUES (@nombre)";
+            string query = "INSERT INTO Familia (Nombre) VALUES (@nombre); SELECT SCOPE_IDENTITY();";
 
             var parametros = new Dictionary<string, object>
             {
                 {"@nombre", nombre }
             };
 
-            int resultado = dal.executeNonQuery(query, parametros);
+            int idGenerado = Convert.ToInt32(dal.executeScalar(query, parametros));
 
-            return resultado;
+            return idGenerado;
         }
 
 
