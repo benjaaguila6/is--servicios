@@ -60,18 +60,11 @@ namespace Servicios
             {
                 bool usaPasswordDefault = _userService.login(username, password);
 
+
+                int idiomaUsuario = ServiceSessionManager55CA.getIntancia().usuarioActivo.IdIdioma;
+                string codIdiomaUsuario = idiomaUsuario == 1 ? "es" : "en";
+                ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(codIdiomaUsuario);
                 
-                Idioma55CA idiomaSeleccionado = (Idioma55CA)cmbIdioma.SelectedItem;
-                _ultimoIdIdioma = idiomaSeleccionado.Id;
-
-
-                _userService.GuardarIdioma(idiomaSeleccionado.Id);
-
-
-                
-                string codIdioma = idiomaSeleccionado.Id == 1 ? "es" : "en";
-                ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(codIdioma);
-
                 txtUser.Text = "";
                 txtPassword.Text = "";
                 this.Hide();
@@ -79,23 +72,13 @@ namespace Servicios
                 if (usaPasswordDefault)
                 {
                     CambiarContraseña form = new CambiarContraseña();
-                    form.FormClosed += (s, args) =>
-                    {
-                        string cod = Login._ultimoIdIdioma == 1 ? "es" : "en";
-                        ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(cod);
-                        this.Show();
-                    };
+                    form.FormClosed += (s, args) => RestaurarIdiomaLogin();
                     form.Show();
                 }
                 else
                 {
                     MenuPrincipal menu = new MenuPrincipal();
-                    menu.FormClosed += (s, args) =>
-                    {
-                        string cod = Login._ultimoIdIdioma == 1 ? "es" : "en";
-                        ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(cod);
-                        this.Show();
-                    };
+                    menu.FormClosed += (s, args) => RestaurarIdiomaLogin();
                     menu.Show();
                 }
             }
@@ -103,6 +86,16 @@ namespace Servicios
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void RestaurarIdiomaLogin()
+        {
+            if (cmbIdioma.SelectedItem is Idioma55CA idiomaLogin)
+            {
+                string cod = idiomaLogin.Id == 1 ? "es" : "en";
+                ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(cod);
+            }
+            this.Show();
         }
 
         public void actualizarIdioma()

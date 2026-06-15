@@ -1,4 +1,5 @@
 ﻿using BE;
+using BLL;
 using Services;
 using Services.Modelos;
 using Services.Modelos.Idioma;
@@ -19,19 +20,57 @@ namespace Servicios
     public partial class MenuPrincipal : Form, IIdiomaObserver
     {
         UsuarioModelo55CA usuarioActual = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo;
+        BLLIdioma55CA _idiomaService = new BLLIdioma55CA();
+        UsuarioService _userService = new UsuarioService();
 
         public MenuPrincipal()
         {
             InitializeComponent();
             configurarAcceso();
-
-            label1.Text = $"Bienvenido: {usuarioActual.Nombre}, {usuarioActual.Apellido} !";
+            CargarSubItemsIdioma();
 
             ServiceSessionManager55CA.getIntancia().Idioma.Suscribir(this);
             actualizarIdioma();
 
         }
+        private void CargarSubItemsIdioma()
+        {
+            idiomaToolStripMenuItem.DropDownItems.Clear();
 
+            var idiomas = _idiomaService.obtenerTodos();
+
+            foreach (var idioma in idiomas)
+            {
+                var item = new ToolStripMenuItem(idioma.Nombre);
+                item.Tag = idioma;
+
+                // Marcar el idioma actual del usuario
+                int idiomaActual = ServiceSessionManager55CA.getIntancia().usuarioActivo.IdIdioma;
+                item.Checked = idioma.Id == idiomaActual;
+
+                item.Click += IdiomaItem_Click;
+                idiomaToolStripMenuItem.DropDownItems.Add(item);
+            }
+        }
+
+        private void IdiomaItem_Click(object sender, EventArgs e)
+        {
+            var item = (ToolStripMenuItem)sender;
+            var idiomaSeleccionado = (Idioma55CA)item.Tag;
+
+            // Guardar en BD y sesión
+            _userService.GuardarIdioma(idiomaSeleccionado.Id);
+
+            // Aplicar idioma globalmente
+            string cod = idiomaSeleccionado.Id == 1 ? "es" : "en";
+            ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(cod);
+
+            // Actualizar checks del submenú
+            foreach (ToolStripMenuItem subItem in idiomaToolStripMenuItem.DropDownItems)
+            {
+                subItem.Checked = subItem.Tag == item.Tag;
+            }
+        }
 
         private void configurarAcceso()
         {
@@ -121,6 +160,8 @@ namespace Servicios
             gestionFamiliaToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuGestionFamilia");
             gestionRolToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuGestionRol");
             ayudaToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuAyuda");
+            idiomaToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuIdioma");
+
         }
 
         private void gestionFamiliaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -136,6 +177,11 @@ namespace Servicios
         }
 
         private void usuarioToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void administradorToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
