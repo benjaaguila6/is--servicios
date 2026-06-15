@@ -106,5 +106,7 @@
   "MenuPrincipal.menuGestionRol": "Role Management",
   "MenuPrincipal.menuAyuda": "Help",
   "MenuPrincipal.msgConfirmarCierreSesion": "Are you sure you want to log out?",
-  "MenuPrincipal.msgTituloCierreSesion": "Confirm Log Out"
+  "MenuPrincipal.msgTituloCierreSesion": "Confirm Log Out",
+
+  "MenuPrincipal.menuIdioma": "Language"
 }

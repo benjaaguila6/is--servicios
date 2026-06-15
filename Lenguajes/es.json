@@ -106,5 +106,7 @@
   "MenuPrincipal.menuGestionRol": "Gestión Rol",
   "MenuPrincipal.menuAyuda": "Ayuda",
   "MenuPrincipal.msgConfirmarCierreSesion": "¿Está seguro que desea cerrar sesión?",
-  "MenuPrincipal.msgTituloCierreSesion": "Confirmar cierre de sesión"
+  "MenuPrincipal.msgTituloCierreSesion": "Confirmar cierre de sesión",
+  "MenuPrincipal.menuIdioma": "Idioma"
+
 }
