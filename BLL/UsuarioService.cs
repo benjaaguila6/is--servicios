@@ -1,6 +1,7 @@
 ﻿using BE;
-using DAL;
 using BE.Enum;
+using DAL;
+using Services;
 using Services.Modelos;
 //using Services;
 using System;
@@ -128,7 +129,17 @@ namespace BLL
             string password = GenerarPassword(apellido, dni);
             string passwordHash = Services_55CA.ServiceSeguridad55CA.Hashear(password);
 
-            dal.InsertarUsuario(dni, nombre, apellido, email, rol.Id, user, passwordHash);
+            long dvh = CalcularDVHUsuario(
+                dni,
+                nombre,
+                apellido,
+                email,
+                rol.Id,
+                user,
+                passwordHash
+            );
+
+            dal.InsertarUsuario(dni, nombre, apellido, email, rol.Id, user, passwordHash, dvh);
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
@@ -146,11 +157,13 @@ namespace BLL
             if (usuario.Activo == true)
             {
                 dal.DesactivarUsuario(dni);
+                RecalcularDVHUsuario(dni);
                 evento = $"Se desactivó la cuenta del usuario: {usuario.User}";
             }
             else
             {
                 dal.ActivarUsuario(dni);
+                RecalcularDVHUsuario(dni);
                 evento = $"Se activó la cuenta del usuario: {usuario.User}";
             }
 
@@ -162,6 +175,7 @@ namespace BLL
         public void ModificarUsuario(string dni, string email, RolModelo55CA rol)
         {
             dal.ModificarUsuario(dni, email, rol.Id);
+            RecalcularDVHUsuario(dni);
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
@@ -187,6 +201,7 @@ namespace BLL
             }
 
             dal.CambiarPassword(passwordNuevaHash, usuarioActivo.DNI);
+            RecalcularDVHUsuario(usuarioActivo.DNI);
 
             return true;
 
@@ -211,7 +226,8 @@ namespace BLL
                 Bloqueo = Convert.ToBoolean(row["Bloqueo"]),
                 Activo = Convert.ToBoolean(row["Activo"]),
                 UltimoIntentoFallido = row["UltimoIntentoFallido"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["UltimoIntentoFallido"]),
-                IdIdioma = Convert.ToInt32(row["IdIdioma"]) 
+                IdIdioma = Convert.ToInt32(row["IdIdioma"]),
+                DVH = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]),
 
             };
         }
@@ -233,6 +249,7 @@ namespace BLL
 
             // desbloqueo
             dal.desbloquearUsuario(dni, nuevaPassHash);
+            RecalcularDVHUsuario(dni);
 
             // bitácora
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
@@ -249,8 +266,52 @@ namespace BLL
         {
             string dni = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
             dal.GuardarIdioma(dni, idIdioma);
+            RecalcularDVHUsuario(dni);
 
             Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.IdIdioma = idIdioma;
+        }
+
+        private long CalcularDVHUsuario(
+
+
+            string dni,
+            string nombre,
+            string apellido,
+            string email,
+            int idRol,
+            string user,
+            string passwordHash)
+            
+        {
+                    string cadena =
+                    dni +
+                    nombre +
+                    apellido +
+                    email +
+                    idRol +
+                    user +
+                    passwordHash;
+
+            return Services.DigitoVerificador55CA.CalcularDVH(cadena);
+        }
+
+        private void RecalcularDVHUsuario(string dni)
+        {
+            var row = dal.obtenerPorDNI(dni);
+
+            UsuarioModelo55CA usuario = MapearUsuario(row);
+
+            long nuevoDVH = CalcularDVHUsuario(
+                usuario.DNI,
+                usuario.Nombre,
+                usuario.Apellido,
+                usuario.Email,
+                usuario.Rol.Id,
+                usuario.User,
+                usuario.Password
+            );
+
+            dal.ActualizarDVH(dni, nuevoDVH);
         }
 
         #region Credenciales

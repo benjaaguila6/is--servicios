@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DigitoVerificador55CA.cs" />
     <Compile Include="IdiomaManager.cs" />
     <Compile Include="Modelos\BitacoraEventosModelo55CA.cs" />
     <Compile Include="Modelos\CompositeRol\Componente55CA.cs" />
