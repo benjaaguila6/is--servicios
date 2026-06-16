@@ -22,6 +22,8 @@ namespace Services.Modelos
         public bool Activo { get; set; }
         public DateTime? UltimoIntentoFallido { get; set; }
         public int IdIdioma { get; set; }
+        public long DVH { get; set; }
+
 
 
 
