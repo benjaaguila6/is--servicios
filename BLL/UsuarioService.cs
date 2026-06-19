@@ -227,7 +227,7 @@ namespace BLL
                 Activo = Convert.ToBoolean(row["Activo"]),
                 UltimoIntentoFallido = row["UltimoIntentoFallido"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(row["UltimoIntentoFallido"]),
                 IdIdioma = Convert.ToInt32(row["IdIdioma"]),
-                DVH = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]),
+                //DVH = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]),
 
             };
         }
@@ -266,7 +266,7 @@ namespace BLL
         {
             string dni = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
             dal.GuardarIdioma(dni, idIdioma);
-            RecalcularDVHUsuario(dni);
+            //RecalcularDVHUsuario(dni);
 
             Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.IdIdioma = idIdioma;
         }

@@ -135,7 +135,7 @@ namespace Servicios
 
                 txtEmail.Text = fila.Cells["Email"].Value.ToString();
 
-                Rol55CA rol = (Rol55CA)fila.Cells["Rol"].Value;
+                RolModelo55CA rol = (RolModelo55CA)fila.Cells["Rol"].Value;
 
                 cmbRol.SelectedValue = rol.Id;
 

@@ -170,21 +170,14 @@ namespace Servicios
                         return;
                     }
 
-                    int nuevoRolId = bllRol.crearRol(nombre);
-
-                    RolModelo55CA rolCreado = new RolModelo55CA { Id = nuevoRolId, Nombre = nombre };
+                    List<Componente55CA> componentesSeleccionados = new List<Componente55CA>();
 
                     foreach (Componente55CA componenteMarcado in checkListPermisosFamilias.CheckedItems)
                     {
-                        if (componenteMarcado is PermisoModelo55CA patente)
-                        {
-                            bllRol.AsignarPatente(rolCreado, patente);
-                        }
-                        else if (componenteMarcado is FamiliaModelo55CA familiaHija)
-                        {
-                            bllRol.AsignarFamilia(rolCreado, familiaHija);
-                        }
+                        componentesSeleccionados.Add(componenteMarcado);
                     }
+
+                    bllRol.crearRol(nombre, componentesSeleccionados);
 
                     MessageBox.Show("El rol fue creado y sus permisos fueron asignados con éxito.");
                 }
@@ -247,7 +240,7 @@ namespace Servicios
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al realizar la operación: " + ex.Message);
+                MessageBox.Show(ex.Message);
             }
         }
 

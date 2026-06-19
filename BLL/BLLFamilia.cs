@@ -30,20 +30,66 @@ namespace BLL
 
             return dictFamilias.Values.ToList();
         }
-        public int CrearFamilia(string nombre)
+        public void CrearFamilia(string nombre, List<Componente55CA> componentes)
         {
             DataTable dtFamilia = _dal.obtenerPorNombre(nombre);
 
-            // Si la tabla contiene al menos una fila, significa que ya existe
+            // si la tabla tiene una fila, significa que ya existe
             if (dtFamilia.Rows.Count > 0)
             {
                 throw new Exception($"Ya existe una familia registrada con el nombre '{nombre}'.");
             }
 
+            FamiliaModelo55CA familia = new FamiliaModelo55CA { Nombre = nombre };
+
+            foreach (Componente55CA comp in componentes) // evitamos crear con patentes duplicados.
+            {
+                var permisosActuales = familia.obtenerPermisos();
+
+                if (comp is PermisoModelo55CA patente)
+                {
+                    if (permisosActuales.Any(p => p.Id == patente.Id))
+                    {
+                        throw new Exception($"Conflicto en la selección: La patente '{patente.Nombre}' ya está incluida indirectamente dentro de otra familia que marcaste.");
+                    }
+                }
+
+                else if (comp is FamiliaModelo55CA familiaHija)
+                {
+                    var permisosHija = familiaHija.obtenerPermisos();
+
+                    foreach (var p in permisosHija)
+                    {
+                        if (permisosActuales.Any(pa => pa.Id == p.Id))
+                        {
+                            throw new Exception($"Conflicto en la selección: La familia '{familiaHija.Nombre}' aporta permisos que ya elegiste previamente.");
+                        }
+                    }
+                }
+
+                familia.agregarHijos(comp);
+            }
+
+            int nuevoFamiliaId = _dal.insertarFamilia(nombre);
+
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+
+            foreach (Componente55CA comp in componentes)
+            {
+                if (comp is PermisoModelo55CA patente)
+                {
+                    _dal.asignarPatenteAFamilia(patente.Id, nuevoFamiliaId);
+                    BLLBit.registrarEvento(dniAutor, $"Asignó la patente {patente.Nombre} a la familia {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+                }
+                else if (comp is FamiliaModelo55CA familiaHija)
+                {
+                    _dal.asignarFamiliaAFamilia(nuevoFamiliaId, familiaHija.Id);
+                    BLLBit.registrarEvento(dniAutor, $"Asignó la familia {familiaHija.Nombre} a la familia {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+                }
+            }
+
             BLLBit.registrarEvento(dniAutor, $"Creo una nueva familia", Criticidad55CA.Alto, Modulos55CA.Usuario);
 
-            return _dal.insertarFamilia(nombre);
         }
 
         public void AsignarPatente(FamiliaModelo55CA familia, PermisoModelo55CA patente)

@@ -179,21 +179,15 @@ namespace Servicios
                         MessageBox.Show("Debe marcar al menos un Componente (Familia/Permiso) de la lista.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
-                    int nuevoFamiliaId = bllFamilia.CrearFamilia(nombre);
 
-                    FamiliaModelo55CA familiaCreada = new FamiliaModelo55CA { Id = nuevoFamiliaId, Nombre = nombre };
+                    List<Componente55CA> componentesSeleccionados = new List<Componente55CA>();
 
-                    foreach (Componente55CA componenteMarcado in checkListPermisosFamilias.CheckedItems)
+                    foreach (var item in checkListPermisosFamilias.CheckedItems)
                     {
-                        if (componenteMarcado is PermisoModelo55CA patente)
-                        {
-                            bllFamilia.AsignarPatente(familiaCreada, patente);
-                        }
-                        else if (componenteMarcado is FamiliaModelo55CA familiaHija)
-                        {
-                            bllFamilia.AsignarFamilia(familiaCreada, familiaHija);
-                        }
+                        componentesSeleccionados.Add((Componente55CA)item);
                     }
+
+                    bllFamilia.CrearFamilia(nombre, componentesSeleccionados);
 
                     MessageBox.Show("Familia creada con éxito.");
                 }
