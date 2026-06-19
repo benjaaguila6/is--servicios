@@ -12,6 +12,10 @@ namespace Services.Modelos
         public string Nombre { get; set; }
         public List<Componente55CA> Permisos { get; set; } = new List<Componente55CA>();
 
+        public override string ToString()
+        {
+            return this.Nombre;
+        }
         public List<Componente55CA> ObtenerPermisos()
         {
             List<Componente55CA> permisos = new List<Componente55CA >();

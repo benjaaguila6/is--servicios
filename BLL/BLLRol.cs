@@ -54,7 +54,7 @@ namespace BLL
         }
 
 
-        public int crearRol(string nombre)
+        public void crearRol(string nombre, List<Componente55CA> componentes)
         {
             DataTable dt = _dal.obtenerPorNombre(nombre);
 
@@ -63,10 +63,56 @@ namespace BLL
                 throw new Exception($"Ya existe una familia registrada con el nombre '{nombre}'");
             }
 
+            RolModelo55CA rol = new RolModelo55CA { Nombre =  nombre };
+
+            foreach (Componente55CA comp in componentes)
+            {
+                var permisosActuales = rol.ObtenerPermisos();
+
+                if (comp is PermisoModelo55CA patente)
+                {
+                    if (permisosActuales.Any(p => p.Id == patente.Id))
+                    {
+                        throw new Exception($"Conflicto en la selección: La patente '{patente.Nombre}' ya está incluida indirectamente dentro de otra familia que marcaste.");
+                    }
+                }
+
+                else if (comp is FamiliaModelo55CA familia)
+                {
+                    var permisosHija = familia.obtenerPermisos();
+
+                    foreach (var p in permisosHija)
+                    {
+                        if (permisosActuales.Any(pa => pa.Id == p.Id))
+                        {
+                            throw new Exception($"Conflicto en la selección: La familia '{familia.Nombre}' aporta permisos que ya elegiste previamente.");
+                        }
+                    }
+                }
+
+                rol.Permisos.Add(comp);
+            }
+
+            int nuevoRolId = _dal.insertarRol(nombre);
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+
+
+            foreach (Componente55CA comp in componentes)
+            {
+                if (comp is PermisoModelo55CA patente)
+                {
+                    _dal.asignarPatenteARol(patente.Id, nuevoRolId);
+                    bllBitacora.registrarEvento(dniAutor, $"Asignó la patente {patente.Nombre} a la familia {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+                }
+                else if (comp is FamiliaModelo55CA familiaHija)
+                {
+                    _dal.asignarFamiliaARol(familiaHija.Id, rol.Id);
+                    bllBitacora.registrarEvento(dniAutor, $"Asignó la familia {familiaHija.Nombre} a la familia {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+                }
+            }
+
             bllBitacora.registrarEvento(dniAutor, $"Creo una nueva familia", Criticidad55CA.Alto, Modulos55CA.Usuario);
 
-            return _dal.insertarRol(nombre);
         }
 
         public void AsignarPatente(RolModelo55CA rol, PermisoModelo55CA patente)
@@ -118,7 +164,7 @@ namespace BLL
             _dal.eliminarRol(idRol);
         }
 
-        #region Métodos Privados de Ensamblaje (Helpers)
+        #region Métodos de Ensamblaje
 
         private void EnsamblarPatentesEnRoles(Dictionary<int, RolModelo55CA> dictRoles, Dictionary<int, PermisoModelo55CA> dictPatentes, DataTable dtRelaciones)
         {
