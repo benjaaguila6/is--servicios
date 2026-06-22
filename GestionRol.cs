@@ -54,7 +54,8 @@ namespace Servicios
             Ninguno,
             Crear,
             Asignar,
-            Eliminar
+            Eliminar,
+            Desasignar
         }
 
         private ModoOperacionFamilia modoActual = ModoOperacionFamilia.Ninguno;
@@ -86,6 +87,7 @@ namespace Servicios
             btnEliminar.Enabled = false;
             btnAsignar.Enabled = false;
             btnCancelar.Enabled = true;
+            btnDesasginar.Enabled = false;
         }
 
         private void btnAsignar_Click(object sender, EventArgs e)
@@ -96,6 +98,7 @@ namespace Servicios
             btnCancelar.Enabled = true;
             btnEliminar.Enabled = false;
             btnCrear.Enabled = false;
+            btnDesasginar.Enabled = false;
         }
 
         private void dgvFamilias_SelectionChanged(object sender, EventArgs e)
@@ -116,6 +119,7 @@ namespace Servicios
             foreach (Componente55CA componente in rol.Permisos)
             {
                 TreeNode nodoHijo = new TreeNode(componente.Nombre);
+                nodoHijo.Tag = componente;
                 nodoRaiz.Nodes.Add(nodoHijo);
 
                 if (componente is FamiliaModelo55CA familia)
@@ -215,7 +219,6 @@ namespace Servicios
 
                 else if (modoActual == ModoOperacionFamilia.Eliminar)
                 {
-                    // (La lógica de eliminar queda igual que la tuya)
                     if (dgvFamilias.CurrentRow == null)
                     {
                         MessageBox.Show("Debe seleccionar un rol destino para eliminar.");
@@ -225,6 +228,29 @@ namespace Servicios
                     RolModelo55CA rolSeleccionado = (RolModelo55CA)dgvFamilias.CurrentRow.DataBoundItem;
                     bllRol.EliminarRol(rolSeleccionado.Id);
                     MessageBox.Show("Se eliminó correctamente el Rol.");
+                }
+
+                else if(modoActual == ModoOperacionFamilia.Desasignar)
+                {
+                    RolModelo55CA rolSeleccionado = (RolModelo55CA)dgvFamilias.CurrentRow.DataBoundItem;
+                    Componente55CA componenteAQuitar = (Componente55CA)tvPermisosAsignados.SelectedNode.Tag;
+
+                    DialogResult respuesta = MessageBox.Show($"¿Seguro que desea quitar '{componenteAQuitar.Nombre}' del rol '{rolSeleccionado.Nombre}'?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    if (respuesta == DialogResult.Yes)
+                    {
+                        if (componenteAQuitar is PermisoModelo55CA patente)
+                        {
+                            bllRol.DesasignarPatente(rolSeleccionado.Id, patente.Id);
+                        }
+                        else if (componenteAQuitar is FamiliaModelo55CA familia)
+                        {
+                            bllRol.DesasignarFamilia(rolSeleccionado.Id, familia.Id);
+                        }
+
+                        MessageBox.Show("Componente desasignado correctamente.");
+                        cargarDatos(); // Recargamos la BD para actualizar el árbol
+                    }
                 }
 
                 modoActual = ModoOperacionFamilia.Ninguno;
@@ -261,6 +287,7 @@ namespace Servicios
             btnCrear.Enabled = true;
             btnAsignar.Enabled = true;
             btnEliminar.Enabled = true;
+            btnDesasginar.Enabled = true;
 
             DesmarcarCheckList();
         }
@@ -274,6 +301,32 @@ namespace Servicios
             btnAsignar.Enabled = false;
             btnEliminar.Enabled = false;
             btnCrear.Enabled = false;
+            btnDesasginar.Enabled = false;
+        }
+
+        private void btnDesasginar_Click(object sender, EventArgs e)
+        {
+            modoActual = ModoOperacionFamilia.Desasignar;
+
+            if (dgvFamilias.CurrentRow == null) return;
+            if (tvPermisosAsignados.SelectedNode == null)
+            {
+                MessageBox.Show("Debe seleccionar un componente del árbol para desasignarlo.");
+                return;
+            }
+
+            if (tvPermisosAsignados.SelectedNode.Level != 1)
+            {
+                MessageBox.Show("Solo puede desasignar componentes directos del rol. Para quitar permisos internos, modifique la familia correspondiente.");
+                return;
+            }
+
+            btnAplicar.Enabled = true;
+            btnCancelar.Enabled = true;
+            btnAsignar.Enabled = false;
+            btnEliminar.Enabled = false;
+            btnCancelar.Enabled = false;
+            btnDesasginar.Enabled = false;
         }
     }
 }

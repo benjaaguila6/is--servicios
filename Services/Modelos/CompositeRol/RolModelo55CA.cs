@@ -25,7 +25,7 @@ namespace Services.Modelos
                 permisos.AddRange(hijo.obtenerPermisos());
             }
 
-            return permisos;
+            return permisos.GroupBy(p => p.Id).Select(grupo => grupo.First()).ToList(); // esto permite que no se le asignen permisos duplicados
         }
     }
 }

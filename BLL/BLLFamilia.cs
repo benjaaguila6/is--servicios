@@ -101,6 +101,26 @@ namespace BLL
                 throw new Exception($"La familia: {familia.Nombre} ya contiene el permiso {patente.Nombre}.");
             }
 
+            BLLRol bllRol = new BLLRol();
+            List<RolModelo55CA> todosLosRoles = bllRol.ObtenerRolesConJerarquia();
+
+            foreach (RolModelo55CA rol in todosLosRoles)
+            {
+                bool rolUsaEstaFamilia = RolUsaFamilia(rol, familia.Id);
+
+                if (rolUsaEstaFamilia)
+                {
+                    // si el rol usa la familia, sacamos sus patentes aplanadas para ver si ya tiene la patente por otra vía
+                    var permisosDelRol = rol.ObtenerPermisos();
+                    bool rolYaTienePatente = permisosDelRol.Any(p => p.Id == patente.Id);
+
+                    if (rolYaTienePatente)
+                    {
+                        throw new Exception($"Operación denegada: El Rol '{rol.Nombre}' utiliza la Familia '{familia.Nombre}', y ya tiene asignada la patente '{patente.Nombre}'. Debe desasignarla del Rol primero.");
+                    }
+                }
+            }
+
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
             BLLBit.registrarEvento(dniAutor, $"Asigno la patente {patente.Nombre} a la familia {familia.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
 
@@ -126,6 +146,28 @@ namespace BLL
                 }
             }
 
+            BLLRol bllRol = new BLLRol();
+            List<RolModelo55CA> todosLosRoles = bllRol.ObtenerRolesConJerarquia();
+
+            foreach (RolModelo55CA rol in todosLosRoles)
+            {
+                bool rolUsaEstaFamilia = RolUsaFamilia(rol, familiaPadre.Id);
+
+                if (rolUsaEstaFamilia)
+                {
+                    var permisosDelRol = rol.ObtenerPermisos();
+
+                    // evaluamos si las patentes aplanadas de la familia hija generarían choque
+                    foreach (var patenteAportada in permisosHija)
+                    {
+                        if (permisosDelRol.Any(p => p.Id == patenteAportada.Id))
+                        {
+                            throw new Exception($"Operación denegada: El Rol '{rol.Nombre}' utiliza la Familia '{familiaPadre.Nombre}'. Si se asigna la familia '{familiaHija.Nombre}', el rol duplicaría la patente '{patenteAportada.Nombre}'. Debe limpiarlo del Rol primero.");
+                        }
+                    }
+                }
+            }
+
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
             BLLBit.registrarEvento(dniAutor, $"Asigno la familia {familiaHija.Nombre} a la familia {familiaPadre.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
 
@@ -144,6 +186,37 @@ namespace BLL
 
             _dal.eliminarFamilia(idFamilia);
         }
+
+        #region Verificacion hacia arriba
+        private bool RolUsaFamilia(RolModelo55CA rol, int idFamiliaBuscada)
+        {
+            return BuscarFamiliaEnNodos(rol.Permisos, idFamiliaBuscada);
+        }
+
+        private bool BuscarFamiliaEnNodos(IEnumerable<Componente55CA> nodos, int idFamiliaBuscada)
+        {
+            foreach (var nodo in nodos)
+            {
+                if (nodo is FamiliaModelo55CA familia)
+                {
+                    // si es la familia que estamos buscando
+                    if (familia.Id == idFamiliaBuscada)
+                    {
+                        return true;
+                    }
+
+                    // si no es, buscamos recursivamente adentro de sus hijos
+                    if (BuscarFamiliaEnNodos(familia.obtenerPermisos(), idFamiliaBuscada))
+                    {
+                        return true;
+                    }
+
+                }
+            }
+            return false;
+        }
+
+        #endregion
 
         #region Mapear y Ensamblar
         private Dictionary<int, FamiliaModelo55CA> MapearFamiliasBase(DataTable dt)

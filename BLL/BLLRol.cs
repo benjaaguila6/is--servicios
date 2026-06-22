@@ -102,16 +102,16 @@ namespace BLL
                 if (comp is PermisoModelo55CA patente)
                 {
                     _dal.asignarPatenteARol(patente.Id, nuevoRolId);
-                    bllBitacora.registrarEvento(dniAutor, $"Asignó la patente {patente.Nombre} a la familia {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+                    bllBitacora.registrarEvento(dniAutor, $"Asignó la patente {patente.Nombre} a el rol {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
                 }
                 else if (comp is FamiliaModelo55CA familiaHija)
                 {
-                    _dal.asignarFamiliaARol(familiaHija.Id, rol.Id);
-                    bllBitacora.registrarEvento(dniAutor, $"Asignó la familia {familiaHija.Nombre} a la familia {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+                    _dal.asignarFamiliaARol(familiaHija.Id, nuevoRolId);
+                    bllBitacora.registrarEvento(dniAutor, $"Asignó la familia {familiaHija.Nombre} a el rol {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
                 }
             }
 
-            bllBitacora.registrarEvento(dniAutor, $"Creo una nueva familia", Criticidad55CA.Alto, Modulos55CA.Usuario);
+            bllBitacora.registrarEvento(dniAutor, $"Creo un nuevo rol", Criticidad55CA.Alto, Modulos55CA.Usuario);
 
         }
 
@@ -162,6 +162,16 @@ namespace BLL
             }
 
             _dal.eliminarRol(idRol);
+        }
+
+        public void DesasignarPatente(int idRol, int idPatente)
+        {
+            _dal.quitarPatenteDeRol(idRol, idPatente);
+        }
+
+        public void DesasignarFamilia(int idRol, int idFamilia)
+        {
+            _dal.quitarFamiliaDeRol(idRol, idFamilia);
         }
 
         #region Métodos de Ensamblaje
