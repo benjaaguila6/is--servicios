@@ -19,32 +19,17 @@ namespace Servicios
     {
         UsuarioService _userService = new UsuarioService();
         BLLIdioma55CA _idiomaService = new BLLIdioma55CA();
-        private bool _cargando = false;
-        private static int _ultimoIdIdioma = 1;
+        
 
         public Login()
         {
             InitializeComponent();
-            CargarIdiomas();
             ServiceSessionManager55CA.getIntancia().Idioma.Suscribir(this);
+            ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma("es");
 
-            string codIdioma = _ultimoIdIdioma == 1 ? "es" : "en";
-            ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(codIdioma);
-
-            _cargando = true;
-            cmbIdioma.SelectedValue = _ultimoIdIdioma;
-            _cargando = false;
         }
 
-        private void CargarIdiomas()
-        {
-            _cargando = true;
-            var idiomas = _idiomaService.obtenerTodos();
-            cmbIdioma.DataSource = idiomas;
-            cmbIdioma.DisplayMember = "Nombre";
-            cmbIdioma.ValueMember = "Id";
-            _cargando = false;
-        }
+        
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -90,12 +75,9 @@ namespace Servicios
 
         private void RestaurarIdiomaLogin()
         {
-            if (cmbIdioma.SelectedItem is Idioma55CA idiomaLogin)
-            {
-                string cod = idiomaLogin.Id == 1 ? "es" : "en";
-                ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(cod);
-            }
+            ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma("es");
             this.Show();
+
         }
 
         public void actualizarIdioma()
@@ -109,16 +91,6 @@ namespace Servicios
             btnLogin.Text = t.Translate("Login.btnLogin");
         }
 
-        private void cmbIdioma_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (_cargando || cmbIdioma.SelectedItem == null) 
-            {
-                return; 
-            }
-
-            Idioma55CA idiomaSeleccionado = (Idioma55CA)cmbIdioma.SelectedItem;
-            string codIdioma = idiomaSeleccionado.Id == 1 ? "es" : "en";
-            ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(codIdioma);
-        }
+        
     }
 }
