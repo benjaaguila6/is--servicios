@@ -103,6 +103,28 @@ namespace DAL
             return cantidad > 0;
         }
 
+        public int quitarPatenteDeRol(int idRol, int idPatente)
+        {
+            string query = "DELETE FROM Rol_Patente WHERE IdRol = @idRol AND IdPatente = @idPatente";
+            var parametros = new Dictionary<string, object>
+            {
+                { "@idRol", idRol },
+                { "@idPatente", idPatente }
+            };
+            return _dal.executeNonQuery(query, parametros);
+        }
+
+        public int quitarFamiliaDeRol(int idRol, int idFamilia)
+        {
+            string query = "DELETE FROM Rol_Familia WHERE IdRol = @idRol AND IdFamilia = @idFamilia";
+            var parametros = new Dictionary<string, object>
+            {
+                { "@idRol", idRol },
+                { "@idFamilia", idFamilia }
+            };
+            return _dal.executeNonQuery(query, parametros);
+        }
+
         public DataTable obtenerRelacionesRolPatente()
         {
             string query = "SELECT IdRol, IdPatente FROM Rol_Patente";
