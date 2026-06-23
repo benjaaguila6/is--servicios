@@ -27,9 +27,9 @@ namespace BLL
             return dal.obtenerBitacora(desde, hasta);
         }
 
-        public DataTable obtenerBitacora(DateTime desde, DateTime hasta)
+        public DataTable obtenerBitacora(DateTime desde, DateTime hasta, int? moduloFiltro = null)
         {
-            return dal.obtenerBitacora(desde, hasta);
+            return dal.obtenerBitacora(desde, hasta, moduloFiltro);
         }
     }
 }

@@ -102,16 +102,16 @@ namespace BLL
                 if (comp is PermisoModelo55CA patente)
                 {
                     _dal.asignarPatenteARol(patente.Id, nuevoRolId);
-                    bllBitacora.registrarEvento(dniAutor, $"Asignó la patente {patente.Nombre} a el rol {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+                    bllBitacora.registrarEvento(dniAutor, $"Asignó la patente {patente.Nombre} a el rol {nombre}.", Criticidad55CA.Alto, Modulos55CA.Perfil);
                 }
                 else if (comp is FamiliaModelo55CA familiaHija)
                 {
                     _dal.asignarFamiliaARol(familiaHija.Id, nuevoRolId);
-                    bllBitacora.registrarEvento(dniAutor, $"Asignó la familia {familiaHija.Nombre} a el rol {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+                    bllBitacora.registrarEvento(dniAutor, $"Asignó la familia {familiaHija.Nombre} a el rol {nombre}.", Criticidad55CA.Alto, Modulos55CA.Perfil);
                 }
             }
 
-            bllBitacora.registrarEvento(dniAutor, $"Creo un nuevo rol", Criticidad55CA.Alto, Modulos55CA.Usuario);
+            bllBitacora.registrarEvento(dniAutor, $"Creo un nuevo rol", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
         }
 
@@ -125,7 +125,7 @@ namespace BLL
             }
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
-            bllBitacora.registrarEvento(dniAutor, $"Asigno la patente {patente.Nombre} a el rol {rol.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+            bllBitacora.registrarEvento(dniAutor, $"Asigno la patente {patente.Nombre} a el rol {rol.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
             _dal.asignarPatenteARol(patente.Id, rol.Id);
         }
@@ -149,7 +149,7 @@ namespace BLL
             }
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
-            bllBitacora.registrarEvento(dniAutor, $"Asigno la familia {familia.Nombre} a el rol {rol.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+            bllBitacora.registrarEvento(dniAutor, $"Asigno la familia {familia.Nombre} a el rol {rol.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
             _dal.asignarFamiliaARol(familia.Id, rol.Id);
         }
@@ -160,6 +160,9 @@ namespace BLL
             {
                 throw new Exception("No se puede eliminar el rol porque actualmente hay usuarios que lo tienen asignado.");
             }
+
+            string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
+            bllBitacora.registrarEvento(dniAutor, $"Elimino un rol.", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
             _dal.eliminarRol(idRol);
         }
