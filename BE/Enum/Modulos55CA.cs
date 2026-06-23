@@ -9,6 +9,7 @@ namespace BE.Enum
     public enum Modulos55CA
     {
         Usuario = 1,
-        Seguridad = 2
+        Seguridad = 2,
+        Perfil = 3
     }
 }

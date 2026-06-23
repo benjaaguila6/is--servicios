@@ -25,7 +25,6 @@ namespace Servicios
         {
             InitializeComponent();
             ServiceSessionManager55CA.getIntancia().Idioma.Suscribir(this);
-            ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma("es");
 
         }
 
@@ -75,20 +74,13 @@ namespace Servicios
 
         private void RestaurarIdiomaLogin()
         {
-            ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma("es");
-            this.Show();
+
 
         }
 
         public void actualizarIdioma()
         {
-            var t = ServiceSessionManager55CA.getIntancia().Idioma;
 
-            this.Text = t.Translate("Login.formTitle");
-            label3.Text = t.Translate("Login.labelBienvenido");
-            lblUsuario.Text = t.Translate("Login.lblUsuario");
-            lblContrasena.Text = t.Translate("Login.lblPassword");
-            btnLogin.Text = t.Translate("Login.btnLogin");
         }
 
         

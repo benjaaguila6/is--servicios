@@ -79,16 +79,16 @@ namespace BLL
                 if (comp is PermisoModelo55CA patente)
                 {
                     _dal.asignarPatenteAFamilia(patente.Id, nuevoFamiliaId);
-                    BLLBit.registrarEvento(dniAutor, $"Asignó la patente {patente.Nombre} a la familia {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+                    BLLBit.registrarEvento(dniAutor, $"Asignó la patente {patente.Nombre} a la familia {nombre}.", Criticidad55CA.Alto, Modulos55CA.Perfil);
                 }
                 else if (comp is FamiliaModelo55CA familiaHija)
                 {
                     _dal.asignarFamiliaAFamilia(nuevoFamiliaId, familiaHija.Id);
-                    BLLBit.registrarEvento(dniAutor, $"Asignó la familia {familiaHija.Nombre} a la familia {nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+                    BLLBit.registrarEvento(dniAutor, $"Asignó la familia {familiaHija.Nombre} a la familia {nombre}.", Criticidad55CA.Alto, Modulos55CA.Perfil);
                 }
             }
 
-            BLLBit.registrarEvento(dniAutor, $"Creo una nueva familia", Criticidad55CA.Alto, Modulos55CA.Usuario);
+            BLLBit.registrarEvento(dniAutor, $"Creo una nueva familia", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
         }
 
@@ -122,7 +122,7 @@ namespace BLL
             }
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
-            BLLBit.registrarEvento(dniAutor, $"Asigno la patente {patente.Nombre} a la familia {familia.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+            BLLBit.registrarEvento(dniAutor, $"Asigno la patente {patente.Nombre} a la familia {familia.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
             _dal.asignarPatenteAFamilia(patente.Id, familia.Id);
         }
@@ -169,7 +169,7 @@ namespace BLL
             }
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
-            BLLBit.registrarEvento(dniAutor, $"Asigno la familia {familiaHija.Nombre} a la familia {familiaPadre.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+            BLLBit.registrarEvento(dniAutor, $"Asigno la familia {familiaHija.Nombre} a la familia {familiaPadre.Nombre}.", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
             _dal.asignarFamiliaAFamilia(familiaPadre.Id, familiaHija.Id);
         }
@@ -182,7 +182,7 @@ namespace BLL
             }
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
-            BLLBit.registrarEvento(dniAutor, $"Elimino una familia.", Criticidad55CA.Alto, Modulos55CA.Usuario);
+            BLLBit.registrarEvento(dniAutor, $"Elimino una familia.", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
             _dal.eliminarFamilia(idFamilia);
         }

@@ -28,6 +28,7 @@
   "GestionFamilia.groupBoxDatos": "Data",
   "GestionFamilia.labelNombre": "Name",
   "GestionFamilia.btnCrear": "CREATE",
+  "GestionFamilia.btnCancelar": "CANCEL",
   "GestionFamilia.btnAsignar": "ASSIGN",
   "GestionFamilia.btnAplicar": "APPLY",
   "GestionFamilia.btnEliminar": "DELETE",
@@ -45,6 +46,9 @@
   "GestionRol.groupBoxDatos": "Data",
   "GestionRol.labelNombre": "Name",
   "GestionRol.btnCrear": "CREATE",
+  "GestionRol.btnEliminar": "DELETE",
+  "GestionRol.btnDesasignar": "UNASSIGN",
+  "GestionRol.btnCancelar": "CANCEL",
   "GestionRol.btnAsignar": "ASSIGN",
   "GestionRol.btnAplicar": "APPLY",
 

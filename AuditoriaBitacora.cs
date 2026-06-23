@@ -47,6 +47,22 @@ namespace Servicios
             dgvBitacora.Columns["Apellido"].Visible = false;
         }
 
+        private void CargarComboModulo()
+        {
+            var listaModulos = new List<object>();
+            listaModulos.Add(new { Id = 0, Nombre = "Todos" });
+
+            foreach (Modulos55CA mod in Enum.GetValues(typeof(Modulos55CA)))
+            {
+                listaModulos.Add(new { Id = (int)mod, Nombre = mod.ToString() });
+            }
+
+            cbModulos.DataSource = listaModulos;
+            cbModulos.DisplayMember = "Nombre";
+            cbModulos.ValueMember = "Id";
+            cbModulos.SelectedIndex = 0;
+        }
+
         private void btnFiltrar_Click(object sender, EventArgs e)
         {
             DateTime desde = dtpDesde.Value.Date;
@@ -65,7 +81,13 @@ namespace Servicios
                 return;
             }
 
-            dgvBitacora.DataSource = bitService.obtenerBitacora(desde, hasta);
+            int? moduloSeleccionado = null;
+            if (cbModulos.SelectedValue != null && (int)cbModulos.SelectedValue != 0)
+            {
+                moduloSeleccionado = (int)cbModulos.SelectedValue;
+            }
+
+            dgvBitacora.DataSource = bitService.obtenerBitacora(desde, hasta, moduloSeleccionado);
             dgvBitacora.Columns["Nombre"].Visible = false;
             dgvBitacora.Columns["Apellido"].Visible = false;
         }
@@ -157,6 +179,12 @@ namespace Servicios
             txtNombre.Clear();
             txtApellido.Clear();
 
+            if (cbModulos.Items.Count > 0)
+            {
+                cbModulos.SelectedIndex = 0;
+            }
+                
+
             CargarGrillaInicial();
         }
 
@@ -186,7 +214,7 @@ namespace Servicios
         {
             dtpDesde.Value = DateTime.Now.AddDays(-3);
             dtpHasta.Value = DateTime.Now;
-
+            CargarComboModulo();
             CargarGrillaInicial();
         }
 

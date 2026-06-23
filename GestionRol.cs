@@ -73,6 +73,9 @@ namespace Servicios
             btnCrear.Text = t.Translate("GestionRol.btnCrear");
             btnAsignar.Text = t.Translate("GestionRol.btnAsignar");
             btnAplicar.Text = t.Translate("GestionRol.btnAplicar");
+            btnEliminar.Text = t.Translate("GestionRol.btnEliminar");
+            btnDesasginar.Text = t.Translate("GestionRol.btnDesasignar");
+            btnCancelar.Text = t.Translate("GestionRol.btnCancelar");
         }
 
         private void btnCrear_Click(object sender, EventArgs e)
@@ -260,6 +263,7 @@ namespace Servicios
                 btnCrear.Enabled = true;
                 btnAsignar.Enabled = true;
                 btnEliminar.Enabled = true;
+                btnDesasginar.Enabled = true;
 
                 DesmarcarCheckList();
                 cargarDatos();

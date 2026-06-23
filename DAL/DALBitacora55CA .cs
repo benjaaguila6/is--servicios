@@ -36,7 +36,7 @@ namespace DAL
             return resultado;
         }
 
-        public DataTable obtenerBitacora(DateTime desde, DateTime hasta)
+        public DataTable obtenerBitacora(DateTime desde, DateTime hasta, int? moduloId = null)
         {
             string query = @"SELECT B.Id, B.DNI, U.Username, U.Nombre, U.Apellido, B.Evento,
             B.Criticidad, B.Modulo, B.FechaHora FROM BitacoraEventos B LEFT JOIN Usuario U ON B.DNI = U.DNI
@@ -53,7 +53,11 @@ namespace DAL
                 }
             };
 
-           
+            if (moduloId.HasValue)
+            {
+                query += " AND B.Modulo = @modulo";
+                parametros.Add("@modulo", moduloId.Value);
+            }
 
             return acceso.executeDataTable(query, parametros);
         }

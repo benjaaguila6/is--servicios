@@ -70,6 +70,7 @@ namespace Servicios
             btAsignar.Text = t.Translate("GestionFamilia.btnAsignar");
             btAplicar.Text = t.Translate("GestionFamilia.btnAplicar");
             btEliminar.Text = t.Translate("GestionFamilia.btnEliminar");
+            btCancelar.Text = t.Translate("GestionFamilia.btnCancelar");
         }
 
 
