@@ -45,6 +45,8 @@ namespace Servicios
 
             dgvBitacora.Columns["Nombre"].Visible = false;
             dgvBitacora.Columns["Apellido"].Visible = false;
+
+            actualizarIdioma();
         }
 
         private void CargarComboModulo()
@@ -254,6 +256,16 @@ namespace Servicios
             btnFiltrar.Text = t.Translate("AuditoriaBitacora.btnFiltrar");
             btnLimpiat.Text = t.Translate("AuditoriaBitacora.btnLimpiar");
             btnPDF.Text = t.Translate("AuditoriaBitacora.btnPDF");
+
+            if(dgvBitacora.Columns.Count > 0)
+            {
+                dgvBitacora.Columns["Evento"].HeaderText = t.Translate("AuditoriaBitacora.colEvento");
+                dgvBitacora.Columns["Criticidad"].HeaderText = t.Translate("AuditoriaBitacora.colCriticidad");
+                dgvBitacora.Columns["Modulo"].HeaderText = t.Translate("AuditoriaBitacora.colModulo");
+                dgvBitacora.Columns["FechaHora"].HeaderText = t.Translate("AuditoriaBitacora.colFechaHora");
+            }
+            
+
         }
     }
 }

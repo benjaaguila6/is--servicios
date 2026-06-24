@@ -88,6 +88,8 @@ namespace Servicios
             listUsuarios = listUsuarios.Where(u => u.DNI != dniUsuarioActivo).ToList();
 
             dgvUsuarios.DataSource = listUsuarios;
+
+            actualizarIdioma();
         }
 
         private void btnCrear_Click(object sender, EventArgs e)

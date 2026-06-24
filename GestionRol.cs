@@ -76,6 +76,8 @@ namespace Servicios
             btnEliminar.Text = t.Translate("GestionRol.btnEliminar");
             btnDesasginar.Text = t.Translate("GestionRol.btnDesasignar");
             btnCancelar.Text = t.Translate("GestionRol.btnCancelar");
+            dgvFamilias.Columns["Nombre"].HeaderText = t.Translate("GestionUsuario.colNombre");
+
         }
 
         private void btnCrear_Click(object sender, EventArgs e)
