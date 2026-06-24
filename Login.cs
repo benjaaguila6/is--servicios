@@ -75,7 +75,7 @@ namespace Servicios
         private void RestaurarIdiomaLogin()
         {
 
-
+            this.Show();
         }
 
         public void actualizarIdioma()
