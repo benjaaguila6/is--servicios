@@ -29,6 +29,8 @@
   "GestionFamilia.labelNombre": "Nombre",
   "GestionFamilia.btnCrear": "CREAR",
   "GestionFamilia.btnAsignar": "ASIGNAR",
+  "GestionFamilia.btndesAsignar": "DESASIGNAR",
+  "GestionFamilia.btnCancelar": "CANCELAR",
   "GestionFamilia.btnAplicar": "APLICAR",
   "GestionFamilia.btnEliminar": "ELIMINAR",
   "GestionFamilia.msgNombreRequerido": "Debe ingresar un nombre para la familia.",
@@ -47,6 +49,10 @@
   "GestionRol.btnCrear": "CREAR",
   "GestionRol.btnAsignar": "ASIGNAR",
   "GestionRol.btnAplicar": "APLICAR",
+  "GestionRol.btnDesasignar": "DESASIGNAR",
+  "GestionRol.btnCancelar": "CANCELAR",
+  "GestionRol.btnEliminar": "ELIMINAR",
+
 
   "GestionUsuario.formTitle": "Gestión de Usuarios",
   "GestionUsuario.gbUsuarios": "Usuarios",
