@@ -74,26 +74,17 @@ namespace Servicios
 
         private void configurarAcceso()
         {
-
-            if(ServiceSessionManager55CA.getIntancia().usuarioActivo.Rol.Id == 1)
-            {
-                administradorToolStripMenuItem.Enabled = true;
-
-                cambiarClaveToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cambiar Clave");
-                cerrarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cerrar Sesion");
-                gestionUsuariosToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Gestion Usuario");
-                iniciarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Iniciar Sesion");
-                bitacoraEventosToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Auditoria Eventos");
-                gestionRolToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Gestion Roles");
-                gestionFamiliaToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Gestion Familia");
-            }
-            else
-            {
-                cambiarClaveToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cambiar Clave");
-                cerrarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cerrar Sesion");
-                iniciarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Iniciar Sesion");
-                administradorToolStripMenuItem.Enabled = false;
-            }
+            cambiarClaveToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cambiar Clave");
+            cerrarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cerrar Sesion");
+            gestionUsuariosToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Gestion Usuario");
+            iniciarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Iniciar Sesion");
+            bitacoraEventosToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Auditoria Eventos");
+            gestionRolToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Gestion Roles");
+            gestionFamiliaToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Gestion Familia");
+            cambiarClaveToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cambiar Clave");
+            cerrarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cerrar Sesion");
+            iniciarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Iniciar Sesion");
+            idiomaToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cambiar Idioma");
         }
 
         private void cambiarClaveToolStripMenuItem_Click(object sender, EventArgs e)

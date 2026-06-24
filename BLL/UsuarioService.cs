@@ -129,17 +129,17 @@ namespace BLL
             string password = GenerarPassword(apellido, dni);
             string passwordHash = Services_55CA.ServiceSeguridad55CA.Hashear(password);
 
-            long dvh = CalcularDVHUsuario(
-                dni,
-                nombre,
-                apellido,
-                email,
-                rol.Id,
-                user,
-                passwordHash
-            );
+            //long dvh = CalcularDVHUsuario(
+            //    dni,
+            //    nombre,
+            //    apellido,
+            //    email,
+            //    rol.Id,
+            //    user,
+            //    passwordHash
+            //);
 
-            dal.InsertarUsuario(dni, nombre, apellido, email, rol.Id, user, passwordHash, dvh);
+            dal.InsertarUsuario(dni, nombre, apellido, email, rol.Id, user, passwordHash);
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
@@ -157,13 +157,13 @@ namespace BLL
             if (usuario.Activo == true)
             {
                 dal.DesactivarUsuario(dni);
-                RecalcularDVHUsuario(dni);
+                //RecalcularDVHUsuario(dni);
                 evento = $"Se desactivó la cuenta del usuario: {usuario.User}";
             }
             else
             {
                 dal.ActivarUsuario(dni);
-                RecalcularDVHUsuario(dni);
+                //RecalcularDVHUsuario(dni);
                 evento = $"Se activó la cuenta del usuario: {usuario.User}";
             }
 
@@ -175,7 +175,7 @@ namespace BLL
         public void ModificarUsuario(string dni, string email, RolModelo55CA rol)
         {
             dal.ModificarUsuario(dni, email, rol.Id);
-            RecalcularDVHUsuario(dni);
+            //RecalcularDVHUsuario(dni);
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
@@ -201,7 +201,7 @@ namespace BLL
             }
 
             dal.CambiarPassword(passwordNuevaHash, usuarioActivo.DNI);
-            RecalcularDVHUsuario(usuarioActivo.DNI);
+            //RecalcularDVHUsuario(usuarioActivo.DNI);
 
             return true;
 
@@ -249,7 +249,7 @@ namespace BLL
 
             // desbloqueo
             dal.desbloquearUsuario(dni, nuevaPassHash);
-            RecalcularDVHUsuario(dni);
+            //RecalcularDVHUsuario(dni);
 
             // bitácora
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
