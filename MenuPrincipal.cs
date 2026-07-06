@@ -176,5 +176,11 @@ namespace Servicios
         {
 
         }
+
+        private void gestionRespaldoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionRespaldo form = new GestionRespaldo();
+            form.Show();
+        }
     }
 }
