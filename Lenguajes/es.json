@@ -39,6 +39,10 @@
   "GestionFamilia.msgComponenteAsignado": "Componente asignado correctamente a la familia.",
   "GestionFamilia.msgFamiliaEliminada": "Se eliminó correctamente la familia.",
   "GestionFamilia.msgAtencion": "Atención",
+  "GestionFamilia.msgValidacion": "Validacion",
+  "GestionFamilia.msgSeleccionarComponente": "Debe marcar al menos un Componente (Familia/Permiso) de la lista.",
+  "GestionFamilia.msgSeleccionarFamilia": "Debe seleccionar una Familia de la lista de Familias",
+
 
   "GestionRol.formTitle": "Gestión de Rol",
   "GestionRol.labelRoles": "Roles",
@@ -52,7 +56,19 @@
   "GestionRol.btnDesasignar": "DESASIGNAR",
   "GestionRol.btnCancelar": "CANCELAR",
   "GestionRol.btnEliminar": "ELIMINAR",
-
+  "GestionRol.msgNombreRequerido": "Debe ingresar un nomre para la familia",
+  "GestionRol.msgSeleccionarComponente": "Debe marcar al menos un Componente (Familia/Permiso) de la lista.",
+  "GestionRol.msgRolCreado": "El rol fue creado y sus permisos fueron asignados con éxito",
+  "GestionRol.msgValidacion": "Validacion",
+  "GestionRol.msgSeleccionarRol": "Debe seleccionar un Rol de la lista de roles.",
+  "GestionRol.msgComponentesAsignados": "Los componentes marcados fueron evaluados y asignados",
+  "GestionRol.msgRolAEliminar": "Debe seleccionar un rol destino para eliminar",
+  "GestionRol.msgRolEliminado": "Se eliminó correctamente el Rol.",
+  "GestionRol.msgConfirmarQuitarComponente": "¿Seguro que desea quitar '{0}' del rol '{1}'?",
+  "GestionRol.msgComponenteDesasignado": "Componente desasignado correctamente.",
+  "GestionRol.msgSeleccionarComponenteDesasignar": "Debe seleccionar un componente del árbol para desasignarlo.",
+  "GestionRol.msgSoloDesasignarComponentesDirectos": "Solo puede desasignar componentes directos del rol. Para quitar permisos internos, modifique la familia correspondiente.",
+  "GestionRol.msgConfirmacion": "Confirmar",
 
   "GestionUsuario.formTitle": "Gestión de Usuarios",
   "GestionUsuario.gbUsuarios": "Usuarios",
@@ -113,6 +129,24 @@
   "MenuPrincipal.menuAyuda": "Ayuda",
   "MenuPrincipal.msgConfirmarCierreSesion": "¿Está seguro que desea cerrar sesión?",
   "MenuPrincipal.msgTituloCierreSesion": "Confirmar cierre de sesión",
-  "MenuPrincipal.menuIdioma": "Idioma"
+
+  "MenuPrincipal.menuIdioma": "Idioma",
+  "MenuPrincipal.menuRespaldo": "Gestion respaldo",
+
+  "GestionRespaldo.titulo": "Gestión de Respaldo",
+  "GestionRespaldo.btnRealizarBackup": "Realizar BackUp",
+  "GestionRespaldo.btnRealizarRestore": "Realizar Restore",
+  "GestionRespaldo.descSeleccionarCarpetaBackup": "Seleccione la carpeta donde desea guardar el Backup.",
+  "GestionRespaldo.msgSeleccionarRuta": "Por favor, seleccione una ruta primero.",
+  "GestionRespaldo.msgBackupExitoso": "Backup generado exitosamente.",
+  "GestionRespaldo.msgErrorBackup": "Error al generar el Backup: {0}",
+  "GestionRespaldo.titleExito": "Éxito",
+  "GestionRespaldo.titleError": "Error",
+  "GestionRespaldo.titleAdvertenciaCritica": "Advertencia Crítica",
+  "GestionRespaldo.titleSeleccionarBackup": "Seleccione el archivo de Backup a restaurar",
+  "GestionRespaldo.msgSeleccionarArchivoBackup": "Por favor, seleccione un archivo de backup primero.",
+  "GestionRespaldo.msgConfirmarRestore": "¿Está seguro que desea restaurar la base de datos? Se perderán los datos actuales no respaldados.",
+  "GestionRespaldo.msgRestoreExitoso": "Restauración completada con éxito. El sistema se reiniciará por seguridad.",
+  "GestionRespaldo.msgErrorRestore": "Error al restaurar la base de datos: {0}"
 
 }

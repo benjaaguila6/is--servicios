@@ -152,7 +152,7 @@ namespace Servicios
             gestionRolToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuGestionRol");
             ayudaToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuAyuda");
             idiomaToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuIdioma");
-
+            gestionRespaldoToolStripMenuItem.Text = t.Translate("MenuPrincipal.menuRespaldo");
         }
 
         private void gestionFamiliaToolStripMenuItem_Click(object sender, EventArgs e)
@@ -175,6 +175,12 @@ namespace Servicios
         private void administradorToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void gestionRespaldoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GestionRespaldo form = new GestionRespaldo();
+            form.Show();
         }
     }
 }

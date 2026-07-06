@@ -161,6 +161,7 @@ namespace Servicios
 
         private void btnAplicar_Click(object sender, EventArgs e)
         {
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
             try
             {
                 if (modoActual == ModoOperacionFamilia.Crear)
@@ -169,13 +170,13 @@ namespace Servicios
 
                     if (string.IsNullOrEmpty(nombre))
                     {
-                        MessageBox.Show("El nombre no puede estar vacío.");
+                        MessageBox.Show(t.Translate("GestionRol.msgNombreRequerido"));
                         return;
                     }
 
                     if (checkListPermisosFamilias.CheckedItems.Count == 0)
                     {
-                        MessageBox.Show("Debe marcar al menos un permiso o familia para crear el rol.");
+                        MessageBox.Show(t.Translate("GestionRol.msgSeleccionarComponente"));
                         return;
                     }
 
@@ -188,20 +189,20 @@ namespace Servicios
 
                     bllRol.crearRol(nombre, componentesSeleccionados);
 
-                    MessageBox.Show("El rol fue creado y sus permisos fueron asignados con éxito.");
+                    MessageBox.Show(t.Translate("GestionRol.msgRolCreado"));
                 }
 
                 else if (modoActual == ModoOperacionFamilia.Asignar)
                 {
                     if (dgvFamilias.CurrentRow == null)
                     {
-                        MessageBox.Show("Debe seleccionar un Rol de la lista de roles.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(t.Translate("GestionRol.msgSeleccionarRol"), t.Translate("GestionRol.msgValidacion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
                     if (checkListPermisosFamilias.CheckedItems.Count == 0)
                     {
-                        MessageBox.Show("Debe marcar al menos un Componente (Familia/Permiso) de la lista.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(t.Translate("GestionRol.msgSeleccionarComponente"), t.Translate("GestionRol.msgValidacion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
@@ -219,20 +220,20 @@ namespace Servicios
                         }
                     }
 
-                    MessageBox.Show("Los componentes marcados fueron evaluados y asignados.");
+                    MessageBox.Show(t.Translate("GestionRol.msgComponentesAsignados"));
                 }
 
                 else if (modoActual == ModoOperacionFamilia.Eliminar)
                 {
                     if (dgvFamilias.CurrentRow == null)
                     {
-                        MessageBox.Show("Debe seleccionar un rol destino para eliminar.");
+                        MessageBox.Show(t.Translate("GestionRol.msgRolAEliminar"));
                         return;
                     }
 
                     RolModelo55CA rolSeleccionado = (RolModelo55CA)dgvFamilias.CurrentRow.DataBoundItem;
                     bllRol.EliminarRol(rolSeleccionado.Id);
-                    MessageBox.Show("Se eliminó correctamente el Rol.");
+                    MessageBox.Show(t.Translate("GestionRol.msgRolEliminado"));
                 }
 
                 else if(modoActual == ModoOperacionFamilia.Desasignar)
@@ -240,7 +241,7 @@ namespace Servicios
                     RolModelo55CA rolSeleccionado = (RolModelo55CA)dgvFamilias.CurrentRow.DataBoundItem;
                     Componente55CA componenteAQuitar = (Componente55CA)tvPermisosAsignados.SelectedNode.Tag;
 
-                    DialogResult respuesta = MessageBox.Show($"¿Seguro que desea quitar '{componenteAQuitar.Nombre}' del rol '{rolSeleccionado.Nombre}'?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult respuesta = MessageBox.Show(t.Translate("GestionRol.msgConfirmarQuitarComponente"), "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     if (respuesta == DialogResult.Yes)
                     {
@@ -253,7 +254,7 @@ namespace Servicios
                             bllRol.DesasignarFamilia(rolSeleccionado.Id, familia.Id);
                         }
 
-                        MessageBox.Show("Componente desasignado correctamente.");
+                        MessageBox.Show(t.Translate("GestionRol.msgComponenteDesasignado"));
                         cargarDatos(); // Recargamos la BD para actualizar el árbol
                     }
                 }
@@ -312,18 +313,19 @@ namespace Servicios
 
         private void btnDesasginar_Click(object sender, EventArgs e)
         {
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
             modoActual = ModoOperacionFamilia.Desasignar;
 
             if (dgvFamilias.CurrentRow == null) return;
             if (tvPermisosAsignados.SelectedNode == null)
             {
-                MessageBox.Show("Debe seleccionar un componente del árbol para desasignarlo.");
+                MessageBox.Show(t.Translate("GestionRol.msgSeleccionarComponenteDesasignar"));
                 return;
             }
 
             if (tvPermisosAsignados.SelectedNode.Level != 1)
             {
-                MessageBox.Show("Solo puede desasignar componentes directos del rol. Para quitar permisos internos, modifique la familia correspondiente.");
+                MessageBox.Show(t.Translate("GestionRol.msgSoloDesasignarComponentesDirectos"));
                 return;
             }
 

@@ -67,6 +67,7 @@ namespace Servicios
 
         private void btnFiltrar_Click(object sender, EventArgs e)
         {
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
             DateTime desde = dtpDesde.Value.Date;
             DateTime hasta = dtpHasta.Value.Date.AddDays(1).AddSeconds(-1);
 
@@ -74,8 +75,8 @@ namespace Servicios
             if (desde > hasta)
             {
                 MessageBox.Show(
-                    "La fecha 'Desde' no puede ser mayor que la fecha 'Hasta'.",
-                    "Error en fechas",
+                    t.Translate("AuditoriaBitacora.errorFechasMsg"),
+                    t.Translate("AuditoriaBitacora.errorFechasTitulo"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );

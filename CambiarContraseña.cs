@@ -43,17 +43,19 @@ namespace Servicios
             string passwordActual = txtContraseñaActual.Text;
             string confirmacion = txtConfirmacion.Text;
 
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
+
             try
             {
                 if (passwordNueva != confirmacion)
                 {
-                    MessageBox.Show("Las contraseñas no coinciden.");
+                    MessageBox.Show(t.Translate("CambiarContraseña.msgNoCoinciden"));
                 }
                 else
                 {
                     if(_usuarioService.cambiarPassword(passwordActual, passwordNueva))
         {
-                        MessageBox.Show("Contraseña modificada con éxito. Debe volver a iniciar sesión.");
+                        MessageBox.Show(t.Translate("CambiarContraseña.msgExito"));
 
                         // cerrar sesión
                         ServiceSessionManager55CA.getIntancia().Logout();
@@ -64,7 +66,7 @@ namespace Servicios
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al cambiar contraseña: " + ex.Message);
+                MessageBox.Show(t.Translate("CambiarContraseña.msgError") + ex.Message);
                 return;
             }
         }

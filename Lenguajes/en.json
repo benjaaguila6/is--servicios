@@ -42,6 +42,9 @@
   "GestionFamilia.msgComponenteAsignado": "Component successfully assigned to the family.",
   "GestionFamilia.msgFamiliaEliminada": "Family deleted successfully.",
   "GestionFamilia.msgAtencion": "Warning",
+  "GestionFamilia.msgValidacion": "Validation",
+  "GestionFamilia.msgSeleccionarComponente": "You must select at least one Component (Family/Permission) from the list.",
+  "GestionFamilia.msgSeleccionarFamilia": "You must select a Family from the list of Families.",
 
   "GestionRol.formTitle": "Role Management",
   "GestionRol.labelRoles": "Roles",
@@ -55,6 +58,19 @@
   "GestionRol.btnCancelar": "CANCEL",
   "GestionRol.btnAsignar": "ASSIGN",
   "GestionRol.btnAplicar": "APPLY",
+  "GestionRol.msgNombreRequerido": "You must enter a name for the role",
+  "GestionRol.msgSeleccionarComponente": "You must select at least one Component (Family/Permission) from the list.",
+  "GestionRol.msgRolCreado": "The role was created and its permissions were successfully assigned.",
+  "GestionRol.msgValidacion": "Validation",
+  "GestionRol.msgSeleccionarRol": "You must select a role from the list of roles.",
+  "GestionRol.msgComponentesAsignados": "The marked components were evaluated and assigned.",
+  "GestionRol.msgRolAEliminar": "You must select a destination role to delete.",
+  "GestionRol.msgRolEliminado": "The role was deleted successfully.",
+  "GestionRol.msgConfirmarQuitarComponente": "Are you sure you want to remove '{0}' from the role '{1}'?",
+  "GestionRol.msgComponenteDesasignado": "The component was unassigned successfully.",
+  "GestionRol.msgSeleccionarComponenteDesasignar": "You must select a component from the tree to unassign it.",
+  "GestionRol.msgSoloDesasignarComponentesDirectos": "You can only unassign components directly assigned to the role. To remove internal permissions, modify the corresponding family.",
+  "GestionRol.msgConfirmacion": "Confirm",
 
   "GestionUsuario.formTitle": "User Management",
   "GestionUsuario.gbUsuarios": "Users",
@@ -116,5 +132,22 @@
   "MenuPrincipal.msgConfirmarCierreSesion": "Are you sure you want to log out?",
   "MenuPrincipal.msgTituloCierreSesion": "Confirm Log Out",
 
-  "MenuPrincipal.menuIdioma": "Language"
+  "MenuPrincipal.menuIdioma": "Language",
+  "MenuPrincipal.menuRespaldo": "Backup management",
+
+  "GestionRespaldo.titulo": "Backup Management",
+  "GestionRespaldo.btnRealizarBackup": "Perform Backup",
+  "GestionRespaldo.btnRealizarRestore": "Perform Restore",
+  "GestionRespaldo.descSeleccionarCarpetaBackup": "Select the folder where you want to save the backup.",
+  "GestionRespaldo.msgSeleccionarRuta": "Please select a destination path first.",
+  "GestionRespaldo.msgBackupExitoso": "Backup completed successfully.",
+  "GestionRespaldo.msgErrorBackup": "Error while creating the backup: {0}",
+  "GestionRespaldo.titleExito": "Success",
+  "GestionRespaldo.titleError": "Error",
+  "GestionRespaldo.titleAdvertenciaCritica": "Critical Warning",
+  "GestionRespaldo.titleSeleccionarBackup": "Select the backup file to restore",
+  "GestionRespaldo.msgSeleccionarArchivoBackup": "Please select a backup file first.",
+  "GestionRespaldo.msgConfirmarRestore": "Are you sure you want to restore the database? Any current data that has not been backed up will be lost.",
+  "GestionRespaldo.msgRestoreExitoso": "The restore was completed successfully. The system will restart for safety.",
+  "GestionRespaldo.msgErrorRestore": "Error while restoring the database: {0}"
 }

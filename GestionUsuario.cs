@@ -115,9 +115,10 @@ namespace Servicios
 
         private void btnModificar_Click(object sender, EventArgs e)
         {
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
             if (dgvUsuarios.CurrentRow == null)
             {
-                MessageBox.Show("Seleccione un usuario.");
+                MessageBox.Show(t.Translate("GestionUsuario.msgSeleccionarUsuario"));
                 return;
             }
 
@@ -158,7 +159,7 @@ namespace Servicios
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al modificar usuario: " + ex.Message);
+                MessageBox.Show("Error: " + ex.Message);
             }
         }
 
@@ -176,6 +177,7 @@ namespace Servicios
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
             try
             {
                 if (modoActual == ModoOperacion.Crear)
@@ -189,31 +191,31 @@ namespace Servicios
 
                     if (cmbRol.SelectedIndex == -1)
                     {
-                        MessageBox.Show("Seleccione un rol.");
+                        MessageBox.Show(t.Translate("GestionUsuario.msgSeleccionarRol"));
                         return;
                     }
 
                     if (email.Length <= 0 || nombre.Length <= 0 || apellido.Length <= 0 || dNI.Length <= 0)
                     {
-                        MessageBox.Show("Debe completar todos los campos.");
+                        MessageBox.Show(t.Translate("GestionUsuario.msgCamposObligatorios"));
                         return;
                     }
 
                     if (!EsEmailValido(email))
                     {
-                        MessageBox.Show("El email no tiene el formato correcto.");
+                        MessageBox.Show(t.Translate("GestionUsuario.msgEmailInvalido"));
                         return;
                     }
 
                     if (!EsDNIValido(dNI))
                     {
-                        MessageBox.Show("El DNI no tiene el formato correcto.");
+                        MessageBox.Show(t.Translate("GestionUsuario.msgDNIInvalido"));
                         return;
                     }
 
                     usuarioService.CrearUsuario(dNI, nombre, apellido, email, rol);
 
-                    MessageBox.Show("Usuario creado con éxito.");
+                    MessageBox.Show(t.Translate("GestionUsuario.msgUsuarioCreado"));
                 }
 
                 else if (modoActual == ModoOperacion.Modificar)
@@ -225,7 +227,7 @@ namespace Servicios
 
                     usuarioService.ModificarUsuario(dNI, email, rol);
 
-                    MessageBox.Show("Usuario modificado correctamente.");
+                    MessageBox.Show(t.Translate("GestionUsuario.msgUsuarioModificado"));
                 }
 
                 else if (modoActual == ModoOperacion.Desbloquear)
@@ -236,11 +238,11 @@ namespace Servicios
 
                     if (!bloqueado)
                     {
-                        MessageBox.Show("El usuario no está bloqueado.");
+                        MessageBox.Show(t.Translate("GestionUsuario.msgUsuarioNoBloqueado"));
                         return;
                     }
 
-                    DialogResult r = MessageBox.Show("¿Seguro que desea desbloquear este usuario?", "Confirmar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    DialogResult r = MessageBox.Show(t.Translate("GestionUsuario.msgConfirmarDesbloqueo"), t.Translate("GestionUsuario.msgConfirmar"), MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                     if (r != DialogResult.Yes)
                     {
@@ -249,7 +251,7 @@ namespace Servicios
 
                     usuarioService.DesbloquearUsuario(dni);
 
-                    MessageBox.Show("Usuario desbloqueado correctamente.");
+                    MessageBox.Show(t.Translate("GestionUsuario.msgUsuarioDesbloqueado"));
                 }
 
                 gbDatos.Visible = false;
@@ -298,11 +300,12 @@ namespace Servicios
 
         private void btnActDesact_Click(object sender, EventArgs e)
         {
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
             try
             {
                 string dniSeleccionado = dgvUsuarios.CurrentRow.Cells["DNI"].Value.ToString();
                 usuarioService.activarDesactivar(dniSeleccionado);
-                MessageBox.Show("El estado del usuario se actualizó correctamente.");
+                MessageBox.Show(t.Translate("GestionUsuario.msgEstadoActualizado"));
 
                 CargarGrilla();
             }
@@ -320,11 +323,13 @@ namespace Servicios
 
         private void btnDesbloquear_Click(object sender, EventArgs e)
         {
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
+
             modoActual = ModoOperacion.Desbloquear;
 
             if (dgvUsuarios.CurrentRow == null)
             {
-                MessageBox.Show("Seleccione un usuario.");
+                MessageBox.Show(t.Translate("GestionUsuario.msgSeleccionarUsuario"));
                 return;
             }
 
