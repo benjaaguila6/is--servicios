@@ -163,6 +163,8 @@ namespace Servicios
 
         private void btAplicar_Click(object sender, EventArgs e)
         {
+            var t = ServiceSessionManager55CA.getIntancia().Idioma;
+
             try
             {
                 if (modoActual == ModoOperacionFamilia.Crear)
@@ -171,13 +173,13 @@ namespace Servicios
 
                     if (nombre.Length <= 0)
                     {
-                        MessageBox.Show("Debe ingresar un nombre para la familia.");
+                        MessageBox.Show(t.Translate("GestionFamilia.msgNombreRequerido"));
                         return;
                     }
 
                     if (checkListPermisosFamilias.CheckedItems.Count == 0)
                     {
-                        MessageBox.Show("Debe marcar al menos un Componente (Familia/Permiso) de la lista.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(t.Translate("GestionFamilia.msgSeleccionarComponente"), t.Translate("GestionFamilia.msgValidacion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
@@ -190,20 +192,20 @@ namespace Servicios
 
                     bllFamilia.CrearFamilia(nombre, componentesSeleccionados);
 
-                    MessageBox.Show("Familia creada con éxito.");
+                    MessageBox.Show(t.Translate("GestionFamilia.msgFamiliaCreada"));
                 }
 
                 else if (modoActual == ModoOperacionFamilia.Asignar)
                 {
                     if (dgvFamilias.CurrentRow == null)
                     {
-                        MessageBox.Show("Debe seleccionar una Familia de la lista de Familias.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(t.Translate("GestionFamilia.msgSeleccionarFamilia"), t.Translate("GestionFamilia.msgValidacion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
                     if (checkListPermisosFamilias.CheckedItems.Count == 0)
                     {
-                        MessageBox.Show("Debe marcar al menos un Componente (Familia/Permiso) de la lista.", "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(t.Translate("GestionFamilia.msgSeleccionarComponente"), t.Translate("GestionFamilia.msgValidacion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
@@ -221,14 +223,14 @@ namespace Servicios
                         }
                     }
 
-                    MessageBox.Show("Los componentes marcados fueron evaluados y asignados.");
+                    MessageBox.Show(t.Translate("GestionFamilia.msgComponenteAsignado"));
                 }
 
                 else if (modoActual == ModoOperacionFamilia.Eliminar)
                 {
                     if (dgvFamilias.CurrentRow == null)
                     {
-                        MessageBox.Show("Debe seleccionar una familia destino y un componente a asignar.");
+                        MessageBox.Show(t.Translate("GestionFamilia.msgSeleccionarFamiliaComponente"));
                         return;
                     }
 
@@ -237,7 +239,7 @@ namespace Servicios
                     try
                     {
                         bllFamilia.EliminarFamilia(familiaSeleccionada.Id);
-                        MessageBox.Show("Se elimino correctamente la familia.");
+                        MessageBox.Show(t.Translate("GestionFamilia.msgFamiliaEliminada"));
                     }
                     catch (Exception ex)
                     {
@@ -262,7 +264,7 @@ namespace Servicios
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Atención", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(ex.Message, t.Translate("GestionFamilia.msgAtencion"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
