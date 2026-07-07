@@ -147,7 +147,7 @@
   "GestionRespaldo.msgSeleccionarArchivoBackup": "Por favor, seleccione un archivo de backup primero.",
   "GestionRespaldo.msgConfirmarRestore": "¿Está seguro que desea restaurar la base de datos? Se perderán los datos actuales no respaldados.",
   "GestionRespaldo.msgRestoreExitoso": "Restauración completada con éxito. El sistema se reiniciará por seguridad.",
-  "GestionRespaldo.msgErrorRestore": "Error al restaurar la base de datos: {0}"
+  "GestionRespaldo.msgErrorRestore": "Error al restaurar la base de datos: {0}",
 
   
     "TituloRepararInconsistencias": "Reparar Inconsistencias",
@@ -159,6 +159,40 @@
     "MsgErrorReparar": "Error al reparar: ",
     "MsgRestoreExitoso": "Restore realizado con éxito. La aplicación se va a cerrar, volvé a iniciarla.",
     "MsgErrorRestore": "Error al restaurar: ",
-    "FiltroBackup": "Archivos de backup (*.bak)|*.bak"
+  "FiltroBackup": "Archivos de backup (*.bak)|*.bak",
+
+  
+    "TablaUsuario": "Usuario",
+    "TablaRol": "Rol",
+    "TablaFamilia": "Familia",
+    "TablaPatente": "Patente",
+
+    "ExcSesionActiva": "Ya existe una sesión activa.",
+    "ExcUsuarioNoExiste": "El usuario no existe.",
+    "ExcUsuarioBloqueado": "El usuario está bloqueado por intentos fallidos. Contacte a un administrador.",
+    "ExcUsuarioInactivo": "El usuario no está activo.",
+    "ExcPasswordIncorrecta": "Contraseña incorrecta. Intento {0}.",
+    "ExcCuentaBloqueada": "Cuenta bloqueada por intentos fallidos.",
+    "ExcUsuarioDniExistente": "Ya existe un usuario con ese DNI.",
+    "ExcPasswordActualIncorrecta": "La contraseña actual es incorrecta.",
+    "ExcPasswordIgualAnterior": "La contraseña nueva no puede ser igual a la actual.",
+    "ExcUsuarioNoEncontrado": "Usuario no encontrado.",
+    "ExcUsuarioNoBloqueado": "El usuario no está bloqueado.",
+
+    "ExcNombreYaExiste": "Ya existe un/a {0} registrado/a con el nombre '{1}'.",
+    "ExcConflictoPatenteIndirecta": "Conflicto en la selección: la patente '{0}' ya está incluida indirectamente dentro de otra familia que marcaste.",
+    "ExcConflictoFamiliaPermisos": "Conflicto en la selección: la familia '{0}' aporta permisos que ya elegiste previamente.",
+    "ExcRolYaContienePermiso": "El Rol: {0} ya contiene el permiso {1}.",
+    "ExcRolYaTieneFamilia": "El rol '{0}' ya tiene asignada la familia '{1}' de forma directa.",
+    "ExcFamiliaPermisoYaPoseido": "La familia aportaría el permiso '{0}', pero el rol ya lo posee.",
+    "ExcRolConUsuariosAsignados": "No se puede eliminar el rol porque actualmente hay usuarios que lo tienen asignado.",
+
+    "ExcFamiliaYaContienePermiso": "La familia: {0} ya contiene el permiso {1}.",
+    "ExcRolUsaFamiliaConPatente": "Operación denegada: el Rol '{0}' utiliza la Familia '{1}', y ya tiene asignada la patente '{2}'. Debe desasignarla del Rol primero.",
+    "ExcFamiliaAsignadaAsiMisma": "Una familia no puede asignarse a sí misma como hija.",
+    "ExcFamiliaHijaPermisoDuplicado": "La familia {0} posee el permiso {1} que la familia {2} ya posee.",
+    "ExcRolDuplicariaPatente": "Operación denegada: el Rol '{0}' utiliza la Familia '{1}'. Si se asigna la familia '{2}', el rol duplicaría la patente '{3}'. Debe limpiarlo del Rol primero.",
+    "ExcFamiliaConDependencias": "No se puede eliminar la familia porque está asignada a un Rol o es parte de otra Familia."
+  
   
 }

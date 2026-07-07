@@ -160,5 +160,38 @@
   "MsgErrorReparar": "Error while repairing: ",
   "MsgRestoreExitoso": "Backup restored successfully. The application will now close. Please restart it.",
   "MsgErrorRestore": "Error while restoring: ",
-  "FiltroBackup": "Backup files (*.bak)|*.bak"
+  "FiltroBackup": "Backup files (*.bak)|*.bak",
+  
+  "TablaUsuario": "User",
+  "TablaRol": "Role",
+  "TablaFamilia": "Family",
+  "TablaPatente": "Permission",
+
+  "ExcSesionActiva": "There is already an active session.",
+  "ExcUsuarioNoExiste": "The user does not exist.",
+  "ExcUsuarioBloqueado": "The user is blocked due to failed attempts. Contact an administrator.",
+  "ExcUsuarioInactivo": "The user is not active.",
+  "ExcPasswordIncorrecta": "Incorrect password. Attempt {0}.",
+  "ExcCuentaBloqueada": "Account blocked due to failed attempts.",
+  "ExcUsuarioDniExistente": "A user with that DNI already exists.",
+  "ExcPasswordActualIncorrecta": "The current password is incorrect.",
+  "ExcPasswordIgualAnterior": "The new password cannot be the same as the current one.",
+  "ExcUsuarioNoEncontrado": "User not found.",
+    "ExcUsuarioNoBloqueado": "The user is not blocked.",
+
+    "ExcNombreYaExiste": "A {0} named '{1}' already exists.",
+    "ExcConflictoPatenteIndirecta": "Selection conflict: the permission '{0}' is already indirectly included within another family you selected.",
+    "ExcConflictoFamiliaPermisos": "Selection conflict: the family '{0}' provides permissions you already selected previously.",
+    "ExcRolYaContienePermiso": "Role: {0} already contains the permission {1}.",
+    "ExcRolYaTieneFamilia": "The role '{0}' already has the family '{1}' assigned directly.",
+    "ExcFamiliaPermisoYaPoseido": "The family would provide the permission '{0}', but the role already has it.",
+    "ExcRolConUsuariosAsignados": "The role cannot be deleted because there are currently users assigned to it.",
+
+    "ExcFamiliaYaContienePermiso": "The family: {0} already contains the permission {1}.",
+    "ExcRolUsaFamiliaConPatente": "Operation denied: the Role '{0}' uses the Family '{1}', and already has the permission '{2}' assigned. You must unassign it from the Role first.",
+    "ExcFamiliaAsignadaAsiMisma": "A family cannot be assigned to itself as a child.",
+    "ExcFamiliaHijaPermisoDuplicado": "The family {0} has the permission {1} that the family {2} already has.",
+    "ExcRolDuplicariaPatente": "Operation denied: the Role '{0}' uses the Family '{1}'. If the family '{2}' is assigned, the role would duplicate the permission '{3}'. You must remove it from the Role first.",
+    "ExcFamiliaConDependencias": "The family cannot be deleted because it is assigned to a Role or is part of another Family."
+  
 }

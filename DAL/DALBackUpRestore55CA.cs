@@ -12,8 +12,8 @@ namespace DAL
     {
         private DALAcceso55CA _dal = new DALAcceso55CA();
         private string _nombreDB = "is--servicios";
-        private readonly string _stringConnectionOriginal = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=is--servicios;Integrated Security=True";
-        //private readonly string _stringConnectionOriginal = "Data Source=LAPTOP-8BNKG482\\SQLEXPRESS;Initial Catalog=is--servicios;Integrated Security=True";
+        //private readonly string _stringConnectionOriginal = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=is--servicios;Integrated Security=True";
+        private readonly string _stringConnectionOriginal = "Data Source=LAPTOP-8BNKG482\\SQLEXPRESS;Initial Catalog=is--servicios;Integrated Security=True";
 
         public void realizarBackUp(string ruta)
         {

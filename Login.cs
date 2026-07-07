@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Services;
 
 namespace Servicios
 {
@@ -44,14 +45,28 @@ namespace Servicios
             {
                 bool usaPasswordDefault = _userService.login(username, password);
 
-                BLLDigitoVerificador bllDV = new BLLDigitoVerificador();
-                bool usuarioOk = bllDV.VerificarUsuario();
-                bool rolOk = bllDV.VerificarRol();
-                bool familiaOk = bllDV.VerificarFamilia();
-                bool patenteOk = bllDV.VerificarPatente();
+                int idiomaUsuario = ServiceSessionManager55CA.getIntancia().usuarioActivo.IdIdioma;
+                string codIdiomaUsuario = idiomaUsuario == 1 ? "es" : "en";
+                ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(codIdiomaUsuario);
 
+                bool usuarioOk = DigitoVerificador55CA.VerificarUsuario();
+                bool rolOk = DigitoVerificador55CA.VerificarRol();
+                bool familiaOk = DigitoVerificador55CA.VerificarFamilia();
+                bool patenteOk = DigitoVerificador55CA.VerificarPatente();
+
+
+                
                 if (!usuarioOk || !rolOk || !familiaOk || !patenteOk)
                 {
+                    if (ServiceSessionManager55CA.getIntancia().usuarioActivo.Rol.Id != 1)
+                    {
+                        MessageBox.Show("Se encontraron inconsistencias en la base de datos, contactese con un administrador");
+                        txtUser.Text = "";
+                        txtPassword.Text = "";
+                        ServiceSessionManager55CA.getIntancia().Logout();
+                        return;
+
+                    }
                     this.Hide();
                     RepararInconsistencias pantalla = new RepararInconsistencias(usuarioOk, rolOk, familiaOk, patenteOk);
                     pantalla.FormClosed += (s, args) => RestaurarIdiomaLogin();
@@ -60,9 +75,7 @@ namespace Servicios
                 }
 
 
-                int idiomaUsuario = ServiceSessionManager55CA.getIntancia().usuarioActivo.IdIdioma;
-                string codIdiomaUsuario = idiomaUsuario == 1 ? "es" : "en";
-                ServiceSessionManager55CA.getIntancia().Idioma.CargarIdioma(codIdiomaUsuario);
+                
                 
                 txtUser.Text = "";
                 txtPassword.Text = "";

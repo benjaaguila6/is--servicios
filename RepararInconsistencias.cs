@@ -10,13 +10,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Services;
 
 namespace Servicios
 {
     public partial class RepararInconsistencias : Form, IIdiomaObserver
     {
         private bool usuarioOk, rolOk, familiaOk, patenteOk;
-        BLLDigitoVerificador bllDV = new BLLDigitoVerificador();
 
         private void btnRecalcular_Click(object sender, EventArgs e)
         {
@@ -24,12 +24,14 @@ namespace Servicios
 
             try
             {
-                if (!usuarioOk) bllDV.RepararUsuario();
-                if (!rolOk) bllDV.RepararRol();
-                if (!familiaOk) bllDV.RepararFamilia();
-                if (!patenteOk) bllDV.RepararPatente();
+                if (!usuarioOk) DigitoVerificador55CA.RepararUsuario();
+                if (!rolOk) DigitoVerificador55CA.RepararRol();
+                if (!familiaOk) DigitoVerificador55CA.RepararFamilia();
+                if (!patenteOk) DigitoVerificador55CA.RepararPatente();
 
                 MessageBox.Show(idioma.Translate("MsgReparacionExitosa"));
+
+                ServiceSessionManager55CA.getIntancia().Logout();
 
                 this.Hide();
                 Login login = new Login();
@@ -58,7 +60,7 @@ namespace Servicios
                 {
                     try
                     {
-                        bllDV.RealizarRestore(ofd.FileName);
+                        DigitoVerificador55CA.RealizarRestore(ofd.FileName);
 
                         MessageBox.Show(idioma.Translate("MsgRestoreExitoso"));
                         Application.Exit();
@@ -87,7 +89,7 @@ namespace Servicios
             MostrarTablasConError();
         }
 
-        private void actualizarIdioma()
+        public void actualizarIdioma()
         {
             var idioma = ServiceSessionManager55CA.getIntancia().Idioma;
 

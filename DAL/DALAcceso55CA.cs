@@ -37,6 +37,7 @@ namespace DAL
                     }
                     catch (SqlException ex)
                     {
+
                         throw new Exception("Error de lectura en la base de datos", ex);
                     }
                 }
