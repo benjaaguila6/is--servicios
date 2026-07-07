@@ -119,6 +119,16 @@ namespace DAL
             return idGenerado;
         }
 
+        public void ActualizarDVH(int id, long dvh)
+        {
+            string query = "UPDATE Familia SET DVH = @dvh WHERE Id = @id";
+            var parametros = new Dictionary<string, object>
+            {
+                { "@dvh", dvh },
+                { "@id", id }
+            };
+            dal.executeNonQuery(query, parametros);
+        }
 
     }
 }

@@ -129,17 +129,17 @@ namespace BLL
             string password = GenerarPassword(apellido, dni);
             string passwordHash = Services_55CA.ServiceSeguridad55CA.Hashear(password);
 
-            //long dvh = CalcularDVHUsuario(
-            //    dni,
-            //    nombre,
-            //    apellido,
-            //    email,
-            //    rol.Id,
-            //    user,
-            //    passwordHash
-            //);
+            long dvh = CalcularDVHUsuario(
+                dni,
+                nombre,
+                apellido,
+                email,
+                rol.Id,
+                user,
+                passwordHash
+            );
 
-            dal.InsertarUsuario(dni, nombre, apellido, email, rol.Id, user, passwordHash);
+            dal.InsertarUsuario(dni, nombre, apellido, email, rol.Id, user, passwordHash, dvh);
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
@@ -157,13 +157,13 @@ namespace BLL
             if (usuario.Activo == true)
             {
                 dal.DesactivarUsuario(dni);
-                //RecalcularDVHUsuario(dni);
+                RecalcularDVHUsuario(dni);
                 evento = $"Se desactivó la cuenta del usuario: {usuario.User}";
             }
             else
             {
                 dal.ActivarUsuario(dni);
-                //RecalcularDVHUsuario(dni);
+                RecalcularDVHUsuario(dni);
                 evento = $"Se activó la cuenta del usuario: {usuario.User}";
             }
 
@@ -175,7 +175,7 @@ namespace BLL
         public void ModificarUsuario(string dni, string email, RolModelo55CA rol)
         {
             dal.ModificarUsuario(dni, email, rol.Id);
-            //RecalcularDVHUsuario(dni);
+            RecalcularDVHUsuario(dni);
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
@@ -201,7 +201,7 @@ namespace BLL
             }
 
             dal.CambiarPassword(passwordNuevaHash, usuarioActivo.DNI);
-            //RecalcularDVHUsuario(usuarioActivo.DNI);
+            RecalcularDVHUsuario(usuarioActivo.DNI);
 
             return true;
 
@@ -249,7 +249,7 @@ namespace BLL
 
             // desbloqueo
             dal.desbloquearUsuario(dni, nuevaPassHash);
-            //RecalcularDVHUsuario(dni);
+            RecalcularDVHUsuario(dni);
 
             // bitácora
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
@@ -266,7 +266,7 @@ namespace BLL
         {
             string dni = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
             dal.GuardarIdioma(dni, idIdioma);
-            //RecalcularDVHUsuario(dni);
+            RecalcularDVHUsuario(dni);
 
             Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.IdIdioma = idIdioma;
         }
@@ -312,6 +312,73 @@ namespace BLL
             );
 
             dal.ActualizarDVH(dni, nuevoDVH);
+        }
+
+        public long CalcularDVHDeFila(DataRow row)
+        {
+            return CalcularDVHUsuario(
+                row["DNI"].ToString(),
+                row["Nombre"].ToString(),
+                row["Apellido"].ToString(),
+                row["Email"].ToString(),
+                Convert.ToInt32(row["IdRol"]),
+                row["Username"].ToString(),
+                row["PasswordHash"].ToString()
+            );
+        }
+
+        public long ObtenerSumaDVHUsuario()
+        {
+            DataTable dt = dal.obtenerTodos();
+            long suma = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                suma += CalcularDVHDeFila(row); // recalcula, no lee la columna DVH guardada
+            }
+
+            return suma;
+        }
+
+        public List<string> ObtenerDNIsConDVHInconsistente()
+        {
+            DataTable dt = dal.obtenerTodos();
+            List<string> dnisConError = new List<string>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                long dvhGuardado = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]);
+                long dvhCalculado = CalcularDVHDeFila(row);
+
+                if (dvhGuardado != dvhCalculado)
+                {
+                    dnisConError.Add(row["DNI"].ToString());
+                }
+            }
+
+            return dnisConError;
+        }
+
+        public void RepararTodoUsuario()
+        {
+            DataTable dt = dal.obtenerTodos();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                long dvhGuardado = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]);
+                long dvhCalculado = CalcularDVHDeFila(row);
+
+                if (dvhGuardado != dvhCalculado)
+                {
+                    string dni = row["DNI"].ToString();
+                    dal.ActualizarDVH(dni, dvhCalculado);
+                }
+            }
+        }
+
+        public void RepararDVH(string dni)
+        {
+            RecalcularDVHUsuario(dni);
         }
 
         #region Credenciales

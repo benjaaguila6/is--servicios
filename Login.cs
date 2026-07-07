@@ -44,6 +44,21 @@ namespace Servicios
             {
                 bool usaPasswordDefault = _userService.login(username, password);
 
+                BLLDigitoVerificador bllDV = new BLLDigitoVerificador();
+                bool usuarioOk = bllDV.VerificarUsuario();
+                bool rolOk = bllDV.VerificarRol();
+                bool familiaOk = bllDV.VerificarFamilia();
+                bool patenteOk = bllDV.VerificarPatente();
+
+                if (!usuarioOk || !rolOk || !familiaOk || !patenteOk)
+                {
+                    this.Hide();
+                    RepararInconsistencias pantalla = new RepararInconsistencias(usuarioOk, rolOk, familiaOk, patenteOk);
+                    pantalla.FormClosed += (s, args) => RestaurarIdiomaLogin();
+                    pantalla.Show();
+                    return;
+                }
+
 
                 int idiomaUsuario = ServiceSessionManager55CA.getIntancia().usuarioActivo.IdIdioma;
                 string codIdiomaUsuario = idiomaUsuario == 1 ? "es" : "en";

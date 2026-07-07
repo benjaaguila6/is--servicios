@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DigitoVerificador55CA.cs" />
     <Compile Include="Enum\Criticidad55CA.cs" />
     <Compile Include="Enum\Modulos55CA.cs" />
     <Compile Include="Idioma55CA.cs" />

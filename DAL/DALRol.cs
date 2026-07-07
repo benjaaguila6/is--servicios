@@ -137,5 +137,16 @@ namespace DAL
 
             return _dal.executeDataTable(query);
         }
+
+        public void ActualizarDVH(int id, long dvh)
+        {
+            string query = "UPDATE Rol SET DVH = @dvh WHERE Id = @id";
+            var parametros = new Dictionary<string, object>
+             {
+                { "@dvh", dvh },
+                { "@id", id }
+             };
+            _dal.executeNonQuery(query, parametros);
+        }
     }
 }

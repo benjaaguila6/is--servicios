@@ -14,10 +14,10 @@ namespace DAL
     {
         DALAcceso55CA acceso = new DALAcceso55CA();
 
-        public int InsertarUsuario(string dni, string nom, string ape, string mail, int idRol, string user, string passHash)
+        public int InsertarUsuario(string dni, string nom, string ape, string mail, int idRol, string user, string passHash, long dvh)
         {
-            string query = @"INSERT INTO Usuario (DNI, Nombre, Apellido, Email, IdRol, Username, PasswordHash) 
-                     VALUES (@dni, @nom, @ape, @mail, @rol, @user, @pass)";
+            string query = @"INSERT INTO Usuario (DNI, Nombre, Apellido, Email, IdRol, Username, PasswordHash, DVH) 
+                     VALUES (@dni, @nom, @ape, @mail, @rol, @user, @pass, @dvh)";
 
             var parametros = new Dictionary<string, object>
             {
@@ -28,7 +28,7 @@ namespace DAL
                 { "@rol", idRol },
                 { "@user", user },
                 { "@pass", passHash },
-                //{ "@dvh", dvh }
+                { "@dvh", dvh }
             };
 
             int resultado = acceso.executeNonQuery(query, parametros);

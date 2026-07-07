@@ -11,7 +11,9 @@ namespace DAL
 {
     public class DALAcceso55CA
     {
-        private readonly string _stringConnection = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=is--servicios;Integrated Security=True";
+        //private readonly string _stringConnection = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=is--servicios;Integrated Security=True";
+
+        private readonly string _stringConnection = "Data Source=LAPTOP-8BNKG482\\SQLEXPRESS;Initial Catalog=is--servicios;Integrated Security=True";
         public DataTable executeDataTable(string query, Dictionary<string, object> parametros = null)
         {
             DataTable dt = new DataTable();

@@ -19,5 +19,15 @@ namespace Services
 
             return suma;
         }
+
+        public static long CalcularDVV(IEnumerable<long> dvhs)
+        {
+            long suma = 0;
+            foreach (long dvh in dvhs)
+            {
+                suma += dvh;
+            }
+            return suma;
+        }
     }
 }
