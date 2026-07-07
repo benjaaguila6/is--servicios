@@ -94,6 +94,10 @@ namespace BLL
             }
 
             int nuevoRolId = _dal.insertarRol(nombre);
+
+            long dvhInicial = Services.DigitoVerificador55CA.CalcularDVH(nuevoRolId.ToString() + nombre);
+            _dal.ActualizarDVH(nuevoRolId, dvhInicial);
+
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
 
@@ -175,6 +179,42 @@ namespace BLL
         public void DesasignarFamilia(int idRol, int idFamilia)
         {
             _dal.quitarFamiliaDeRol(idRol, idFamilia);
+        }
+
+        private long CalcularDVHDeFila(DataRow row)
+        {
+            string cadena = row["Id"].ToString() + row["Nombre"].ToString();
+            return Services.DigitoVerificador55CA.CalcularDVH(cadena);
+        }
+
+        public long ObtenerSumaDVH()
+        {
+            DataTable dt = _dal.obtenerTodos();
+            long suma = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                suma += CalcularDVHDeFila(row); // recalcula, no lee la columna guardada
+            }
+
+            return suma;
+        }
+
+        public void RepararTodo()
+        {
+            DataTable dt = _dal.obtenerTodos();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                long dvhGuardado = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]);
+                long dvhCalculado = CalcularDVHDeFila(row);
+
+                if (dvhGuardado != dvhCalculado)
+                {
+                    int id = Convert.ToInt32(row["Id"]);
+                    _dal.ActualizarDVH(id, dvhCalculado);
+                }
+            }
         }
 
         #region Métodos de Ensamblaje

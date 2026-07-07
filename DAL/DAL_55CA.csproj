@@ -46,6 +46,7 @@
     <Compile Include="DALAcceso55CA.cs" />
     <Compile Include="DALBackUpRestore55CA.cs" />
     <Compile Include="DALBitacora55CA .cs" />
+    <Compile Include="DALDigitoVerificador55CA.cs" />
     <Compile Include="DALFamilia.cs" />
     <Compile Include="DALIidioma55CA.cs" />
     <Compile Include="DALPatente.cs" />

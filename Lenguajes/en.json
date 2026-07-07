@@ -149,5 +149,16 @@
   "GestionRespaldo.msgSeleccionarArchivoBackup": "Please select a backup file first.",
   "GestionRespaldo.msgConfirmarRestore": "Are you sure you want to restore the database? Any current data that has not been backed up will be lost.",
   "GestionRespaldo.msgRestoreExitoso": "The restore was completed successfully. The system will restart for safety.",
-  "GestionRespaldo.msgErrorRestore": "Error while restoring the database: {0}"
+  "GestionRespaldo.msgErrorRestore": "Error while restoring the database: {0}",
+
+  "TituloRepararInconsistencias": "Repair Inconsistencies",
+  "MensajeInconsistenciasDetectadas": "Inconsistencies were detected in:",
+  "BtnRecalcular": "Recalculate",
+  "BtnRestore": "Restore Backup",
+  "BtnSalir": "Exit",
+  "MsgReparacionExitosa": "The detected inconsistencies have been repaired.",
+  "MsgErrorReparar": "Error while repairing: ",
+  "MsgRestoreExitoso": "Backup restored successfully. The application will now close. Please restart it.",
+  "MsgErrorRestore": "Error while restoring: ",
+  "FiltroBackup": "Backup files (*.bak)|*.bak"
 }

@@ -149,4 +149,16 @@
   "GestionRespaldo.msgRestoreExitoso": "Restauración completada con éxito. El sistema se reiniciará por seguridad.",
   "GestionRespaldo.msgErrorRestore": "Error al restaurar la base de datos: {0}"
 
+  
+    "TituloRepararInconsistencias": "Reparar Inconsistencias",
+    "MensajeInconsistenciasDetectadas": "Se detectaron inconsistencias en:",
+    "BtnRecalcular": "Recalcular",
+    "BtnRestore": "Restaurar Backup",
+    "BtnSalir": "Salir",
+    "MsgReparacionExitosa": "Se repararon las inconsistencias encontradas.",
+    "MsgErrorReparar": "Error al reparar: ",
+    "MsgRestoreExitoso": "Restore realizado con éxito. La aplicación se va a cerrar, volvé a iniciarla.",
+    "MsgErrorRestore": "Error al restaurar: ",
+    "FiltroBackup": "Archivos de backup (*.bak)|*.bak"
+  
 }

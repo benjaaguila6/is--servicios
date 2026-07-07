@@ -71,6 +71,8 @@ namespace BLL
             }
 
             int nuevoFamiliaId = _dal.insertarFamilia(nombre);
+            long dvhInicial = Services.DigitoVerificador55CA.CalcularDVH(nuevoFamiliaId.ToString() + nombre);
+            _dal.ActualizarDVH(nuevoFamiliaId, dvhInicial);
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
@@ -185,6 +187,43 @@ namespace BLL
             BLLBit.registrarEvento(dniAutor, $"Elimino una familia.", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
             _dal.eliminarFamilia(idFamilia);
+        }
+
+        private long CalcularDVHDeFila(DataRow row)
+        {
+            string cadena = row["Id"].ToString() + row["Nombre"].ToString();
+            return Services.DigitoVerificador55CA.CalcularDVH(cadena);
+        }
+
+
+        public long ObtenerSumaDVH()
+        {
+            DataTable dt = _dal.obtenerTodos();
+            long suma = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                suma += CalcularDVHDeFila(row);
+            }
+
+            return suma;
+        }
+
+        public void RepararTodo()
+        {
+            DataTable dt = _dal.obtenerTodos();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                long dvhGuardado = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]);
+                long dvhCalculado = CalcularDVHDeFila(row);
+
+                if (dvhGuardado != dvhCalculado)
+                {
+                    int id = Convert.ToInt32(row["Id"]);
+                    _dal.ActualizarDVH(id, dvhCalculado);
+                }
+            }
         }
 
         #region Verificacion hacia arriba
