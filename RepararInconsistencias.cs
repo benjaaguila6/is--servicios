@@ -20,6 +20,8 @@ namespace Servicios
 
         private void btnRecalcular_Click(object sender, EventArgs e)
         {
+            var idioma = ServiceSessionManager55CA.getIntancia().Idioma;
+
             try
             {
                 if (!usuarioOk) bllDV.RepararUsuario();
@@ -27,7 +29,7 @@ namespace Servicios
                 if (!familiaOk) bllDV.RepararFamilia();
                 if (!patenteOk) bllDV.RepararPatente();
 
-                MessageBox.Show("Se repararon las inconsistencias encontradas.");
+                MessageBox.Show(idioma.Translate("MsgReparacionExitosa"));
 
                 this.Hide();
                 Login login = new Login();
@@ -36,7 +38,7 @@ namespace Servicios
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al reparar: " + ex.Message);
+                MessageBox.Show(idioma.Translate("MsgErrorReparar") + ex.Message);
             }
         }
 
@@ -47,21 +49,23 @@ namespace Servicios
 
         private void btnRestore_Click(object sender, EventArgs e)
         {
+            var idioma = ServiceSessionManager55CA.getIntancia().Idioma;
+
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
-                ofd.Filter = "Backup files (*.bak)|*.bak";
+                ofd.Filter = idioma.Translate("FiltroBackup");
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
                         bllDV.RealizarRestore(ofd.FileName);
 
-                        MessageBox.Show("Restore realizado con éxito. La aplicación se va a cerrar, volvé a iniciarla.");
+                        MessageBox.Show(idioma.Translate("MsgRestoreExitoso"));
                         Application.Exit();
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Error al restaurar: " + ex.Message);
+                        MessageBox.Show(idioma.Translate("MsgErrorRestore") + ex.Message);
                     }
                 }
             }
