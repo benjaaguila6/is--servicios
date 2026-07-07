@@ -58,6 +58,12 @@
     <Compile Include="CambiarContraseña.Designer.cs">
       <DependentUpon>CambiarContraseña.cs</DependentUpon>
     </Compile>
+    <Compile Include="Configuracion Inicial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuracion Inicial.Designer.cs">
+      <DependentUpon>Configuracion Inicial.cs</DependentUpon>
+    </Compile>
     <Compile Include="GestionFamilia.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -107,6 +113,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CambiarContraseña.resx">
       <DependentUpon>CambiarContraseña.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Configuracion Inicial.resx">
+      <DependentUpon>Configuracion Inicial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GestionFamilia.resx">
       <DependentUpon>GestionFamilia.cs</DependentUpon>
