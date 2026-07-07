@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BitacoraEventosService.cs" />
-    <Compile Include="BLLDigitoVerificador.cs" />
     <Compile Include="BLLFamilia.cs" />
     <Compile Include="BLLIdioma55CA.cs" />
     <Compile Include="BLLPatente.cs" />

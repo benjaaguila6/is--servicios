@@ -32,17 +32,18 @@ namespace BLL
         }
         public void CrearFamilia(string nombre, List<Componente55CA> componentes)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
             DataTable dtFamilia = _dal.obtenerPorNombre(nombre);
 
-            // si la tabla tiene una fila, significa que ya existe
             if (dtFamilia.Rows.Count > 0)
             {
-                throw new Exception($"Ya existe una familia registrada con el nombre '{nombre}'.");
+                throw new Exception(string.Format(idioma.Translate("ExcNombreYaExiste"), idioma.Translate("TablaFamilia"), nombre));
             }
 
             FamiliaModelo55CA familia = new FamiliaModelo55CA { Nombre = nombre };
 
-            foreach (Componente55CA comp in componentes) // evitamos crear con patentes duplicados.
+            foreach (Componente55CA comp in componentes) 
             {
                 var permisosActuales = familia.obtenerPermisos();
 
@@ -50,7 +51,7 @@ namespace BLL
                 {
                     if (permisosActuales.Any(p => p.Id == patente.Id))
                     {
-                        throw new Exception($"Conflicto en la selección: La patente '{patente.Nombre}' ya está incluida indirectamente dentro de otra familia que marcaste.");
+                        throw new Exception(string.Format(idioma.Translate("ExcConflictoPatenteIndirecta"), patente.Nombre));
                     }
                 }
 
@@ -62,7 +63,7 @@ namespace BLL
                     {
                         if (permisosActuales.Any(pa => pa.Id == p.Id))
                         {
-                            throw new Exception($"Conflicto en la selección: La familia '{familiaHija.Nombre}' aporta permisos que ya elegiste previamente.");
+                            throw new Exception(string.Format(idioma.Translate("ExcConflictoFamiliaPermisos"), familiaHija.Nombre));
                         }
                     }
                 }
@@ -73,6 +74,7 @@ namespace BLL
             int nuevoFamiliaId = _dal.insertarFamilia(nombre);
             long dvhInicial = Services.DigitoVerificador55CA.CalcularDVH(nuevoFamiliaId.ToString() + nombre);
             _dal.ActualizarDVH(nuevoFamiliaId, dvhInicial);
+            Services.DigitoVerificador55CA.ActualizarDVVFamilia();
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
@@ -96,11 +98,13 @@ namespace BLL
 
         public void AsignarPatente(FamiliaModelo55CA familia, PermisoModelo55CA patente)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
             var permisosAplanados = familia.obtenerPermisos();
 
             if (permisosAplanados.Any(p => p.Id == patente.Id))
             {
-                throw new Exception($"La familia: {familia.Nombre} ya contiene el permiso {patente.Nombre}.");
+                throw new Exception(string.Format(idioma.Translate("ExcFamiliaYaContienePermiso"), familia.Nombre, patente.Nombre));
             }
 
             BLLRol bllRol = new BLLRol();
@@ -118,7 +122,7 @@ namespace BLL
 
                     if (rolYaTienePatente)
                     {
-                        throw new Exception($"Operación denegada: El Rol '{rol.Nombre}' utiliza la Familia '{familia.Nombre}', y ya tiene asignada la patente '{patente.Nombre}'. Debe desasignarla del Rol primero.");
+                        throw new Exception(string.Format(idioma.Translate("ExcRolUsaFamiliaConPatente"), rol.Nombre, familia.Nombre, patente.Nombre));
                     }
                 }
             }
@@ -131,9 +135,11 @@ namespace BLL
 
         public void AsignarFamilia(FamiliaModelo55CA familiaPadre, FamiliaModelo55CA familiaHija)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
             if (familiaPadre.Id == familiaHija.Id)
             {
-                throw new Exception("Una familia no puede asignarse a sí misma como hija.");
+                throw new Exception(idioma.Translate("ExcFamiliaAsignadaAsiMisma"));
             }
 
             var permisosPadre = familiaPadre.obtenerPermisos();
@@ -144,7 +150,7 @@ namespace BLL
                 //si el padre ya tiene un permiso que la hija intenta aportar, hay redundancia
                 if (permisosPadre.Any(p => p.Id == permiso.Id))
                 {
-                    throw new Exception($"La familia {familiaHija.Nombre} posee el permiso {permiso.Nombre} que la familia {familiaPadre.Nombre} ya posee.");
+                    throw new Exception(string.Format(idioma.Translate("ExcFamiliaHijaPermisoDuplicado"), familiaHija.Nombre, permiso.Nombre, familiaPadre.Nombre));
                 }
             }
 
@@ -164,7 +170,7 @@ namespace BLL
                     {
                         if (permisosDelRol.Any(p => p.Id == patenteAportada.Id))
                         {
-                            throw new Exception($"Operación denegada: El Rol '{rol.Nombre}' utiliza la Familia '{familiaPadre.Nombre}'. Si se asigna la familia '{familiaHija.Nombre}', el rol duplicaría la patente '{patenteAportada.Nombre}'. Debe limpiarlo del Rol primero.");
+                            throw new Exception(string.Format(idioma.Translate("ExcRolDuplicariaPatente"), rol.Nombre, familiaPadre.Nombre, familiaHija.Nombre, patenteAportada.Nombre));
                         }
                     }
                 }
@@ -178,53 +184,25 @@ namespace BLL
 
         public void EliminarFamilia(int idFamilia)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
             if (_dal.tieneDependencias(idFamilia)) 
             {
-                throw new Exception("No se puede eliminar la familia porque está asignada a un Rol o es parte de otra Familia.");
+                throw new Exception(idioma.Translate("ExcFamiliaConDependencias"));
             }
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
             BLLBit.registrarEvento(dniAutor, $"Elimino una familia.", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
             _dal.eliminarFamilia(idFamilia);
+            Services.DigitoVerificador55CA.ActualizarDVVFamilia();
         }
 
-        private long CalcularDVHDeFila(DataRow row)
-        {
-            string cadena = row["Id"].ToString() + row["Nombre"].ToString();
-            return Services.DigitoVerificador55CA.CalcularDVH(cadena);
-        }
+       
 
+        
 
-        public long ObtenerSumaDVH()
-        {
-            DataTable dt = _dal.obtenerTodos();
-            long suma = 0;
-
-            foreach (DataRow row in dt.Rows)
-            {
-                suma += CalcularDVHDeFila(row);
-            }
-
-            return suma;
-        }
-
-        public void RepararTodo()
-        {
-            DataTable dt = _dal.obtenerTodos();
-
-            foreach (DataRow row in dt.Rows)
-            {
-                long dvhGuardado = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]);
-                long dvhCalculado = CalcularDVHDeFila(row);
-
-                if (dvhGuardado != dvhCalculado)
-                {
-                    int id = Convert.ToInt32(row["Id"]);
-                    _dal.ActualizarDVH(id, dvhCalculado);
-                }
-            }
-        }
+        
 
         #region Verificacion hacia arriba
         private bool RolUsaFamilia(RolModelo55CA rol, int idFamiliaBuscada)

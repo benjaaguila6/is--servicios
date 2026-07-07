@@ -56,11 +56,13 @@ namespace BLL
 
         public void crearRol(string nombre, List<Componente55CA> componentes)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
             DataTable dt = _dal.obtenerPorNombre(nombre);
 
             if(dt.Rows.Count > 0)
             {
-                throw new Exception($"Ya existe una familia registrada con el nombre '{nombre}'");
+                throw new Exception(string.Format(idioma.Translate("ExcNombreYaExiste"), idioma.Translate("TablaRol"), nombre));
             }
 
             RolModelo55CA rol = new RolModelo55CA { Nombre =  nombre };
@@ -73,7 +75,7 @@ namespace BLL
                 {
                     if (permisosActuales.Any(p => p.Id == patente.Id))
                     {
-                        throw new Exception($"Conflicto en la selección: La patente '{patente.Nombre}' ya está incluida indirectamente dentro de otra familia que marcaste.");
+                        throw new Exception(string.Format(idioma.Translate("ExcConflictoPatenteIndirecta"), patente.Nombre));
                     }
                 }
 
@@ -85,7 +87,7 @@ namespace BLL
                     {
                         if (permisosActuales.Any(pa => pa.Id == p.Id))
                         {
-                            throw new Exception($"Conflicto en la selección: La familia '{familia.Nombre}' aporta permisos que ya elegiste previamente.");
+                            throw new Exception(string.Format(idioma.Translate("ExcConflictoFamiliaPermisos"), familia.Nombre));
                         }
                     }
                 }
@@ -97,6 +99,7 @@ namespace BLL
 
             long dvhInicial = Services.DigitoVerificador55CA.CalcularDVH(nuevoRolId.ToString() + nombre);
             _dal.ActualizarDVH(nuevoRolId, dvhInicial);
+            Services.DigitoVerificador55CA.ActualizarDVVRol();
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
 
@@ -121,11 +124,13 @@ namespace BLL
 
         public void AsignarPatente(RolModelo55CA rol, PermisoModelo55CA patente)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
             var permisosAplanados = rol.ObtenerPermisos();
 
             if (permisosAplanados.Any(p => p.Id == patente.Id))
             {
-                throw new Exception($"El Rol: {rol.Nombre} ya contiene el permiso {patente.Nombre}.");
+                throw new Exception(string.Format(idioma.Translate("ExcRolYaContienePermiso"), rol.Nombre, patente.Nombre));
             }
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
@@ -136,9 +141,11 @@ namespace BLL
 
         public void AsignarFamilia(RolModelo55CA rol, FamiliaModelo55CA familia)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
             if (rol.Permisos.Any(c => c.Id == familia.Id && c is FamiliaModelo55CA))
             {
-                throw new Exception($"El rol '{rol.Nombre}' ya tiene asignada la familia '{familia.Nombre}' de forma directa.");
+                throw new Exception(string.Format(idioma.Translate("ExcRolYaTieneFamilia"), rol.Nombre, familia.Nombre));
             }
 
             var permisosDelRol = rol.ObtenerPermisos();
@@ -148,7 +155,7 @@ namespace BLL
             {
                 if (permisosDelRol.Any(p => p.Id == permisoAportado.Id))
                 {
-                    throw new Exception($"La familia aportaría el permiso '{permisoAportado.Nombre}', pero el rol ya lo posee.");
+                    throw new Exception(string.Format(idioma.Translate("ExcFamiliaPermisoYaPoseido"), permisoAportado.Nombre));
                 }
             }
 
@@ -160,15 +167,19 @@ namespace BLL
 
         public void EliminarRol(int idRol)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
             if (_dal.tieneUsuariosAsignados(idRol))
             {
-                throw new Exception("No se puede eliminar el rol porque actualmente hay usuarios que lo tienen asignado.");
+                throw new Exception(idioma.Translate("ExcRolConUsuariosAsignados"));
             }
 
             string dniAutor = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo.DNI;
             bllBitacora.registrarEvento(dniAutor, $"Elimino un rol.", Criticidad55CA.Alto, Modulos55CA.Perfil);
 
             _dal.eliminarRol(idRol);
+            Services.DigitoVerificador55CA.ActualizarDVVRol();
+
         }
 
         public void DesasignarPatente(int idRol, int idPatente)
@@ -181,41 +192,11 @@ namespace BLL
             _dal.quitarFamiliaDeRol(idRol, idFamilia);
         }
 
-        private long CalcularDVHDeFila(DataRow row)
-        {
-            string cadena = row["Id"].ToString() + row["Nombre"].ToString();
-            return Services.DigitoVerificador55CA.CalcularDVH(cadena);
-        }
+        
 
-        public long ObtenerSumaDVH()
-        {
-            DataTable dt = _dal.obtenerTodos();
-            long suma = 0;
+        
 
-            foreach (DataRow row in dt.Rows)
-            {
-                suma += CalcularDVHDeFila(row); // recalcula, no lee la columna guardada
-            }
-
-            return suma;
-        }
-
-        public void RepararTodo()
-        {
-            DataTable dt = _dal.obtenerTodos();
-
-            foreach (DataRow row in dt.Rows)
-            {
-                long dvhGuardado = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]);
-                long dvhCalculado = CalcularDVHDeFila(row);
-
-                if (dvhGuardado != dvhCalculado)
-                {
-                    int id = Convert.ToInt32(row["Id"]);
-                    _dal.ActualizarDVH(id, dvhCalculado);
-                }
-            }
-        }
+        
 
         #region Métodos de Ensamblaje
 

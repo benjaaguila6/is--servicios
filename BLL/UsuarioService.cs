@@ -33,28 +33,29 @@ namespace BLL
 
         public bool login(string user, string password)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
 
             var usuario = MapearUsuario(dal.obtenerPorUser(user));
 
             //validaciones
             if (Services_55CA.ServiceSessionManager55CA.getIntancia().estaLogueado())
             {
-                throw new Exception("Ya existe una sesión activa.");
+                throw new Exception(idioma.Translate("ExcSesionActiva"));
             }
 
             if (usuario == null)
             {
-                throw new Exception("El usuario no existe.");
+                throw new Exception(idioma.Translate("ExcUsuarioNoExiste"));
             }
 
             if (usuario.Bloqueo == true)
             {
-                throw new Exception("El usuario esta bloqueado por intentos fallidos. Contacte a un administrador.");
+                throw new Exception(idioma.Translate("ExcUsuarioBloqueado"));
             }
 
             if (usuario.Activo == false)
             {
-                throw new Exception("El usuario no esta activo");
+                throw new Exception(idioma.Translate("ExcUsuarioInactivo"));
             }
 
             if (usuario.UltimoIntentoFallido.HasValue)
@@ -83,10 +84,10 @@ namespace BLL
                     dal.bloquearUsuario(usuario.DNI);
                     bit.registrarEvento(usuario.DNI, $"Usuario {usuario.User} bloqueado.", Criticidad55CA.Alto, Modulos55CA.Seguridad);
 
-                    throw new Exception("Cuenta bloqueada por intentos fallidos.");
+                    throw new Exception(idioma.Translate("ExcCuentaBloqueada"));
                 }
 
-                throw new Exception($"Contraseña incorrecta. Intento {usuario.Intentos}.");
+                throw new Exception(string.Format(idioma.Translate("ExcPasswordIncorrecta"), usuario.Intentos));
             }
             BLLRol gestorRol = new BLLRol();
 
@@ -119,10 +120,12 @@ namespace BLL
 
         public void CrearUsuario(string dni, string nombre, string apellido, string email, RolModelo55CA rol)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
 
             if (dal.obtenerPorDNI(dni) != null)
             {
-                throw new Exception("Ya existe un usuario con ese DNI.");
+                throw new Exception(idioma.Translate("ExcUsuarioDniExistente"));
             }
 
             string user = GenerarUsuario(nombre, dni);
@@ -138,6 +141,7 @@ namespace BLL
                 user,
                 passwordHash
             );
+            Services.DigitoVerificador55CA.ActualizarDVVUsuario();
 
             dal.InsertarUsuario(dni, nombre, apellido, email, rol.Id, user, passwordHash, dvh);
 
@@ -184,24 +188,27 @@ namespace BLL
 
         public bool cambiarPassword(string passwordActual, string passwordNueva)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
             string passwordActualHash = Services_55CA.ServiceSeguridad55CA.Hashear(passwordActual);
 
             UsuarioModelo55CA usuarioActivo = Services_55CA.ServiceSessionManager55CA.getIntancia().usuarioActivo;
 
             if (passwordActualHash != usuarioActivo.Password)
             {
-                throw new Exception("La contraseña actual es incorrecta.");
+                throw new Exception(idioma.Translate("ExcPasswordActualIncorrecta"));
             }
 
             string passwordNuevaHash = Services_55CA.ServiceSeguridad55CA.Hashear(passwordNueva);
 
             if (passwordActualHash == passwordNuevaHash)
             {
-                throw new Exception("La contraesña nueva no puede ser igual a la actual.");
+                throw new Exception(idioma.Translate("ExcPasswordIgualAnterior"));
             }
 
             dal.CambiarPassword(passwordNuevaHash, usuarioActivo.DNI);
             RecalcularDVHUsuario(usuarioActivo.DNI);
+            
 
             return true;
 
@@ -234,14 +241,16 @@ namespace BLL
 
         public void DesbloquearUsuario(string dni)
         {
+            var idioma = Services_55CA.ServiceSessionManager55CA.getIntancia().Idioma;
+
             var row = dal.obtenerPorDNI(dni);
             var usuario = MapearUsuario(row);
 
             if (usuario == null)
-                throw new Exception("Usuario no encontrado.");
+                throw new Exception(idioma.Translate("ExcUsuarioNoEncontrado"));
 
             if (!usuario.Bloqueo)
-                throw new Exception("El usuario no está bloqueado.");
+                throw new Exception(idioma.Translate("ExcUsuarioNoBloqueado"));
 
             // password default
             string nuevaPass = GenerarPassword(usuario.Apellido, usuario.DNI);
@@ -312,69 +321,10 @@ namespace BLL
             );
 
             dal.ActualizarDVH(dni, nuevoDVH);
+            Services.DigitoVerificador55CA.ActualizarDVVUsuario();
+
         }
 
-        public long CalcularDVHDeFila(DataRow row)
-        {
-            return CalcularDVHUsuario(
-                row["DNI"].ToString(),
-                row["Nombre"].ToString(),
-                row["Apellido"].ToString(),
-                row["Email"].ToString(),
-                Convert.ToInt32(row["IdRol"]),
-                row["Username"].ToString(),
-                row["PasswordHash"].ToString()
-            );
-        }
-
-        public long ObtenerSumaDVHUsuario()
-        {
-            DataTable dt = dal.obtenerTodos();
-            long suma = 0;
-
-            foreach (DataRow row in dt.Rows)
-            {
-                suma += CalcularDVHDeFila(row); // recalcula, no lee la columna DVH guardada
-            }
-
-            return suma;
-        }
-
-        public List<string> ObtenerDNIsConDVHInconsistente()
-        {
-            DataTable dt = dal.obtenerTodos();
-            List<string> dnisConError = new List<string>();
-
-            foreach (DataRow row in dt.Rows)
-            {
-                long dvhGuardado = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]);
-                long dvhCalculado = CalcularDVHDeFila(row);
-
-                if (dvhGuardado != dvhCalculado)
-                {
-                    dnisConError.Add(row["DNI"].ToString());
-                }
-            }
-
-            return dnisConError;
-        }
-
-        public void RepararTodoUsuario()
-        {
-            DataTable dt = dal.obtenerTodos();
-
-            foreach (DataRow row in dt.Rows)
-            {
-                long dvhGuardado = row["DVH"] == DBNull.Value ? 0 : Convert.ToInt64(row["DVH"]);
-                long dvhCalculado = CalcularDVHDeFila(row);
-
-                if (dvhGuardado != dvhCalculado)
-                {
-                    string dni = row["DNI"].ToString();
-                    dal.ActualizarDVH(dni, dvhCalculado);
-                }
-            }
-        }
 
         public void RepararDVH(string dni)
         {
