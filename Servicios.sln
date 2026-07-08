@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.14.36414.22
+# Visual Studio Version 18
+VisualStudioVersion = 18.8.11925.187 insiders
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI_55CA", "GUI_55CA.csproj", "{C3724063-F84C-4753-B655-57D87D1B74DD}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL_55CA", "BLL\BLL_55CA.csproj", "{B2FB6397-6033-427B-BB87-FD46A8D06BE8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services_55CA", "Services\Services_55CA.csproj", "{960D771D-0546-4FFE-B37E-8D38ADE0BC87}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Sistema_IngSoftware", "..\Sistema_IngSoftware\Sistema_IngSoftware.vdproj", "{19B0A315-9E9B-2007-CE79-E83F7AB76BF5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,8 @@ Global
 		{960D771D-0546-4FFE-B37E-8D38ADE0BC87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{960D771D-0546-4FFE-B37E-8D38ADE0BC87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{960D771D-0546-4FFE-B37E-8D38ADE0BC87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19B0A315-9E9B-2007-CE79-E83F7AB76BF5}.Debug|Any CPU.ActiveCfg = Debug
+		{19B0A315-9E9B-2007-CE79-E83F7AB76BF5}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

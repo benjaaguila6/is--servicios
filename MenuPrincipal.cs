@@ -85,6 +85,7 @@ namespace Servicios
             cerrarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cerrar Sesion");
             iniciarSesionToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Iniciar Sesion");
             idiomaToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Cambiar Idioma");
+            gestionRespaldoToolStripMenuItem.Enabled = ServiceSessionManager55CA.getIntancia().TienePermiso("Gestion Respaldo");
         }
 
         private void cambiarClaveToolStripMenuItem_Click(object sender, EventArgs e)

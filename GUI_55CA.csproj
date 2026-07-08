@@ -33,7 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
+    <Reference Include="System">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.7.2\System.dll</HintPath>
+    </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -108,6 +110,9 @@
     <Compile Include="RepararInconsistencias.Designer.cs">
       <DependentUpon>RepararInconsistencias.cs</DependentUpon>
     </Compile>
+    <None Include="Scripts\scriptTerceraEntrega.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <EmbeddedResource Include="AuditoriaBitacora.resx">
       <DependentUpon>AuditoriaBitacora.cs</DependentUpon>
     </EmbeddedResource>
