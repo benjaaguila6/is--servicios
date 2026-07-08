@@ -44,6 +44,7 @@
     <Compile Include="Enum\Criticidad55CA.cs" />
     <Compile Include="Enum\Modulos55CA.cs" />
     <Compile Include="Idioma55CA.cs" />
+    <Compile Include="InstanciaSqlBE.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
